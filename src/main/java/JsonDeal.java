@@ -6,13 +6,60 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class JsonDeal {
 
+    public void generer_aleatoirement(int nb_automates, int nb_etats, String[] alphabet, int nb_transition, int max_config_par_etat){
+        JSONObject jsonAutomates = new JSONObject();
+        ArrayList arrayList00 = new ArrayList();
+        Random random = new Random();
+        for (int i = 0; i < 1; i++){
+            for (int j = 0; j < nb_transition; j++){
+                ArrayList transitions = new ArrayList();
+                int a = random.nextInt(max_config_par_etat+1);
+                if (a != 0){
+                    ArrayList arrayList = new ArrayList();
+                    for (int k = 0; k < a; k++ ){
+                        int b = random.nextInt(alphabet.length);
+                        int c = random.nextInt(nb_etats);
+                        ArrayList config = new ArrayList();
+                        config.add(String.valueOf(c));
+                        config.add(alphabet[b]);
+                        arrayList.add(config);
+                    }
+                    transitions.add(a);
+                    transitions.add(arrayList);
+                }else {
+                }
+                if (transitions.size() != 0){
+                    arrayList00.add(transitions);
+                }
+            }
+            System.out.println(arrayList00);
+            HashMap hashMap = new HashMap();
+            for (int j =0; j < arrayList00.size(); j++){
+                ArrayList a = (ArrayList) arrayList00.get(j);
+                System.out.println(a.get(0));
+                if (hashMap.containsKey(a)){
+                    ArrayList ab = (ArrayList) hashMap.get(a);
+
+                }
+                hashMap.put(a.get(0),a.get(1));
+            }
+            System.out.println(hashMap);
+        }
+
+    }
 
     public static void main(String[] args) {
 
+        JsonDeal jsonDeal = new JsonDeal();
+        jsonDeal.generer_aleatoirement(5, 4, new String[]{"a", "b", "c"}, 6, 3);
         JSONParser jsonParser = new JSONParser();
 
         try {
@@ -66,8 +113,6 @@ public class JsonDeal {
                 tr.add(transitions1);
             }
 
-            System.out.println(tr.get(0).getTransitions());
-            System.out.println(tr.get(0).getEtat());
 
 
 

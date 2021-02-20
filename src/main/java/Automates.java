@@ -1,63 +1,64 @@
 import java.util.List;
 
 public class Automates {
-    private Etats init;
-    //private List<Etats> finaux,alphabet,transition,etat;
-    private List<Etats> finaux,alphabet,transition,etat;
 
-    public Automates(Etats init, List<Etats> finaux, List<Etats> alphabet, List<Etats> transition, List<Etats> etat) {
-        this.init = init;
-        this.finaux = finaux;
+    private AbstractEtats etatDepart;
+    private List<AbstractEtats> etatsArrivee,etats;
+    private List<String> alphabet;
+    private List transitions; // [ [ 0 , [ [0,"a"],[1,"b"] ] ], [ 1 , [ [1,"a"],[2,"b"] ] ]]
+
+    public Automates(AbstractEtats etatDepart, List<AbstractEtats> etatsArrivee, List<AbstractEtats> etats, List<String> alphabet, List transitions) {
+        this.etatDepart = etatDepart;
+        this.etatsArrivee = etatsArrivee;
+        this.etats = etats;
         this.alphabet = alphabet;
-        this.transition = transition;
-        this.etat = etat;
+        this.transitions = transitions;
     }
 
-    public Etats getInit() {
-        return init;
+    public AbstractEtats getEtatDepart() {
+        return etatDepart;
     }
 
-    public List<Etats> getFinaux() {
-        return finaux;
+    public void setEtatDepart(AbstractEtats etatDepart) {
+        this.etatDepart = etatDepart;
     }
 
-    public List<Etats> getAlphabet() {
+    public List<AbstractEtats> getEtatsArrivee() {
+        return etatsArrivee;
+    }
+
+    public void setEtatsArrivee(List<AbstractEtats> etatsArrivee) {
+        this.etatsArrivee = etatsArrivee;
+    }
+
+    public List<AbstractEtats> getEtats() {
+        return etats;
+    }
+
+    public void setEtats(List<AbstractEtats> etats) {
+        this.etats = etats;
+    }
+
+    public List<String> getAlphabet() {
         return alphabet;
     }
 
-    public List<Etats> getTransition() {
-        return transition;
-    }
-
-    public List<Etats> getEtat() {
-        return etat;
-    }
-
-    public void setInit(Etats init) {
-        this.init = init;
-    }
-
-    public void setFinaux(List<Etats> finaux) {
-        this.finaux = finaux;
-    }
-
-    public void setAlphabet(List<Etats> alphabet) {
+    public void setAlphabet(List<String> alphabet) {
         this.alphabet = alphabet;
     }
 
-    public void setTransition(List<Etats> transition) {
-        this.transition = transition;
+    public List getTransitions() {
+        return transitions;
     }
 
-    public void setEtat(List<Etats> etat) {
-        this.etat = etat;
+    public void setTransitions(List transitions) {
+        this.transitions = transitions;
     }
-
     // ALGORITHMES UTILES
 
-    public EtatsCompose creationEtatCompose(List<Etats> liste){
+    public EtatsCompose creationEtatCompose(List<AbstractEtats> liste){
         // TO DO
-        //EtatsCompose ec = new EtatsCompose();
+        //AbstractEtatsCompose ec = new AbstractEtatsCompose();
         return null;
     }
     public void toMatrice(){

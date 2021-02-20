@@ -1,34 +1,20 @@
+import java.util.List;
+
 public class Transitions {
-    private Etats depart,destination;
-    private String caractere;
+    //private AbstractEtats depart;
+    private List transitions; // [0,"a"]
 
-    public Transitions(Etats depart, Etats destination, String caractere) {
-        this.depart = depart;
-        this.destination = destination;
-        this.caractere = caractere;
+    public Transitions( List transitions) {
+        this.transitions = transitions;
     }
 
-    public Etats getDepart() {
-        return depart;
+    public List getTransitions() {
+        return transitions;
     }
 
-    public void setDepart(Etats depart) {
-        this.depart = depart;
+    public void setTransitions(List transitions) {
+        this.transitions = transitions;
     }
 
-    public Etats getDestination() {
-        return destination;
-    }
 
-    public void setDestination(Etats destination) {
-        this.destination = destination;
-    }
-
-    public String getCaractere() {
-        return caractere;
-    }
-
-    public void setCaractere(String caractere) {
-        this.caractere = caractere;
-    }
 }

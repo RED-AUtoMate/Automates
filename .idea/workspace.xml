@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="update">
+    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="Ghilas commited les classes eni">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/JsonDeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JsonDeal.java" afterDir="false" />
     </list>
@@ -85,8 +86,6 @@
       <updated>1613827742264</updated>
       <workItem from="1613827744292" duration="363000" />
       <workItem from="1613828133950" duration="1228000" />
-      <workItem from="1613944924993" duration="6833000" />
-      <workItem from="1614033407616" duration="3102000" />
     </task>
     <task id="LOCAL-00001" summary="Ghilas commited les classes eni">
       <created>1613828472218</created>
@@ -95,21 +94,7 @@
       <option name="project" value="LOCAL" />
       <updated>1613828472218</updated>
     </task>
-    <task id="LOCAL-00002" summary="Ghilas commited les classes eni">
-      <created>1613836361747</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1613836361747</updated>
-    </task>
-    <task id="LOCAL-00003" summary="update">
-      <created>1614035416566</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1614035416566</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,7 +134,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ghilas commited les classes eni" />
-    <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ghilas commited les classes eni" />
   </component>
 </project>

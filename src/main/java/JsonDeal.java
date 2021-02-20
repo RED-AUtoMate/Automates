@@ -43,6 +43,7 @@ public class JsonDeal {
 
                 /* chaque trnsition sera representée dans un tableau arrayList2 */
                 ArrayList arrayList2 = new ArrayList();
+                Etats etats1 = new Etats();
 
                 /* pour chaque configuration on obtient le mot de l'alphabet et l'etat destination */
                 for (int j = 0; j < trans.size(); j++){
@@ -52,22 +53,25 @@ public class JsonDeal {
                     /* chaque configuration est representée par arraylist1 0=>e_dest, 1=>mot de l alphabet*/
                     arrayList.add(arrayList1.get(0).toString());
                     arrayList.add(arrayList1.get(1).toString());
+                    Transitions transitions1 = new Transitions(arrayList);
 
                     /* ajout à l'ensemble de configuration */
                     arrayList2.add(arrayList);
                 }
+                etats1.setNom(e_init);
+                etats1.setTransitions(arrayList2);
+
+
 
                 /* instantiation d'une transition et attribution des valeurs à ses attributs*/
-                Transitions transitions1 = new Transitions();
-                transitions1.setEtat(e_init);
-                transitions1.setTransitions(arrayList2);
+
 
                 /* ajout de la transition dans l'ensemble des transitions de notre automate */
-                tr.add(transitions1);
+                System.out.println(etats1.getNom());
+                System.out.println(etats1.getTransitions());
             }
 
-            System.out.println(tr.get(0).getTransitions());
-            System.out.println(tr.get(0).getEtat());
+
 
 
 

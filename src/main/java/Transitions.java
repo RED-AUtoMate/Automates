@@ -1,26 +1,34 @@
-import java.util.ArrayList;
-
 public class Transitions {
-    public String etat;
-    public ArrayList transitions;
+    private Etats depart,destination;
+    private String caractere;
 
-    public Transitions(){
+    public Transitions(Etats depart, Etats destination, String caractere) {
+        this.depart = depart;
+        this.destination = destination;
+        this.caractere = caractere;
     }
 
-
-    public String getEtat() {
-        return etat;
+    public Etats getDepart() {
+        return depart;
     }
 
-    public void setEtat(String etat) {
-        this.etat = etat;
+    public void setDepart(Etats depart) {
+        this.depart = depart;
     }
 
-    public ArrayList getTransitions() {
-        return transitions;
+    public Etats getDestination() {
+        return destination;
     }
 
-    public void setTransitions(ArrayList transitions) {
-        this.transitions = transitions;
+    public void setDestination(Etats destination) {
+        this.destination = destination;
+    }
+
+    public String getCaractere() {
+        return caractere;
+    }
+
+    public void setCaractere(String caractere) {
+        this.caractere = caractere;
     }
 }

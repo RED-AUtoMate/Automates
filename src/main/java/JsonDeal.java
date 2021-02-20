@@ -59,7 +59,7 @@ public class JsonDeal {
     public static void main(String[] args) {
 
         JsonDeal jsonDeal = new JsonDeal();
-        jsonDeal.generer_aleatoirement(5, 4, new String[]{"a", "b", "c"}, 6, 3);
+        //jsonDeal.generer_aleatoirement(5, 4, new String[]{"a", "b", "c"}, 6, 3);
         JSONParser jsonParser = new JSONParser();
 
         try {
@@ -99,18 +99,20 @@ public class JsonDeal {
                     /* chaque configuration est representée par arraylist1 0=>e_dest, 1=>mot de l alphabet*/
                     arrayList.add(arrayList1.get(0).toString());
                     arrayList.add(arrayList1.get(1).toString());
+                    Transitions transitions1 = new Transitions(arrayList);
 
                     /* ajout à l'ensemble de configuration */
                     arrayList2.add(arrayList);
                 }
 
+
+                System.out.println(arrayList2);
+
                 /* instantiation d'une transition et attribution des valeurs à ses attributs*/
-                Transitions transitions1 = new Transitions();
-                transitions1.setEtat(e_init);
-                transitions1.setTransitions(arrayList2);
+
+
 
                 /* ajout de la transition dans l'ensemble des transitions de notre automate */
-                tr.add(transitions1);
             }
 
 

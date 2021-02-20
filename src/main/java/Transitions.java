@@ -1,26 +1,20 @@
-import java.util.ArrayList;
+import java.util.List;
 
 public class Transitions {
-    public String etat;
-    public ArrayList transitions;
+    //private AbstractEtats depart;
+    private List transitions; // [0,"a"]
 
-    public Transitions(){
+    public Transitions( List transitions) {
+        this.transitions = transitions;
     }
 
-
-    public String getEtat() {
-        return etat;
-    }
-
-    public void setEtat(String etat) {
-        this.etat = etat;
-    }
-
-    public ArrayList getTransitions() {
+    public List getTransitions() {
         return transitions;
     }
 
-    public void setTransitions(ArrayList transitions) {
+    public void setTransitions(List transitions) {
         this.transitions = transitions;
     }
+
+
 }

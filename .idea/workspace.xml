@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="Added class Image to generate .gv file (not completed yet)">
+    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="A faire : generation du fichier .gv, et regler le probléme de la derniére ligne manquante">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Images.java" afterDir="false" />
     </list>
@@ -69,13 +69,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -99,7 +101,8 @@
       <workItem from="1613828133950" duration="3761000" />
       <workItem from="1613851861512" duration="2513000" />
       <workItem from="1613859205017" duration="308000" />
-      <workItem from="1613904639054" duration="17833000" />
+      <workItem from="1613904639054" duration="18286000" />
+      <workItem from="1613927119693" duration="8330000" />
     </task>
     <task id="LOCAL-00001" summary="Ghilas commited les classes eni">
       <created>1613828472218</created>
@@ -122,7 +125,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613917444200</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="A faire : generation du fichier .gv, et regler le probléme de la derniére ligne manquante">
+      <created>1613923573308</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1613923573308</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,6 +154,28 @@
     <MESSAGE value="Ghilas commited les classes eni" />
     <MESSAGE value="Ghilas commited a new version with new transitions" />
     <MESSAGE value="Added class Image to generate .gv file (not completed yet)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added class Image to generate .gv file (not completed yet)" />
+    <MESSAGE value="A faire : generation du fichier .gv, et regler le probléme de la derniére ligne manquante" />
+    <option name="LAST_COMMIT_MESSAGE" value="A faire : generation du fichier .gv, et regler le probléme de la derniére ligne manquante" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Images.java</url>
+          <line>114</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Images.java</url>
+          <line>110</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Images.java</url>
+          <line>99</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -1,6 +1,9 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.*;
 
 public class Images {
     private static boolean check(char[] arr, char toCheckValue) {
@@ -27,18 +30,27 @@ public class Images {
                 "1\n" +
                 "[[1, c], [3, a], [3, b]]\n" +
                 "2\n" +
+                "[[2, a], [3, a]]\n" +
+                "4\n" +
                 "[[2, a], [3, a]]\n";
         char transition[][] = new char[10][3];
         int g = 0;
         String transitionGv = "";
-        char src;
-        char dst;
-        char lbl;
-        String etatInitial = "0";
-        String etatFinal = "1";
+        String src = "";
+        String dst = "";
+        String lbl = "";
         char tabEtats[] = new char[30];
+        JSONParser jsonParser = new JSONParser();
         try {
-            // Création du fichier
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader("test.json"));
+            JSONArray alphabet = (JSONArray) jsonObject.get("Alphabet");
+            JSONArray etats = (JSONArray) jsonObject.get("Etats");
+            String init = jsonObject.get("Init").toString();
+            String fin = jsonObject.get("Fin").toString();
+            Transitions transitions = (Transitions) jsonObject.get("Transitions");
+            String etatInitial = init;
+            String etatFinal = fin;
+            // Création du fichier .gv
             BufferedWriter b = new BufferedWriter(new FileWriter("/home/rayani00/test.gv"));
             System.out.println("Fichier cree avec succes");
             automateJson = automateJson.replace("]]\n", "]]\n\n").replace("[[", "[").replace("]]", "]");
@@ -92,9 +104,12 @@ public class Images {
             b.write(header);
             // Generer la ligne pour les etats et leurs style
             String chaineEtats = "";
-            for (int i = 0; i < tabEtats.length; i++) {
-                if ((tabEtats[i] + "") != "") {
-                    chaineEtats = chaineEtats + tabEtats[i] + ",";
+            for (int i = 0; i < etats.size(); i++) {
+                if (i == etats.size() - 1) {
+                    chaineEtats = chaineEtats + etats.get(i).toString();
+
+                } else {
+                    chaineEtats = chaineEtats + etats.get(i).toString() + ",";
                 }
             }
             chaineEtats = chaineEtats.replace(",", " ").trim().replaceAll("\\s", ",").trim();
@@ -103,17 +118,18 @@ public class Images {
             b.write("\r\n" + "    " + etatInitial + " " + attributsEtatInitial);
             // Generer la ligne pour les etats finaux
             b.write("\r\n" + "    " + etatFinal + " " + attributsEtatsFinaux);
+
             // Ecrire les transitions dans le fichier .gv
-            for (int i = 0; i < g; i++) {
-                src = transition[i][0];
-                dst = transition[i][1];
-                lbl = transition[i][2];
+            for (int a = 0; a < transitions.nbTransitions(); a++) {
+                transitions.getTransitions();
                 transitionGv = "    " + src + " -> " + dst + " " + "[label= \"" + lbl + "\"];";
                 b.write("\r\n" + transitionGv);
             }
             b.write("\r\n" + footer);
             b.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }

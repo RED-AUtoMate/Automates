@@ -5,10 +5,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class JsonDeal {
 
@@ -28,24 +25,22 @@ public class JsonDeal {
 
         la fonction va renvoyer un objet de la classe Automate
      */
-    public void random_aut(int nb_etats, int nb_transition, String[] alphabet) {
+    public void random_aut(int nb_etats, int nb_transition, List<String> alphabet) {
         Random random = new Random();
+
         /* L'ensemble d'etats de l'automate */
         ArrayList etats = new ArrayList();
         for (int i = 1; i <= nb_etats; i++) {
             etats.add(String.valueOf(i));
         }
 
-        /* L'etat de depart et l'etat final */
-        String etat_depart = String.valueOf(random.nextInt(nb_etats));
-        String etat_final = String.valueOf(random.nextInt(nb_etats));
 
         /* les transitions */
-        HashMap transitions = new HashMap();
+        HashMap<String, ArrayList> transitions = new HashMap<String, ArrayList>();
         for (int j = 0; j < nb_transition; j++) {
             String depart = String.valueOf(random.nextInt(nb_etats));
             String destination = String.valueOf(random.nextInt(nb_etats));
-            String mot = alphabet[random.nextInt(alphabet.length)];
+            String mot = alphabet.get(random.nextInt(alphabet.size()));
             ArrayList<String> transition = new ArrayList<String>();
             transition.add(0, destination);
             transition.add(1, mot);
@@ -59,6 +54,21 @@ public class JsonDeal {
                 transitions.put(depart, config);
             }
         }
+        ArrayList<String> states= new ArrayList<String>();
+        for (Map.Entry<String, ArrayList> entry: transitions.entrySet()){
+            states.add(entry.getKey());
+        }
+
+        /* L'etat de depart et l'etat final */
+        String etat_depart = String.valueOf(states.get(random.nextInt(states.size())));
+        String etat_final = String.valueOf(states.get(random.nextInt(states.size())));
+        System.out.println(etat_depart);
+        System.out.println(etat_final);
+        System.out.println(transitions);
+        Etats etats_depart = new Etats();
+
+
+
     }
 
     public void generer_aleatoirement(int nb_automates, int nb_etats, String[] alphabet, int nb_transition, int max_config_par_etat) {
@@ -107,7 +117,11 @@ public class JsonDeal {
 
 
         JsonDeal jsonDeal = new JsonDeal();
-        jsonDeal.random_aut(4, 8, new String[]{"a", "b", "c"});
+        List<String> alphab= new ArrayList<String>();
+        alphab.add("a");
+        alphab.add("b");
+        alphab.add("c");
+        jsonDeal.random_aut(4, 8, alphab);
         //jsonDeal.generer_aleatoirement(5, 4, new String[]{"a", "b", "c"}, 6, 3);
         JSONParser jsonParser = new JSONParser();
 

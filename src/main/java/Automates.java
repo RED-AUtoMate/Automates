@@ -5,14 +5,12 @@ public class Automates {
     private Etats etatDepart;
     private List<Etats> etatsArrivee,etats;
     private List<String> alphabet;
-    private List transitions; // [ [ 0 , [ [0,"a"],[1,"b"] ] ], [ 1 , [ [1,"a"],[2,"b"] ] ]]
 
-    public Automates(Etats etatDepart, List<Etats> etatsArrivee, List<Etats> etats, List<String> alphabet, List transitions) {
+    public Automates(Etats etatDepart, List<Etats> etatsArrivee, List<Etats> etats, List<String> alphabet) {
         this.etatDepart = etatDepart;
         this.etatsArrivee = etatsArrivee;
         this.etats = etats;
         this.alphabet = alphabet;
-        this.transitions = transitions;
     }
 
     public Etats getEtatDepart() {
@@ -47,13 +45,6 @@ public class Automates {
         this.alphabet = alphabet;
     }
 
-    public List getTransitions() {
-        return transitions;
-    }
-
-    public void setTransitions(List transitions) {
-        this.transitions = transitions;
-    }
     // ALGORITHMES UTILES
 
 

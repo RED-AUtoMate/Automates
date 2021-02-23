@@ -2,25 +2,16 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
+import java.lang.Object;
 import java.io.*;
+import java.util.ArrayList;
 
 public class Images {
-    private static boolean check(char[] arr, char toCheckValue) {
-        boolean test = false;
-        for (int element : arr) {
-            if (element == toCheckValue) {
-                test = true;
-                break;
-            }
-        }
-        return test;
-    }
-
     public static void main(String[] args) {
         String header = "digraph automate {\n" +
                 "\trankdir=LR;\n" +
-                "\tsize=\"8,5\"";
+                "\tsize=\"8,5\";\n" +
+                "    node  [shape = circle];";
         String footer = "}";
         String attributsEtats = " [shape = circle];";
         String attributsEtatInitial = " [style = \"filled\",color =\"gray\"];";
@@ -36,9 +27,9 @@ public class Images {
         char transition[][] = new char[10][3];
         int g = 0;
         String transitionGv = "";
-        String src = "";
-        String dst = "";
-        String lbl = "";
+        char src;
+        char dst;
+        char lbl;
         char tabEtats[] = new char[30];
         JSONParser jsonParser = new JSONParser();
         try {
@@ -47,11 +38,12 @@ public class Images {
             JSONArray etats = (JSONArray) jsonObject.get("Etats");
             String init = jsonObject.get("Init").toString();
             String fin = jsonObject.get("Fin").toString();
-            Transitions transitions = (Transitions) jsonObject.get("Transitions");
+            // Converting JSONArray to ArrayList
+            JSONArray transitions = (JSONArray) jsonObject.get("Transitions");
             String etatInitial = init;
             String etatFinal = fin;
             // Création du fichier .gv
-            BufferedWriter b = new BufferedWriter(new FileWriter("/home/rayani00/test.gv"));
+            BufferedWriter b = new BufferedWriter(new FileWriter("/home/rayani00/IdeaProjects/Automates/test.dot"));
             System.out.println("Fichier cree avec succes");
             automateJson = automateJson.replace("]]\n", "]]\n\n").replace("[[", "[").replace("]]", "]");
             String chaineTransitions[] = automateJson.split("\n\n");
@@ -88,40 +80,20 @@ public class Images {
             int nbCols = transition[0].length;
             int nbRows = transition.length;
             int v = 0;
-            // Recuperer tous les etats
-            for (int j = 0; j < 2; j++) {
-                for (int i = 0; i < g; i++) {
-                    if (i == 0 && j == 0) {
-                        tabEtats[v] = transition[i][j];
-                        v++;
-                    }
-                    if (!check(tabEtats, transition[i][j])) {
-                        tabEtats[v] = transition[i][j];
-                        v++;
-                    }
-                }
-            }
             b.write(header);
-            // Generer la ligne pour les etats et leurs style
-            String chaineEtats = "";
-            for (int i = 0; i < etats.size(); i++) {
-                if (i == etats.size() - 1) {
-                    chaineEtats = chaineEtats + etats.get(i).toString();
-
-                } else {
-                    chaineEtats = chaineEtats + etats.get(i).toString() + ",";
-                }
-            }
-            chaineEtats = chaineEtats.replace(",", " ").trim().replaceAll("\\s", ",").trim();
-            b.write("\r\n" + "    " + chaineEtats + " " + attributsEtats);
             // Generer la ligne pour les etats initials
             b.write("\r\n" + "    " + etatInitial + " " + attributsEtatInitial);
             // Generer la ligne pour les etats finaux
             b.write("\r\n" + "    " + etatFinal + " " + attributsEtatsFinaux);
 
+            // Recuperer les transitions a partir du JSONArray
+            for (int i = 0; i < transitions.size(); i++) {
+            }
             // Ecrire les transitions dans le fichier .gv
-            for (int a = 0; a < transitions.nbTransitions(); a++) {
-                transitions.getTransitions();
+            for (int i = 0; i < g; i++) {
+                src = transition[i][0];
+                dst = transition[i][1];
+                lbl = transition[i][2];
                 transitionGv = "    " + src + " -> " + dst + " " + "[label= \"" + lbl + "\"];";
                 b.write("\r\n" + transitionGv);
             }

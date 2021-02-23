@@ -1,5 +1,6 @@
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -10,177 +11,235 @@ import java.util.*;
 public class JsonDeal {
 
 
-    public void automate_to_json(Automates automate){
-        List<String> alphabet = automate.getAlphabet();
-        List<Transitions> transitions = automate.getTransitions();
-
-    }
-
-
     /*
-    Creation d'un auomate aleatoirement :
-        nb_etats : le nombre d'etat que l'automate va contenir
-        nb_transitions : le nombre total de transition
-        alphabet : les non termineaux
-
-        la fonction va renvoyer un objet de la classe Automate
+    Generation d'un automate aleatoirement les parametres sont le nombres
+    d'etats, le nombre de transitions, une liste d'alphabet
      */
-    public void random_aut(int nb_etats, int nb_transition, List<String> alphabet) {
+
+    public Automates random_aut(int nb_etats, int nb_transition, List<String> alphabet) {
         Random random = new Random();
 
-        /* L'ensemble d'etats de l'automate */
-        ArrayList etats = new ArrayList();
-        for (int i = 1; i <= nb_etats; i++) {
+        /*
+        Obtenir une liste contenant nb_etats etats numerotés de 0 jusque a nb_etats-1 [0,1,2] si n = 3
+         */
+        ArrayList<String> etats = new ArrayList<String>();
+        for (int i = 0; i < nb_etats; i++) {
             etats.add(String.valueOf(i));
         }
 
 
-        /* les transitions */
-        HashMap<String, ArrayList> transitions = new HashMap<String, ArrayList>();
+        /*
+        generation aleatoire de transition, une transition est un triplet etat_depart, mot lu, etat_arrive
+        on cree une map qui va avoir comme kle des indices d'etats et comme valeur les differentes
+        configuration que cet etat peut suivre {1: [[0, a], [1,b]],
+                                                2: [[2,a],[2,b]]
+                                                }
+         */
+        HashMap<String, ArrayList<ArrayList<String>>> transitions = new HashMap<String, ArrayList<ArrayList<String>>>();
         for (int j = 0; j < nb_transition; j++) {
+            /*
+            le treplet etat_depart, mot, etat_arrive est genere à chaque eteration de la boucle,
+            le mot et l'etat_arrive forment une configuration represente par "transition" [0, a]
+             */
             String depart = String.valueOf(random.nextInt(nb_etats));
             String destination = String.valueOf(random.nextInt(nb_etats));
             String mot = alphabet.get(random.nextInt(alphabet.size()));
             ArrayList<String> transition = new ArrayList<String>();
             transition.add(0, destination);
             transition.add(1, mot);
+
+            /*
+            on assure que chaque etat de depart ne va pas se repeter en utilisant une map qui va
+            contenir l etat_depart comme cle, une liste de transition (liste ) comme valeur
+                                    1:[[0,a], [0,b]]
+             */
             if (transitions.containsKey(depart)) {
-                ArrayList arrayList = (ArrayList) transitions.get(depart);
+                ArrayList<ArrayList<String>> arrayList = transitions.get(depart);
                 arrayList.add(transition);
                 transitions.put(depart, arrayList);
             } else {
-                ArrayList config = new ArrayList();
+                ArrayList<ArrayList<String>> config = new ArrayList<ArrayList<String>>();
                 config.add(transition);
                 transitions.put(depart, config);
             }
         }
-        ArrayList<String> states= new ArrayList<String>();
-        for (Map.Entry<String, ArrayList> entry: transitions.entrySet()){
-            states.add(entry.getKey());
+
+        /*
+        on cree la liste d'etats que va contenir notre automate
+        on enitialise pour chque item de la map un objet de la classe Etats
+        et on l'ajoute a la liste etatsListe
+         */
+        List<Etats> etatsList = new ArrayList<Etats>();
+        for (Map.Entry<String, ArrayList<ArrayList<String>>> entry: transitions.entrySet()){
+            Etats etats1 = new Etats();
+            etats1.setNom(entry.getKey());
+            etats1.setTransitions(entry.getValue());
+            etatsList.add(etats1);
         }
 
-        /* L'etat de depart et l'etat final */
-        String etat_depart = String.valueOf(states.get(random.nextInt(states.size())));
-        String etat_final = String.valueOf(states.get(random.nextInt(states.size())));
-        System.out.println(etat_depart);
-        System.out.println(etat_final);
-        System.out.println(transitions);
-        Etats etats_depart = new Etats();
+        /*
+        notre automate est pret a etre instancie et a se balader dans la memoire
+        par contre il reste de definir l'etat initiale et l'ensemble d'etats fineaux
+         */
+        Automates automates = new Automates();
+        automates.setEtats(etatsList);
+        automates.setAlphabet(alphabet);
 
+        int n = automates.getEtats().size();
+        /*
+        l'etat initiale est tire aleatoirement parmi les etats qu'on a
+         */
+        automates.setEtatDepart(automates.getEtats().get(random.nextInt(n)));
 
+        /*
+        la cardinalite de l'ensemble d'etats fineaux est tire au hasard et donc un nombre = card
+        d'etats fineaux est selectionne
+         */
+        int m = random.nextInt(n);
+        if (m == 0){
+            m += 1;
+        }
+        ArrayList<Etats> finale = new ArrayList<Etats>();
+        for (int i = 0; i < m; i++){
+            finale.add(automates.getEtats().get(i));
+        }
+        automates.setEtatsArrivee(finale);
+
+        return automates;
 
     }
 
-    public void generer_aleatoirement(int nb_automates, int nb_etats, String[] alphabet, int nb_transition, int max_config_par_etat) {
-        JSONObject jsonAutomates = new JSONObject();
-        ArrayList arrayList00 = new ArrayList();
-        Random random = new Random();
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < nb_transition; j++) {
-                ArrayList transitions = new ArrayList();
-                int a = random.nextInt(max_config_par_etat + 1);
-                if (a != 0) {
-                    ArrayList arrayList = new ArrayList();
-                    for (int k = 0; k < a; k++) {
-                        int b = random.nextInt(alphabet.length);
-                        int c = random.nextInt(nb_etats);
-                        ArrayList config = new ArrayList();
-                        config.add(String.valueOf(c));
-                        config.add(alphabet[b]);
-                        arrayList.add(config);
-                    }
-                    transitions.add(a);
-                    transitions.add(arrayList);
-                } else {
-                }
-                if (transitions.size() != 0) {
-                    arrayList00.add(transitions);
-                }
-            }
-            System.out.println(arrayList00);
-            HashMap hashMap = new HashMap();
-            for (int j = 0; j < arrayList00.size(); j++) {
-                ArrayList a = (ArrayList) arrayList00.get(j);
-                System.out.println(a.get(0));
-                if (hashMap.containsKey(a)) {
-                    ArrayList ab = (ArrayList) hashMap.get(a);
-
-                }
-                hashMap.put(a.get(0), a.get(1));
-            }
-            System.out.println(hashMap);
-        }
-
-    }
-
-    public static void main(String[] args) {
 
 
-        JsonDeal jsonDeal = new JsonDeal();
-        List<String> alphab= new ArrayList<String>();
-        alphab.add("a");
-        alphab.add("b");
-        alphab.add("c");
-        jsonDeal.random_aut(4, 8, alphab);
-        //jsonDeal.generer_aleatoirement(5, 4, new String[]{"a", "b", "c"}, 6, 3);
+    /* partir depuis une representation json vers des objets java ensuite vers notre objet automate */
+    public Automates json_to_automate(String path){
+        Automates automates = new Automates();
+
         JSONParser jsonParser = new JSONParser();
 
         try {
             /* lecture du fichier json */
-            JSONObject ob = (JSONObject) jsonParser.parse(new FileReader("test.json"));
+            JSONObject ob = (JSONObject) jsonParser.parse(new FileReader(path));
 
-            /* obtention du contenu du fichier json (definition de l'automate) */
-            JSONArray alphabet = (JSONArray) ob.get("Alphabet");
+            /* on recupere la representation de l'automate depuis le fichier json */
+            ArrayList alpha = (ArrayList) ob.get("Alphabet");
             JSONArray etats = (JSONArray) ob.get("Etats");
             String init = ob.get("Init").toString();
-            String fin = ob.get("Fin").toString();
-            JSONArray transitions = (JSONArray) ob.get("Transitions");
+            JSONArray fin = (JSONArray) ob.get("Fin");
+            JSONArray trans = (JSONArray) ob.get("Transitions");
 
-            /* construction du tableau des differentes transitions */
-            /* tr va contenir les transitions*/
-            ArrayList<Transitions> tr = new ArrayList<Transitions>();
+            /*on cree une map qui va contenir pour chaque etat ses transitions */
+            HashMap<String, ArrayList> hashMap = new HashMap<String, ArrayList>();
 
-            /* pour chaque transition on obtien l'etat initiale et les differentes configurations */
-            for (int i = 0; i < transitions.size(); i++) {
-                JSONArray transition = (JSONArray) transitions.get(i);
+            /* les differentes listes utilisees par notre automate */
+            ArrayList<String> alphabet = new ArrayList<String>();
+            ArrayList<Etats> etatsArrayList = new ArrayList<Etats>();
+            ArrayList<Etats> fineaux = new ArrayList<Etats>();
+            Etats etat_depart = new Etats();
 
-
-                /* obtention de l'etat source */
-                String e_init = transition.get(0).toString();
-
-                /* obtention des differentes configuration de cette transition */
-                JSONArray trans = (JSONArray) transition.get(1);
-
-                /* chaque trnsition sera representée dans un tableau arrayList2 */
-                ArrayList<ArrayList<String>> arrayList2 = new ArrayList<ArrayList<String>>();
-
-                /* pour chaque configuration on obtient le mot de l'alphabet et l'etat destination */
-                for (int j = 0; j < trans.size(); j++) {
-                    ArrayList arrayList1 = (ArrayList) trans.get(j);
-                    ArrayList<String> arrayList = new ArrayList<String>();
-
-                    /* chaque configuration est representée par arraylist1 0=>e_dest, 1=>mot de l alphabet*/
-                    arrayList.add(arrayList1.get(0).toString());
-                    arrayList.add(arrayList1.get(1).toString());
-                    Transitions transitions1 = new Transitions(arrayList);
-
-                    /* ajout à l'ensemble de configuration */
-                    arrayList2.add(arrayList);
-                }
-
-                /* instantiation d'une transition et attribution des valeurs à ses attributs*/
-
-
-
-                /* ajout de la transition dans l'ensemble des transitions de notre automate */
+            for (int i = 0; i < alpha.size(); i++){
+                alphabet.add(alpha.get(i).toString());
             }
 
+            ArrayList aut_trans = new ArrayList();
+
+            for (int i = 0; i < trans.size(); i++){
+                ArrayList transi = (ArrayList) trans.get(i);
+
+                String depart = transi.get(0).toString();
+                ArrayList config = (ArrayList) transi.get(1);
+
+                /* building a list of configurations */
+                ArrayList aut_config = new ArrayList();
+                for (int j = 0; j < config.size(); j++){
+
+                    ArrayList<String> aut_conf = new ArrayList<String>();
+                    /* getting the basic configuration [0, a] from json format to arraylist aut_conf */
+                    ArrayList conf = (ArrayList) config.get(j);
+                    String arrive = conf.get(0).toString();
+                    String mot = conf.get(1).toString();
+
+                    aut_conf.add(arrive);
+                    aut_conf.add(mot);
+                    aut_config.add(aut_conf);
+
+                }
+                hashMap.put(depart, aut_config);
+            }
+
+            for (Map.Entry<String, ArrayList> entry: hashMap.entrySet()){
+                Etats etats1 = new Etats();
+                etats1.setNom(entry.getKey());
+                etats1.setTransitions(entry.getValue());
+
+                etatsArrayList.add(etats1);
+            }
+            /*depart*/
+            etat_depart.setNom(init);
+            etat_depart.setTransitions(hashMap.get(init));
+
+            /*finaux*/
+            ArrayList<Etats> finos = new ArrayList<Etats>();
+            for (int i = 0; i < fin.size(); i++){
+                Etats finale = new Etats();
+                finale.setNom(fin.get(i).toString());
+                finale.setTransitions(hashMap.get(fin.get(i).toString()));
+                finos.add(finale);
+            }
+            automates.setAlphabet(alphabet);
+            automates.setEtats(etatsArrayList);
+            automates.setEtatDepart(etat_depart);
+            automates.setEtatsArrivee(finos);
 
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        return automates;
+    }
+
+
+    public JSONObject automate_to_json(Automates automates){
+
+        ArrayList transitions = new ArrayList();
+        for (int i = 0; i < automates.getEtats().size(); i++){
+            ArrayList etat = new ArrayList();
+            Etats etats = automates.getEtats().get(i);
+            etat.add(etats.getNom());
+            etat.add(etats.getTransitions());
+            transitions.add(etat);
+        }
+        List<String> alphabet = automates.getAlphabet();
+        String init = automates.getEtatDepart().getNom();
+
+        ArrayList etats = new ArrayList();
+        for (int i = 0; i < automates.getEtats().size(); i++){
+            etats.add(automates.getEtats().get(i).getNom());
+        }
+
+        ArrayList finaux = new ArrayList();
+        for (int i = 0; i < automates.getEtatsArrivee().size(); i++){
+            finaux.add(automates.getEtatsArrivee().get(i).getNom());
+        }
+        HashMap hashMap = new HashMap();
+        hashMap.put("Alphabet", alphabet);
+        hashMap.put("Etats", etats);
+        hashMap.put("Init", init);
+        hashMap.put("Fin", finaux);
+        hashMap.put("Transitions", transitions);
+        JSONObject object = new JSONObject();
+        object.putAll(hashMap);
+        return object;
+    }
+
+
+
+    public static void main(String[] args) {
+        JsonDeal jsonDeal= new JsonDeal();
+        Automates a = jsonDeal.json_to_automate("test.json");
+        JSONObject aut = jsonDeal.automate_to_json(a);
 
     }
 

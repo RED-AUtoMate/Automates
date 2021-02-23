@@ -6,6 +6,9 @@ public class Automates {
     private List<Etats> etatsArrivee,etats;
     private List<String> alphabet;
 
+    public Automates(){
+
+    }
     public Automates(Etats etatDepart, List<Etats> etatsArrivee, List<Etats> etats, List<String> alphabet) {
         this.etatDepart = etatDepart;
         this.etatsArrivee = etatsArrivee;

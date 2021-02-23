@@ -1,8 +1,10 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Etats {
     private String nom;
-    private List<Transitions> transitions;//[ [0,"a"],[1,"b"] ]
+
+    private ArrayList transitions;//[ [0,"a"],[1,"b"] ]getliste.getitem.getobje.getlist.getitem
 
     public Etats(){
 
@@ -15,11 +17,11 @@ public class Etats {
         this.nom = nom;
     }
 
-    public List<Transitions> getTransitions() {
+    public ArrayList getTransitions() {
         return transitions;
     }
 
-    public void setTransitions(List<Transitions> transitions) {
+    public void setTransitions(ArrayList transitions) {
         this.transitions = transitions;
     }
 }

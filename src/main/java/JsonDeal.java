@@ -80,7 +80,7 @@ public class JsonDeal {
         /*
         notre automate est pret a etre instancie et a se balader dans la memoire
         par contre il reste de definir l'etat initiale et l'ensemble d'etats fineaux
-         */
+         a*/
         Automates automates = new Automates();
         automates.setEtats(etatsList);
         automates.setAlphabet(alphabet);

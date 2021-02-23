@@ -1,0 +1,117 @@
+Index: src/main/java/JsonDeal.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import org.json.simple.JSONArray;\nimport org.json.simple.JSONObject;\nimport org.json.simple.JSONValue;\nimport org.json.simple.parser.JSONParser;\nimport org.json.simple.parser.ParseException;\n\nimport java.io.FileReader;\nimport java.io.IOException;\nimport java.lang.reflect.Array;\nimport java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.Random;\n\npublic class JsonDeal {\n\n    public void generer_aleatoirement(int nb_automates, int nb_etats, String[] alphabet, int nb_transition, int max_config_par_etat){\n        JSONObject jsonAutomates = new JSONObject();\n        ArrayList arrayList00 = new ArrayList();\n        HashMap hashMap = new HashMap();\n        Random random = new Random();\n        for (int i = 0; i < 1; i++){\n            for (int j = 0; j < nb_transition; j++){\n                ArrayList transitions = new ArrayList();\n\n                int a = random.nextInt(max_config_par_etat+1);\n                if (a != 0){\n                    ArrayList arrayList = new ArrayList();\n                    for (int k = 0; k < a; k++ ){\n                        int b = random.nextInt(alphabet.length);\n                        int c = random.nextInt(nb_etats);\n                        ArrayList config = new ArrayList();\n                        config.add(String.valueOf(c));\n                        config.add(alphabet[b]);\n                        arrayList.add(config);\n\n                        if (hashMap.containsKey(a)){\n                            ArrayList bn = (ArrayList) hashMap.get(a);\n                            bn.add(config);\n                        }\n                    }\n                    if (!hashMap.containsKey(a)){\n                        hashMap.put(a,arrayList);\n                    }\n                    transitions.add(a);\n                    transitions.add(arrayList);\n                }\n                if (transitions.size() != 0){\n                    arrayList00.add(transitions);\n                }\n            }\n            System.out.println(arrayList00);\n            System.out.println(hashMap);\n        }\n\n    }\n\n    public static void main(String[] args) {\n\n        JsonDeal jsonDeal = new JsonDeal();\n        jsonDeal.generer_aleatoirement(5, 4, new String[]{\"a\", \"b\", \"c\"}, 6, 3);\n        JSONParser jsonParser = new JSONParser();\n\n        try {\n            /* lecture du fichier json */\n            JSONObject ob = (JSONObject) jsonParser.parse(new FileReader(\"test.json\"));\n\n            /* obtention du contenu du fichier json (definition de l'automate) */\n            JSONArray alphabet = (JSONArray) ob.get(\"Alphabet\");\n            JSONArray etats = (JSONArray) ob.get(\"Etats\");\n            String init =  ob.get(\"Init\").toString();\n            String fin =  ob.get(\"Fin\").toString();\n            JSONArray transitions = (JSONArray) ob.get(\"Transitions\");\n\n            /* construction du tableau des differentes transitions */\n            /* tr va contenir les transitions*/\n            ArrayList<Transitions> tr = new ArrayList<Transitions>();\n\n            /* pour chaque transition on obtien l'etat initiale et les differentes configurations */\n            for (int i = 0; i < transitions.size(); i++){\n                JSONArray transition =(JSONArray) transitions.get(i);\n\n\n                /* obtention de l'etat source */\n                String e_init = transition.get(0).toString();\n\n                /* obtention des differentes configuration de cette transition */\n                JSONArray trans = (JSONArray) transition.get(1);\n\n                /* chaque trnsition sera representée dans un tableau arrayList2 */\n                ArrayList arrayList2 = new ArrayList();\n\n                /* pour chaque configuration on obtient le mot de l'alphabet et l'etat destination */\n                for (int j = 0; j < trans.size(); j++){\n                    ArrayList arrayList1 = (ArrayList) trans.get(j);\n                    ArrayList arrayList = new ArrayList();\n\n                    /* chaque configuration est representée par arraylist1 0=>e_dest, 1=>mot de l alphabet*/\n                    arrayList.add(arrayList1.get(0).toString());\n                    arrayList.add(arrayList1.get(1).toString());\n\n                    /* ajout à l'ensemble de configuration */\n                    arrayList2.add(arrayList);\n                }\n\n                /* instantiation d'une transition et attribution des valeurs à ses attributs*/\n                Transitions transitions1 = new Transitions();\n                transitions1.setEtat(e_init);\n                transitions1.setTransitions(arrayList2);\n\n                /* ajout de la transition dans l'ensemble des transitions de notre automate */\n                tr.add(transitions1);\n            }\n\n\n\n\n        } catch (IOException e) {\n            e.printStackTrace();\n        } catch (ParseException e) {\n            e.printStackTrace();\n        }\n\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/JsonDeal.java b/src/main/java/JsonDeal.java
+--- a/src/main/java/JsonDeal.java	(revision d0dc935a7234361c8ef3fc5876b6ab6a62eb679f)
++++ b/src/main/java/JsonDeal.java	(date 1613832762279)
+@@ -14,19 +14,31 @@
+ 
+ public class JsonDeal {
+ 
+-    public void generer_aleatoirement(int nb_automates, int nb_etats, String[] alphabet, int nb_transition, int max_config_par_etat){
++    public void aleatoire(int nb_automates, int nb_etats, String[] alphabet, int nb_transitions){
++        ArrayList automates = new ArrayList();
++        for (int i = 0; i < nb_automates; i++){
++            ArrayList automate = new ArrayList();
++
++            for (int j = 0; j < nb_transitions; j++){
++
++            }
++
++        }
++    }
++
++    public void generer_aleatoirement(int nb_automates, int nb_etats, String[] alphabet, int nb_transition, int max_config_par_etat) {
+         JSONObject jsonAutomates = new JSONObject();
+         ArrayList arrayList00 = new ArrayList();
+         HashMap hashMap = new HashMap();
+         Random random = new Random();
+-        for (int i = 0; i < 1; i++){
+-            for (int j = 0; j < nb_transition; j++){
++        for (int i = 0; i < 1; i++) {
++            for (int j = 0; j < nb_transition; j++) {
+                 ArrayList transitions = new ArrayList();
+ 
+-                int a = random.nextInt(max_config_par_etat+1);
+-                if (a != 0){
++                int a = random.nextInt(max_config_par_etat + 1);
++                if (a != 0) {
+                     ArrayList arrayList = new ArrayList();
+-                    for (int k = 0; k < a; k++ ){
++                    for (int k = 0; k < a; k++) {
+                         int b = random.nextInt(alphabet.length);
+                         int c = random.nextInt(nb_etats);
+                         ArrayList config = new ArrayList();
+@@ -34,23 +46,23 @@
+                         config.add(alphabet[b]);
+                         arrayList.add(config);
+ 
+-                        if (hashMap.containsKey(a)){
++                        if (hashMap.containsKey(a)) {
+                             ArrayList bn = (ArrayList) hashMap.get(a);
+                             bn.add(config);
+                         }
+                     }
+-                    if (!hashMap.containsKey(a)){
+-                        hashMap.put(a,arrayList);
++                    if (!hashMap.containsKey(a)) {
++                        hashMap.put(a, arrayList);
+                     }
+                     transitions.add(a);
+                     transitions.add(arrayList);
+                 }
+-                if (transitions.size() != 0){
++                if (transitions.size() != 0) {
+                     arrayList00.add(transitions);
+                 }
+             }
+             System.out.println(arrayList00);
+-            System.out.println(hashMap);
++
+         }
+ 
+     }
+@@ -68,8 +80,8 @@
+             /* obtention du contenu du fichier json (definition de l'automate) */
+             JSONArray alphabet = (JSONArray) ob.get("Alphabet");
+             JSONArray etats = (JSONArray) ob.get("Etats");
+-            String init =  ob.get("Init").toString();
+-            String fin =  ob.get("Fin").toString();
++            String init = ob.get("Init").toString();
++            String fin = ob.get("Fin").toString();
+             JSONArray transitions = (JSONArray) ob.get("Transitions");
+ 
+             /* construction du tableau des differentes transitions */
+@@ -77,8 +89,8 @@
+             ArrayList<Transitions> tr = new ArrayList<Transitions>();
+ 
+             /* pour chaque transition on obtien l'etat initiale et les differentes configurations */
+-            for (int i = 0; i < transitions.size(); i++){
+-                JSONArray transition =(JSONArray) transitions.get(i);
++            for (int i = 0; i < transitions.size(); i++) {
++                JSONArray transition = (JSONArray) transitions.get(i);
+ 
+ 
+                 /* obtention de l'etat source */
+@@ -91,7 +103,7 @@
+                 ArrayList arrayList2 = new ArrayList();
+ 
+                 /* pour chaque configuration on obtient le mot de l'alphabet et l'etat destination */
+-                for (int j = 0; j < trans.size(); j++){
++                for (int j = 0; j < trans.size(); j++) {
+                     ArrayList arrayList1 = (ArrayList) trans.get(j);
+                     ArrayList arrayList = new ArrayList();
+ 
+@@ -113,8 +125,6 @@
+             }
+ 
+ 
+-
+-
+         } catch (IOException e) {
+             e.printStackTrace();
+         } catch (ParseException e) {

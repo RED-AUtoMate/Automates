@@ -1,3 +1,6 @@
+import com.groupdocs.*;
+import com.groupdocs.foundation.*;
+import com.sun.xml.internal.ws.commons.xmlutil.Converter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -8,6 +11,8 @@ import java.lang.Object;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.groupdocs.metadata.MetadataKey.DocumentInfo.FileType;
 
 public class Images {
     /**
@@ -33,11 +38,11 @@ public class Images {
         try {
 
             JsonDeal jsonDeal = new JsonDeal();
-            Automates automates = jsonDeal.json_to_automate("test.json");
+            Automates automates = jsonDeal.json_to_automate(jsonFile);
             String etatInitial = automates.getEtatDepart().getNom();
             List<Etats> etatFinal = automates.getEtatsArrivee();
             // Création du fichier .gv
-            BufferedWriter b = new BufferedWriter(new FileWriter("/home/rayani00/IdeaProjects/Automates/test.dot"));
+            BufferedWriter b = new BufferedWriter(new FileWriter(path));
             System.out.println("Fichier cree avec succes");
             b.write(header);
             // Generer la ligne pour les etats initials
@@ -63,6 +68,12 @@ public class Images {
 
             b.write("\r\n" + footer);
             b.close();
+//            // Load the source DOT file to be converted
+//            Converter converter = new Converter("test.dot");
+//            // Get the convert options ready for the target PNG format
+//            ConvertOptions convertOptions = new FileType().fromExtension("png").getConvertOptions();
+//            // Convert to PNG format
+//            converter.convert("output.png", convertOptions);
         } catch (IOException e) {
             e.printStackTrace();
         }

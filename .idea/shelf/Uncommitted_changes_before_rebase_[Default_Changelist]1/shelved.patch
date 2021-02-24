@@ -6,8 +6,8 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/src/main/java/JsonDeal.java b/src/main/java/JsonDeal.java
---- a/src/main/java/JsonDeal.java	(revision d0dc935a7234361c8ef3fc5876b6ab6a62eb679f)
-+++ b/src/main/java/JsonDeal.java	(date 1613832762279)
+--- a/src/main/java/JsonDeal.java	
++++ b/src/main/java/JsonDeal.java	
 @@ -14,19 +14,31 @@
  
  public class JsonDeal {

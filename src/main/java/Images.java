@@ -7,6 +7,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Images {
+  
+  <<<<<<< imadhou
 
     public static void automate_to_graphviz(Automates automates){
         JsonDeal jsonDeal= new JsonDeal();
@@ -28,6 +30,9 @@ public class Images {
 
 
 
+
+=======
+>>>>>>> main
 
     public static void main(String[] args) {
         String header = "digraph automate {\n" +

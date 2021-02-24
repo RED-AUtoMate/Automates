@@ -244,7 +244,7 @@ public class JsonDeal {
     public static void main(String[] args) {
         JsonDeal jsonDeal= new JsonDeal();
         Automates a = jsonDeal.json_to_automate("test.json");
-        jsonDeal.automate_to_json(a);
+        System.out.println(a.getEtatsArrivee().get(0).getTransitions());
 
     }
 

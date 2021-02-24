@@ -1,6 +1,6 @@
 {
   "Alphabet" : ["a", "b", "c", "d"],
-  "Etats" : [0,1,2,3],
+  "Etats" : [0,1,2,3,4],
   "Init" : 0,
   "Fin" : [2],
   "Transitions" : [

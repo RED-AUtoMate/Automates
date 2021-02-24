@@ -244,7 +244,18 @@ public class JsonDeal {
     public static void main(String[] args) {
         JsonDeal jsonDeal= new JsonDeal();
         Automates a = jsonDeal.json_to_automate("test.json");
-        jsonDeal.automate_to_json(a);
+
+        for (int i = 0; i < a.getEtats().size(); i++){
+            Etats e = a.getEtats().get(i);
+            System.out.println("source=" + e.getNom());
+            ArrayList ar = e.getTransitions();
+            for (int j = 0; j < ar.size(); j++){
+                ArrayList tr = (ArrayList) ar.get(j);
+                System.out.println("dest = " + tr.get(0));
+                System.out.println("mot = " + tr.get(1));
+            }
+            System.out.println("\n");
+        }
 
     }
 

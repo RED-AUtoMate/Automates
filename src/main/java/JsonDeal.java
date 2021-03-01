@@ -242,6 +242,7 @@ public class JsonDeal {
         images.jsonToDot("test.json", "/home/rayani00/IdeaProjects/Automates/test.dot");
         JsonDeal jsonDeal = new JsonDeal();
         Automates a = jsonDeal.json_to_automate("test.json");
+        a.synchroniser();
 
         for (int i = 0; i < a.getEtats().size(); i++) {
             Etats e = a.getEtats().get(i);

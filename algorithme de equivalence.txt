@@ -1,0 +1,59 @@
+	private Automate union(Automate a, boolean estUnion){
+		if(a == null) return null;
+		
+		Automate union = new Automate();
+		Set<Character> alphabet = this.alphabet();
+		HashMap<Etat[], Etat> map = new HashMap<Etat[], Etat>();
+		Stack<Etat[]> pile = new Stack<Etat[]>();
+		ArrayList<Etat[]> listDuoEtat = new ArrayList<Etat[]>();
+		int etatCompteur = 0;
+
+		//Unions des etats initiaux
+		for(Etat etatB : this.initiaux){
+			for(Etat etatA : a.initiaux){
+				Etat tmp = new Etat(true, etatB.isTerm() || etatA.isTerm(), etatCompteur++);
+				union.ajouteEtatSeul(tmp);
+				Etat[] duoTmp = new Etat[2];
+				duoTmp[0] = etatB;
+				duoTmp[1] = etatA;
+				map.put(duoTmp, tmp);
+				pile.push(duoTmp);
+				listDuoEtat.add(duoTmp);
+			}
+		}
+
+		while(!pile.empty()){
+			Etat[] duoPop = pile.pop();
+			Etat etatLie = map.get(duoPop);
+			
+			for(Character lettre : alphabet){
+				ArrayList<Etat[]> duoSuccList = new ArrayList<Etat[]>();
+				EnsEtat[] duoPopSucc = new EnsEtat[2];
+				duoPopSucc[0] = (duoPop[0] != null)? duoPop[0].succ(lettre.charValue()) : null;
+				duoPopSucc[1] = (duoPop[1] != null)? duoPop[1].succ(lettre.charValue()) : null;
+				
+				if(duoPopSucc[0] == null && duoPopSucc[1] == null) break;
+				else if(duoPopSucc[0] == null){
+					for(Etat etatTmp : duoPopSucc[1]){
+						Etat[] tabTmp = new Etat[2];
+						tabTmp[0] = null;
+						tabTmp[1] = etatTmp;
+						duoSuccList.add(tabTmp);
+					}
+				}else if(duoPopSucc[1] == null){
+					for(Etat etatTmp : duoPopSucc[0]){
+						Etat[] tabTmp = new Etat[2];
+						tabTmp[0] = etatTmp;
+						tabTmp[1] = null;
+						duoSuccList.add(tabTmp);
+					}
+				}else{
+					for(Etat etatTmpB : duoPopSucc[0]){
+						for(Etat etatTmpA : duoPopSucc[1]){
+							Etat[] tabTmp = new Etat[2];
+							tabTmp[0] = etatTmpB;
+							tabTmp[1] = etatTmpA;
+							duoSuccList.add(tabTmp);
+						}
+					}
+				}

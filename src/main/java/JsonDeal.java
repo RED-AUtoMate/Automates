@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class JsonDeal {
+     int i =0;
 
 
     /*
@@ -245,6 +246,19 @@ public class JsonDeal {
         JsonDeal jsonDeal= new JsonDeal();
         Automates a = jsonDeal.json_to_automate("test.json");
         a.synchroniser();
+
+        String s = "a*";
+        String[] ss = {"a", "b", "c"};
+
+        Automates bb = a.thompson(s,ss);
+
+
+        for (int i = 0; i < bb.getEtats().size(); i++){
+            System.out.println(bb.getEtats().get(i).getNom());
+            System.out.println(bb.getEtats().get(i).getTransitions());
+            System.out.println("*****");
+        }
+
 
 
     }

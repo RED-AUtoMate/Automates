@@ -474,7 +474,7 @@ public class JsonDeal {
                             // ajouter les transitions de l'etat i de l'automate non deterministe
                             if(a.getEtats().get(i).getTransitions()!=null){
                             for (int m = 0; m < a.getEtats().get(i).getTransitions().size(); m++) {
-                                //grpetat pour ls arrivées
+                                //grpetat pour les arrivées
                                 for (int l = 0; l < grpEtats.size(); l++) {
                                     // etat1 contient les etats d'arrivée à tester
                                     String etat1[] = grpEtats.get(l).getNom().split(",");
@@ -483,16 +483,20 @@ public class JsonDeal {
                                         if (ltr.get(0).equals(etat1[g])) {
                                             boolean trouve = false;
                                             // verfie si on a déja ajouté la transition
-//                                            if (grpEtats.get(j).getTransitions() != null){
-//                                                for (int n = 0; n < grpEtats.get(j).getTransitions().size(); n++) {
-//                                                    ArrayList q = (ArrayList) (grpEtats.get(j).getTransitions().get(n));
-//                                                    if (q.get(1).equals((String) ((ArrayList<?>) a.getEtats().get(i).getTransitions().get(m)).get(1))) {
-//                                                        trouve = true;
-//                                                    }
-//                                                }
-//                                            // s'il n'existte pas envore de transition avec cette lettre la on ajoute
-//                                            if (!trouve) {
+                                            if (grpEtats.get(j).getTransitions() != null) {
+                                                for (int n = 0; n < grpEtats.get(j).getTransitions().size(); n++) {
+                                                    ArrayList q = (ArrayList) (grpEtats.get(j).getTransitions().get(n));
+                                                    if (q.get(1).equals((String) ((ArrayList<?>) a.getEtats().get(i).getTransitions().get(m)).get(1))) {
+                                                        trouve = true;
+                                                        // ce qu'on pourrait faire c'est ajouter ici  a.getEtats().get(i).getTransitions().get(m)).get(0)
+                                                        // à une liste qui formerait l'etat ou envoie l'etat groupé en cours
+                                                    }
+                                                }
+                                            }
+                                            // s'il n'existte pas envore de transition avec cette lettre la on ajoute
+                                            if (!trouve) {
                                                 ArrayList<String> al = new ArrayList<String>();
+                                                // cette ligne a un probleme
                                                 al.add(grpEtats.get(l).getNom());
                                                 al.add((String) ((ArrayList<?>) a.getEtats().get(i).getTransitions().get(m)).get(1));
                                                 if (grpEtats.get(j).getTransitions() != null) {
@@ -504,8 +508,8 @@ public class JsonDeal {
                                                     grpEtats.get(j).getTransitions().add(al);
 
                                                 }
-//                                            }
-//                                        }
+
+                                        }
                                         }
                                     }
                                 }

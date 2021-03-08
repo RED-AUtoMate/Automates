@@ -1,17 +1,20 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
 public class Automates {
-
-    Stack<String> automates = new Stack<String>();
+    Stack<String> automates = new Stack();
     private Etats etatDepart;
-    private List<Etats> etatsArrivee, etats;
+    private List<Etats> etatsArrivee;
+    private List<Etats> etats;
     private List<String> alphabet;
 
     public Automates() {
-
     }
 
     public Automates(Etats etatDepart, List<Etats> etatsArrivee, List<Etats> etats, List<String> alphabet) {
@@ -22,7 +25,7 @@ public class Automates {
     }
 
     public Etats getEtatDepart() {
-        return etatDepart;
+        return this.etatDepart;
     }
 
     public void setEtatDepart(Etats etatDepart) {
@@ -30,7 +33,7 @@ public class Automates {
     }
 
     public List<Etats> getEtatsArrivee() {
-        return etatsArrivee;
+        return this.etatsArrivee;
     }
 
     public void setEtatsArrivee(List<Etats> etatsArrivee) {
@@ -38,7 +41,7 @@ public class Automates {
     }
 
     public List<Etats> getEtats() {
-        return etats;
+        return this.etats;
     }
 
     public void setEtats(List<Etats> etats) {
@@ -46,533 +49,339 @@ public class Automates {
     }
 
     public List<String> getAlphabet() {
-        return alphabet;
+        return this.alphabet;
     }
 
     public void setAlphabet(List<String> alphabet) {
         this.alphabet = alphabet;
     }
 
-    // ALGORITHMES UTILES
-
-
     public void toMatrice() {
-        //  TO DO
     }
-
-
-    // ALGORITHMES
 
     public void determiniser() {
-        // TO DO
     }
 
-
-    /* Obtenir l'equivalent de l'automate sans eps-transitions */
-    public Automates synchroniser() {
-
-
-
-        /*  Pour chaque etat on verifie s'il contient des eps-transitions
-         *   avec deux cas possible
-         *       1- la transition mene vers un etat final
-         *       2- la transition mene vers un etat non final
-         *           le traitement est le meme mais dans le 1er cas on
-         *           ajoute l'etat dont il s'agit a l'ensemble des
-         *           etats finaux    */
-
-        List<Etats> etats_finaux = this.getEtatsArrivee();
-        for (int i = 0; i < this.getEtats().size(); i++) {
-
-            /* pour chaque etat on obtient son ensemble de transitions */
-            Etats etat = this.getEtats().get(i);
-            System.out.println(etat.getNom());
-            System.out.println(etat.getTransitions());
-            System.out.println("***********");
-            ArrayList transitions = etat.getTransitions();
-
-            /* pour chaque transition on verifie s'il s'agit d'une eps-transition */
-            for (int j = 0; j < transitions.size(); j++) {
-                ArrayList configs = (ArrayList) transitions.get(j);
-                if (configs.get(1).equals("eps")) {
-                    Etats eps = new Etats();
-                    for (int a = 0; a < this.getEtats().size(); a++) {
-                        Etats et = this.getEtats().get(a);
-                        if (et.getNom().equals(configs.get(0))) {
-                            eps = et;
-                        }
-                    }
-
-                    /* puis on verifie si elle mene vers un etat final ou non */
-                    int not_final = 1;
-                    int n = 0;
-                    while (n < etats_finaux.size() && not_final == 1) {
-                        Etats etat_final = etats_finaux.get(n);
-                        if (etat_final.getNom().equals(configs.get(0))) {
-                            not_final = 0;
-                        }
-                        n++;
-                    }
-
-                    /* 1erement on supprime la transition */
-                    transitions.remove(j);
-
-                    /* si elle mene a un etat final on ajoute l'etat actuel a l'ensemble des finaux*/
-                    if (not_final == 0) {
-                        etats_finaux.add(etat);
-                    }
-
-                    /* on ajoute les non epsilon transitions de l'etat auquel l'eps-transition mene
-                     * a l'etat actuel */
-                    for (int q = 0; q < eps.getTransitions().size(); q++) {
-                        ArrayList trs = (ArrayList) eps.getTransitions().get(q);
-                        if (!trs.get(1).equals("eps")) {
-                            transitions.add(trs);
-                        }
-                    }
-                }
-            }
-        }
-
-        System.out.println("****** apres ******");
-
-        for (int i = 0; i < this.getEtats().size(); i++) {
-            Etats etats = this.getEtats().get(i);
-            System.out.println(etats.getNom());
-            System.out.println(etats.getTransitions());
-            System.out.println("***************");
-        }
-
-        System.out.println("*****finaux******");
-        for (int i = 0; i < etats_finaux.size(); i++) {
-            System.out.println(etats_finaux.get(i).getNom());
-        }
-
-        return this;
-    }
-
-//
-//    Automates thompson(String expression, char[] alphabet, int i) {
-//        if(expression == "#"){
-//
-//        }
-//
-//        /* Le tableau automates va contenir les automates construit au fur et a mesur de l'analyse
-//         * de l'expression reguliere, a la fin on aura un seul automate issue des unions successifs
-//         * des automates construits */
-//
-//        Automates automate1 = new Automates();
-//        int k =0;
-//
-//        /* construire un automate de thompson correspondant à l'expression "a" ou "a" est un symbole d'alphabet */
-//        if (presentIn(expression[i], alphabet)) {
-//
-//            ArrayList<Etats> etats = new ArrayList<Etats>();
-//            ArrayList<Etats> etats_finaux = new ArrayList<Etats>();
-//            List<String> alpha = new ArrayList<String>();
-//
-//            /* Definir l'ensemble d'alphabet */
-//            alpha.add(String.valueOf(expression[i]));
-//
-//            /* Definir l'etat de depart */
-//            Etats etat_dep = new Etats();
-//            ArrayList dep = new ArrayList();
-//            dep.add(k + 1);
-//            dep.add(expression[i]);
-//            etat_dep.setNom(String.valueOf(k));
-//            etat_dep.setTransitions(dep);
-//
-//            /* Definir l'etat final et l'ajouter a l'ensemble d'etats finaux */
-//            Etats etat_arr = new Etats();
-//            ArrayList fin = new ArrayList();
-//            etat_arr.setNom(String.valueOf(k + 1));
-//            etat_arr.setTransitions(fin);
-//            k = k + 2;
-//            etats_finaux.add(etat_arr);
-//
-//            /* Definir l'ensemble des etats */
-//            etats.add(etat_dep);
-//            etats.add(etat_arr);
-//
-//            /* Construction de l'automate */
-//            automate1.setEtats(etats);
-//            automate1.setEtatDepart(etat_dep);
-//            automate1.setEtatsArrivee(etats_finaux);
-//            automate1.setAlphabet(alpha);
-//        }
-//
-//
-//        Automates automate = new Automates();
-//        return automate;
-//    }
-//
-//    Stack abc(String a){
-//
-//        if (a.length() == 0){
-//            return automates;
-//        }
-//
-//        if (a.charAt(0) == 'a' || a.charAt(0) == 'b' || a.charAt(0) == 'c'){
-//            String b;
-//            b = "1";
-//            automates.push(b);
-//
-//        }
-//
-//        if (a.charAt(0) == '+'){
-//            String b = automates.pop();
-//            Stack<String> s = new Stack<String>();
-//            a = a.substring(1);
-//            s = abc(a);
-//            b+= s.pop();
-//            automates.push(b);
-//            return automates;
-//        }
-//
-//        return automates;
-//    }
 
 
     boolean presentIn(char mot, String[] alphabet) {
         boolean not_preset = true;
-        int i = 0;
-        while (i < alphabet.length) {
+
+        for(int i = 0; i < alphabet.length; ++i) {
             if (alphabet[i].equals(String.valueOf(mot))) {
                 return false;
             }
-            i++;
         }
 
-       return true;
+        return true;
     }
 
-
-
-    public Automates thompson(String expression, String[] alpha){
-        Stack<Automates> pileA = new Stack<Automates>();
-        Stack<Character> pileM = new Stack<Character>();
+    public Automates thompson(String expression, String[] alpha) {
+        Stack<Automates> pileA = new Stack();
+        Stack<Character> pileM = new Stack();
         int etati = 0;
 
 
-       for (int i = 0; i < expression.length(); i++){
+        for(int i = 0; i < expression.length(); ++i) {
+            Automates ap;
+            ArrayList apEtats;
 
-
-
-            /* **************************************************** */
-            /* Cas ou le character courant est un mot de l alphabet */
-            if (!presentIn(expression.charAt(i), alpha)){
-                Automates a = new Automates();
-
-                /* etat depart */
+            /* cas ou c est un charactere de l alphabet */
+            if (!this.presentIn(expression.charAt(i), alpha)) {
+                ap = new Automates();
                 Etats etd = new Etats();
                 etd.setNom(String.valueOf(etati));
-                etati ++;
-
-                /* etat final */
+                ++etati;
                 Etats etf = new Etats();
                 etf.setNom(String.valueOf(etati));
-                etati++;
-
-                /* ajout de la config dep --> mot ---> fin */
-                ArrayList<String> config = new ArrayList<String>();
+                ++etati;
+                ArrayList<String> config = new ArrayList();
                 config.add(etf.getNom());
                 config.add(String.valueOf(expression.charAt(i)));
-
-                /* transitions des deux etats */
                 ArrayList trs = new ArrayList();
                 ArrayList trs1 = new ArrayList();
                 etf.setTransitions(trs);
-
                 trs1.add(config);
                 etd.setTransitions(trs1);
-
-
-                List<Etats> etfs = new ArrayList<Etats>();
+                List<Etats> etfs = new ArrayList();
                 etfs.add(etf);
-
-
-                /* liste d alphabet */
-                List<String> al = alphabet;
-
-
-
-
-                /* liste d etats */
-                List<Etats> ets = new ArrayList<Etats>();
-                ets.add(etd);
-                ets.add(etf);
-
-
-                /* parametres de l automate */
-                a.setAlphabet(al);
-                a.setEtats(ets);
-                a.setEtatsArrivee(etfs);
-                a.setEtatDepart(etd);
-
-
-                /* On empile l'automate construit pour le mot dans la pile d'automate */
-                pileA.push(a);
-
-
+                List<String> al = this.alphabet;
+                apEtats = new ArrayList();
+                apEtats.add(etd);
+                apEtats.add(etf);
+                ap.setAlphabet(al);
+                ap.setEtats(apEtats);
+                ap.setEtatsArrivee(etfs);
+                ap.setEtatDepart(etd);
+                pileA.push(ap);
             }
 
-
-
-            /* ************************************************ */
-            /* cas ou le charactere est une parenthese ouvrante */
-            if (expression.charAt(i) == '('){
+            if (expression.charAt(i) == '(') {
                 System.out.println("(");
-
             }
 
-
-
-            /* ********************************************************** */
-            /* cas ou le caractere courant est le point de concatination */
-            if (expression.charAt(i) == '.'){
+            if (expression.charAt(i) == '.') {
                 pileM.push('.');
                 System.out.println(".");
-
             }
 
-
-
-            /* ************************************* */
-            /* cas ou le caractere courant est un + */
-            if (expression.charAt(i) == '+'){
+            if (expression.charAt(i) == '+') {
                 pileM.push('+');
                 System.out.println("+");
-
             }
 
-
-
-            /* ************************************* */
-            /* cas ou le caractere courant est l etoile de kleen */
-            if (expression.charAt(i) == '*'){
-
+            ArrayList config1;
+            ArrayList config2;
+            ArrayList trF;
+            String ed1;
+            if (expression.charAt(i) == '*') {
                 System.out.println("*");
-                /* Depiler le plus recent automate construit */
-                Automates ap = pileA.pop();
-
-
-                /* Chercher la liste de ses etats */
-                List<Etats> etats= ap.getEtats();
-
-
-                /* Ancien Etat depart et final */
-                String ef = ap.getEtatsArrivee().get(0).getNom();
+                ap = (Automates)pileA.pop();
+                Automates a = new Automates();
+                new ArrayList();
+                List<Etats> etats = ap.getEtats();
                 String ed = ap.getEtatDepart().getNom();
-
-
-
-                /* nouveux etats depart et final */
+                ed1 = ((Etats)ap.getEtatsArrivee().get(0)).getNom();
                 Etats etatD = new Etats();
                 etatD.setNom(String.valueOf(etati));
-                etati++;
-
-
+                ++etati;
                 Etats etatF = new Etats();
                 etatF.setNom(String.valueOf(etati));
-                etati++;
-
-
-                /* ajout de eps-transition entre l ancien etatF et lancien etatD */
-                ArrayList<String> config1 = new ArrayList<String>();
-                config1.add(String.valueOf(ed));
+                ArrayList etfss = new ArrayList();
+                etatF.setTransitions(etfss);
+                ++etati;
+                apEtats = new ArrayList();
+                apEtats.add(etatF);
+                ArrayList trD = new ArrayList();
+                config1 = new ArrayList();
+                config1.add(etatF.getNom());
                 config1.add("eps");
-                for (int j = 0; j < ap.getEtats().size(); j++){
-                    System.out.println(ap.getEtats().get(j).getNom());
+                trD.add(config1);
+                config2 = new ArrayList();
+                config2.add(ed);
+                config2.add("eps");
+                trD.add(config2);
+                etatD.setTransitions(trD);
+
+                for(int j = 0; j < etats.size(); ++j) {
+                    if (((Etats)etats.get(j)).getNom().equals(ed1)) {
+                        ArrayList<String> config3 = new ArrayList();
+                        config3.add(etatF.getNom());
+                        config3.add("eps");
+                        ((Etats)etats.get(j)).getTransitions().add(config3);
+                        trF = new ArrayList();
+                        trF.add(ed);
+                        trF.add("eps");
+                        ((Etats)etats.get(j)).getTransitions().add(trF);
+                    }
                 }
-                ap.getEtats().get(get_etat(ap,ef)).getTransitions().add(config1);
 
-
-                /* ajout de eps-transition entre l'ancien et le nouvel etatF */
-                ArrayList<String> config2 = new ArrayList<String>();
-                config1.add(String.valueOf(etatF.getNom()));
-                config1.add("eps");
-                ap.getEtats().get(get_etat(ap,ef)).getTransitions().add(config2);
-
-
-                /* ajout de eps transition entre le nouvel etatD et le nouvel etatF */
-                ArrayList<String> config3 = new ArrayList<String>();
-                config1.add(String.valueOf(etatF.getNom()));
-                config1.add("eps");
-                etatD.setTransitions(config3);
-
-
-                /* ajout du nouvel etat final et de nouvel etat de depart a l ensemble des etats */
-                ap.getEtats().add(etatD);
-                ap.getEtats().add(etatF);
-
-
-                ap.getEtatsArrivee().remove(0);
-                ap.etatDepart = null;
-
-
-                /* mise a jour de l etat final et de l etat de depart */
-                ap.setEtatDepart(etatD);
-                ap.getEtatsArrivee().add(etatF);
-
-                pileA.push(ap);
-
+                etats.add(etatD);
+                etats.add(etatF);
+                a.setEtatsArrivee(apEtats);
+                a.setEtats(etats);
+                a.setEtatDepart(etatD);
+                a.setAlphabet(ap.getAlphabet());
+                pileA.push(a);
             }
 
-
-
-            /* ***************************************************** */
-            /* cas ou le caractere courant est une parethese fermant */
-            if (expression.charAt(i) == ')'){
-
+            if (expression.charAt(i) == ')') {
                 System.out.println(")");
-                Automates ap = new Automates();
-
-                /* chercher l'operation dans la pile d'operations */
-                char exp = pileM.pop();
-
-                /* on depile deux automates */
-                Automates ap2 = pileA.pop();
-                Automates ap1 = pileA.pop();
-
-                /* on cherche l etat depart et final pour les deux automates */
-                String ed1 = ap1.getEtatDepart().getNom();
+                ap = new Automates();
+                char exp = (Character)pileM.pop();
+                Automates ap2 = (Automates)pileA.pop();
+                Automates ap1 = (Automates)pileA.pop();
+                ed1 = ap1.getEtatDepart().getNom();
                 String ed2 = ap2.getEtatDepart().getNom();
-                String ef1 = ap1.getEtatsArrivee().get(0).getNom();
-                String ef2 = ap2.getEtatsArrivee().get(0).getNom();
-
-
-
+                String ef1 = ((Etats)ap1.getEtatsArrivee().get(0)).getNom();
+                String ef2 = ((Etats)ap2.getEtatsArrivee().get(0)).getNom();
                 ap.setAlphabet(ap2.getAlphabet());
-                List<Etats> apEtats = new ArrayList<Etats>();
-                for (int j = 0; j < ap1.getEtats().size(); j++){
+                apEtats = new ArrayList();
+
+                int j;
+                for(j = 0; j < ap1.getEtats().size(); ++j) {
                     apEtats.add(ap1.getEtats().get(j));
                 }
-                for (int j = 0; j < ap2.getEtats().size(); j++){
+
+                for(j = 0; j < ap2.getEtats().size(); ++j) {
                     apEtats.add(ap2.getEtats().get(j));
                 }
+
                 ap.setEtats(apEtats);
-                System.out.println("aut deb");
-                for (int k = 0; k < ap.getEtats().size(); k++){
-                    System.out.println("deb etat");
-                    System.out.println(ap.getEtats().get(k).getNom());
-                    System.out.println(ap.getEtats().get(k).getTransitions());
-                    System.out.println("fin etat");
-                }
-                System.out.println("aut fin");
-
-
-                switch (exp){
-
-                    case '+' :
-                        /* nouvel etat depart */
+                switch(exp) {
+                    case '+':
                         Etats etatsD = new Etats();
                         etatsD.setNom(String.valueOf(etati));
-                        etati++;
-
-
-                        /* ajout des deux eps-transitions entre le nouvel ED et les deux anciens ED */
-                        ArrayList<String> config1 = new ArrayList<String>();
+                        ++etati;
+                        config1 = new ArrayList();
                         config1.add(String.valueOf(ed1));
                         config1.add("eps");
-
-                        ArrayList<String> config2 = new ArrayList<String>();
-                        config1.add(String.valueOf(ed2));
-                        config1.add("eps");
-
+                        config2 = new ArrayList();
+                        config2.add(String.valueOf(ed2));
+                        config2.add("eps");
                         ArrayList trD = new ArrayList();
                         trD.add(config1);
                         trD.add(config2);
-
                         etatsD.setTransitions(trD);
                         ap.getEtats().add(etatsD);
-
-
-
-                        /* nouvel etat final */
                         Etats etatsF = new Etats();
                         etatsF.setNom(String.valueOf(etati));
-                        etati++;
-                        ArrayList trF = new ArrayList();
+                        ++etati;
+                        trF = new ArrayList();
                         etatsF.setTransitions(trF);
                         ap.getEtats().add(etatsF);
-
-                        /* ajout des deux eps-transitions entre le nouvel EF et les deux anciens EF */
-                        ArrayList<String> config3 = new ArrayList<String>();
+                        ArrayList<String> config3 = new ArrayList();
                         config3.add(String.valueOf(etatsF.getNom()));
                         config3.add("eps");
-
-                        ArrayList<String> config4 = new ArrayList<String>();
+                        ArrayList<String> config4 = new ArrayList();
                         config4.add(String.valueOf(etatsF.getNom()));
                         config4.add("eps");
-
-
-                        ap.getEtats().get(get_etat(ap,ef1)).getTransitions().add(config3);
-                        ap.getEtats().get(get_etat(ap,ef2)).getTransitions().add(config4);
-
-
-
-
-                        List<Etats> efs = new ArrayList<Etats>();
+                        ((Etats)ap.getEtats().get(this.get_etat(ap, ef1))).getTransitions().add(config3);
+                        ((Etats)ap.getEtats().get(this.get_etat(ap, ef2))).getTransitions().add(config4);
+                        List<Etats> efs = new ArrayList();
                         efs.add(etatsF);
-
-
-
-
                         ap.setEtatDepart(etatsD);
                         ap.setEtatsArrivee(efs);
-
                         pileA.push(ap);
-                    break;
-
-
-                    case '.' :
-
-                    break;
-
+                        break;
+                    case '.':
+                        int indiceF1 = ap.get_etat(ap, ((Etats)ap1.getEtatsArrivee().get(0)).getNom());
+                        int indiceD2 = ap.get_etat(ap, ap2.getEtatDepart().getNom());
+                        ((Etats)ap.getEtats().get(indiceF1)).getTransitions().addAll(ap2.getEtatDepart().getTransitions());
+                        ap.getEtats().remove(indiceD2);
+                        ap.setEtatDepart(ap1.getEtatDepart());
+                        ap.setEtatsArrivee(ap2.getEtatsArrivee());
+                        pileA.push(ap);
                 }
-
-
             }
-
-
         }
 
-        return pileA.pop();
+        return (Automates)pileA.pop();
     }
 
-    public String next_parenthese(String expression){
 
-        int n = expression.length();
-        int ouv = 1;
-        int ferm = 0;
-        int i =1;
 
-        while (i < n && ouv > ferm){
-            if(expression.charAt(i) == '('){
-                ouv +=1 ;
-            }
-            if (expression.charAt(i) == ')'){
-                ferm += 1;
-            }
-
-            i++;
-        }
-
-        System.out.println(i);
-
-        return expression.substring(1, i-1);
-    }
-
-    public int get_etat(Automates automates, String nom){
-        for(int i = 0; i < automates.getEtats().size(); i++){
-            if (automates.getEtats().get(i).getNom().equals(nom)){
+    public int get_etat(Automates automates, String nom) {
+        for(int i = 0; i < automates.getEtats().size(); ++i) {
+            if (((Etats)automates.getEtats().get(i)).getNom().equals(nom)) {
                 return i;
             }
         }
+
         return -1;
     }
 
 
 
 
+    public void synch3(){
+
+        List<Etats> etats = this.getEtats();
+
+        /* etape1 : calcule des eps-transitivitées */
+        for (int i = 0; i < etats.size(); i++){
+            Etats etat0 = etats.get(i);
+            for (int j = 0; j < etat0.getTransitions().size(); j++){
+                ArrayList config0 = (ArrayList) etat0.getTransitions().get(j);
+                if (config0.get(1) == "eps"){
+                    int et = this.get_etat(this, config0.get(0).toString());
+
+                    for (int s = 0; s < this.getEtatsArrivee().size(); s++){
+                        if (this.getEtatsArrivee().get(s).getNom() == this.getEtats().get(et).getNom()){
+                            this.getEtatsArrivee().add(etat0);
+                        }
+                    }
+                    for (int k = 0; k < etats.get(et).getTransitions().size(); k++){
+                        ArrayList config1 = (ArrayList) etats.get(et).getTransitions().get(k);
+                        if (config1.get(1) == "eps"){
+                            etat0.getTransitions().add(config1);
+                        }
+                    }
+                }
+            }
+        }
+
+        /* etape 2 calcule des transitivités sans epsilons */
+        for (int i = 0; i < etats.size(); i++){
+            Etats etat_courant = etats.get(i);
+
+            for (int j = 0; j < etat_courant.getTransitions().size(); j++){
+                ArrayList config = (ArrayList) etat_courant.getTransitions().get(j);
+                if (config.get(1) == "eps"){
+                    Etats etat_inter = etats.get(this.get_etat(this, config.get(0).toString()));
+                    for (int s = 0; s < this.getEtatsArrivee().size(); s++){
+                        if (this.getEtatsArrivee().get(s).getNom() == this.getEtats().get(this.get_etat(this, String.valueOf(config.get(0)))).getNom()){
+                            this.getEtatsArrivee().add(etat_courant);
+                        }
+                    }
+
+                    for (int k = 0; k < etat_inter.getTransitions().size(); k++){
+                        ArrayList trans = etat_inter.getTransitions();
+                        for (int s = 0; s < trans.size(); s++){
+                            ArrayList config1 = (ArrayList) trans.get(s);
+                            if (config1.get(1) != "eps"){
+                                etat_courant.getTransitions().add(config1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        /* etape 3 : suppression des eps-transitions */
+        for ( int i = 0 ; i < this.getEtats().size(); i++){
+            ArrayList trs = new ArrayList();
+            for ( int j = 0; j < this.getEtats().get(i).getTransitions().size(); j++){
+                ArrayList a = (ArrayList) this.getEtats().get(i).getTransitions().get(j);
+                if(a.get(1) != "eps"){
+                    if ( ! trs.contains(a)){
+                        trs.add(a);
+                    }
+                }
+            }
+            this.getEtats().get(i).setTransitions(trs);
+        }
+
+        /* etape 4: suppression des etats non accessibles et des transitions double */
+        ArrayList<String> etats_acce = new ArrayList<String>();
+        for (int i = 0; i < this.getEtats().size(); i++){
+            String nom = this.getEtats().get(i).getNom();
+            for (int j = 0; j < this.getEtats().size(); j++){
+                ArrayList transitions = this.getEtats().get(j).getTransitions();
+                for ( int k = 0; k < transitions.size(); k++){
+                    ArrayList conf = (ArrayList) transitions.get(k);
+                    if (conf.get(0) == nom){
+                        etats_acce.add(nom);
+                    }
+                }
+            }
+            if (this.getEtats().get(i).getNom() == this.getEtatDepart().getNom()){
+                etats_acce.add(this.getEtats().get(i).getNom());
+            }
+        }
+
+
+        /* definition des nouveaux etats */
+        ArrayList<Etats> etts = new ArrayList<Etats>();
+        for (int i = 0; i < this.getEtats().size(); i++){
+            if (etats_acce.contains(this.getEtats().get(i).getNom())){
+                etts.add(this.getEtats().get(i));
+            }
+        }
+        this.setEtats(etts);
+
+        /* definition des nouveaux etats finaux */
+        ArrayList<Etats> arr = new ArrayList<Etats>();
+        for (int i = 0; i < this.getEtatsArrivee().size(); i++){
+            if (etats_acce.contains(this.getEtatsArrivee().get(i).getNom())){
+                Etats ett = this.getEtats().get(this.get_etat(this, this.getEtatsArrivee().get(i).getNom()));
+                if (!arr.contains(ett)){
+                    arr.add(ett);
+                }
+            }
+        }
+        this.setEtatsArrivee(arr);
+
+    }
 }

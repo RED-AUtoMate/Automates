@@ -244,20 +244,20 @@ public class JsonDeal {
 
     public static void main(String[] args) {
         JsonDeal jsonDeal= new JsonDeal();
-        Automates a = jsonDeal.json_to_automate("test.json");
-        a.synchroniser();
 
-        String s = "a*";
+
+        Automates a = jsonDeal.json_to_automate("test.json");
+
+
+        String s = "((a+(b.b))*.(b+(a.a))*)";
         String[] ss = {"a", "b", "c"};
 
         Automates bb = a.thompson(s,ss);
 
-
-        for (int i = 0; i < bb.getEtats().size(); i++){
-            System.out.println(bb.getEtats().get(i).getNom());
-            System.out.println(bb.getEtats().get(i).getTransitions());
-            System.out.println("*****");
-        }
+        System.out.println(jsonDeal.automate_to_json(bb));
+        Images i = new Images();
+        i.jsonToDot("test.json", "hh2.dot");
+        bb.synch3();
 
 
 

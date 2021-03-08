@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import com.groupdocs.*;
 import com.groupdocs.foundation.*;
+=======
+
+>>>>>>> imadhou00
 import com.sun.xml.internal.ws.commons.xmlutil.Converter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,7 +16,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 import static com.groupdocs.metadata.MetadataKey.DocumentInfo.FileType;
+=======
+>>>>>>> imadhou00
 
 public class Images {
     /**
@@ -79,5 +86,9 @@ public class Images {
         }
     }
 
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> imadhou00

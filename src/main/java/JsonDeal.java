@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class JsonDeal {
+     int i =0;
 
 
     /*
@@ -243,8 +244,21 @@ public class JsonDeal {
 
     public static void main(String[] args) {
         JsonDeal jsonDeal= new JsonDeal();
+
+
         Automates a = jsonDeal.json_to_automate("test.json");
-        a.synchroniser();
+
+
+        String s = "((a+(b.b))*.(b+(a.a))*)";
+        String[] ss = {"a", "b", "c"};
+
+        Automates bb = a.thompson(s,ss);
+
+        System.out.println(jsonDeal.automate_to_json(bb));
+        Images i = new Images();
+        i.jsonToDot("test.json", "hh2.dot");
+        bb.synch3();
+
 
 
     }

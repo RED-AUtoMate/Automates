@@ -338,6 +338,7 @@ public class JsonDeal {
         alphabet.add("@");
         alphabet.add(".");
         Automates a = new Automates(q1,arrivee,etats,alphabet);
+        a.determiniser();
 //        System.out.println(a.getAlphabet());
 ////        System.out.println(a.getEtats());
 //        for(int i=0;i<a.getEtats().size();i++) {
@@ -363,167 +364,167 @@ public class JsonDeal {
         // determinaison
 //        System.out.println(a.getEtats().get());
         // contient les transitions finales à inserer dans les grpEtats
-        ArrayList grpTransitions = new ArrayList();
-        // sert a creer les transitions groupées mais de maniere condensée : ["a:1,2,4","b:2,3"]
-        ArrayList<String> grpTransitionsTemp = new ArrayList<String>();
-        // contient les etat à inserer dans l'automate final deteminisé
-        ArrayList<Etats> grpEtats = new ArrayList<Etats>();
-        Etats e = new Etats();
-        e.setNom(a.getEtatDepart().getNom());
-        grpEtats.add(e);
-        // on parcourt les etats de a
-        for(int i=0;i<a.getEtats().size();i++){
-            // contient les transition de l'etat i
-            ArrayList transitions_etat = a.getEtats().get(i).getTransitions();
-            int size = 0;
-            if (transitions_etat == null)
-                size = 0;
-            else
-                size = transitions_etat.size();
-            // parcourt les transitions de l"etat i
-            for(int j=0;j<size;j++){
-                if (transitions_etat.get(j) != null) {
-                    // contient la transition j de l'etat i : ce sera toujours un tableau de 2 elements
-                    ArrayList<String> tr = (ArrayList<String>)transitions_etat.get(j);
-                    //System.out.println(tr.get(1));
-                    // creer un nouvel etat composé pour chaque transition partant de etat num i
-                    // creer un liste d'etat destination pour chaque lettre de l'alphabet
-                    // a partir de cette liste on creera les etats
-                    boolean exist = false;
-                    if(grpTransitionsTemp != null) {
-                        // parcourt les transitions temporaires
-                        for(int k=0;k<grpTransitionsTemp.size();k++){
-                            String str = grpTransitionsTemp.get(k);
-                            String alph_etat[] = str.split(":");
-//                            System.out.println("ceci est "+alph_etat[0]+"/"+alph_etat[1]+"///"+alph_etat.length);
-                            // ajouter un nouvel etat au groupe d'etat
-                            if (tr.get(1).equals(alph_etat[0])){
-//                                System.out.println(alph_etat[1]);
-                                // ici erreur :
-                                // le alph_etat[1] ne recupere qu'un seul element ??? qui pourtant est censé etre un string
-                                alph_etat[1] = alph_etat[1]+","+tr.get(0);
-                                // les deux prochaines lignes devraient etre correctes ???
-                                // le probleme vient probablement du fait que les boucles ou les structures sont foireuses
-
-                                ////// le code est correct : le probleme : je ne precise pas le depart des transitions
-                                // le a va bel et bien vers 1,2,3,4,5,6
-                                // il faudrait penser à modifier les structures  intermediraire du groupage d'en haut comme ça on pourrait
-                                // determiner le depart des arcs
-                                String temp =alph_etat[0]+":"+alph_etat[1];
-                                grpTransitionsTemp.set(k,temp);
-//                                System.out.println(alph_etat[0]+" "+alph_etat[1]+" "+k+"\n\n");
-                                exist = true;
-                            }
-                        }
-
-                    }
-                    // creation d'une transition pour un group d'etat
-                    if (!exist){
-                        String str = tr.get(1)+":"+tr.get(0);
-                        grpTransitionsTemp.add(str);
-                    }
-                }
-            }
-            for(int g=0;g<grpEtats.size();g++)
-            System.out.println("grpetats :"+grpEtats.get(g).getNom());
-            System.out.println("grpTransitionsTemp :"+grpTransitionsTemp);
-            // ici generer grpTransitions
-
-            System.out.println("fin du parcours de l'etat "+(i+1));
-            // ici on pourrais creer les etats groupés puis vider grpTransitionsTemp
-            // ici on utilisera grpetat pour stocker les etats groupés déja créés
-            int s;
-            if(grpTransitionsTemp!=null) {
-                s = grpTransitionsTemp.size();
-            }else {
-                s = 0;
-            }
-                for (int x = 0; x < s; x++) {
-                    String alph_etat[] = grpTransitionsTemp.get(x).split(":");
-//                Etats etat = creerEtatGrp(alph_etat[1], String.valueOf(i), alph_etat[0]);
-                    if (grpEtats.contains(alph_etat[1])) {
-
-                    } else {
-                        Etats et = new Etats();
-                        et.setNom(alph_etat[1]);
-                        // la partie suivante pourra etre ajoutée à une autre boucle
-                        // ou on pourrait vider grpTransitionstemp et refaire la meme boucle,sauf qu'en remplissant on ajouterait progressivement les transitions
-//                        ArrayList<String> trns = new ArrayList<String>();
-//                        trns.add()
-//                        et.getTransitions().add();
-                        grpEtats.add(et);
-                    }
-                }
-                // ici former grpTransitions
-            grpTransitions.add(String.valueOf(i));
-            grpTransitions.add(grpTransitionsTemp);
-            // ICI PPROBLEME
-            // grpTransitionTemp est vide????
-            System.out.println("voila "+grpTransitions);
-            grpTransitionsTemp.clear();
-
-        }
-            // parcours de grpEtat ( pour le depart )
-            for(int j=0;j<grpEtats.size();j++){
-                String etat[] = grpEtats.get(j).getNom().split(",");
-                // on recupere les etats du grpEtat ( depart )
-                for (int y=0;y<etat.length;y++){
-                    // parcours des etats de l'automate ( pour determiner l'arrivée )
-                    for (int i=0;i<a.getEtats().size();i++) {
-                        if (etat[y].equals(a.getEtats().get(i).getNom())) {
-                            // ajouter les transitions de l'etat i de l'automate non deterministe
-                            if(a.getEtats().get(i).getTransitions()!=null){
-                            for (int m = 0; m < a.getEtats().get(i).getTransitions().size(); m++) {
-                                //grpetat pour les arrivées
-                                for (int l = 0; l < grpEtats.size(); l++) {
-                                    // etat1 contient les etats d'arrivée à tester
-                                    String etat1[] = grpEtats.get(l).getNom().split(",");
-                                    for (int g = 0; g < etat1.length; g++) {
-                                        ArrayList ltr = (ArrayList) a.getEtats().get(i).getTransitions().get(m);
-                                        if (ltr.get(0).equals(etat1[g])) {
-                                            boolean trouve = false;
-                                            // verfie si on a déja ajouté la transition
-                                            if (grpEtats.get(j).getTransitions() != null) {
-                                                for (int n = 0; n < grpEtats.get(j).getTransitions().size(); n++) {
-                                                    ArrayList q = (ArrayList) (grpEtats.get(j).getTransitions().get(n));
-                                                    if (q.get(1).equals((String) ((ArrayList<?>) a.getEtats().get(i).getTransitions().get(m)).get(1))) {
-                                                        trouve = true;
-                                                        // ce qu'on pourrait faire c'est ajouter ici  a.getEtats().get(i).getTransitions().get(m)).get(0)
-                                                        // à une liste qui formerait l'etat ou envoie l'etat groupé en cours
-                                                    }
-                                                }
-                                            }
-                                            // s'il n'existte pas envore de transition avec cette lettre la on ajoute
-                                            if (!trouve) {
-                                                ArrayList<String> al = new ArrayList<String>();
-                                                // cette ligne a un probleme
-                                                al.add(grpEtats.get(l).getNom());
-                                                al.add((String) ((ArrayList<?>) a.getEtats().get(i).getTransitions().get(m)).get(1));
-                                                if (grpEtats.get(j).getTransitions() != null) {
-                                                    grpEtats.get(j).getTransitions().add(al);
-                                                } else {
-                                                    // à regler le cas ou les transitions sont vides
-//                                                grpEtats.get(j).getTransitions() = new ArrayList();
-                                                    grpEtats.get(j).setTransitions(new ArrayList());
-                                                    grpEtats.get(j).getTransitions().add(al);
-
-                                                }
-
-                                        }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        }
-                    }
-                }
-            }
-
-        System.out.println(grpTransitionsTemp);
-            for (int i=0;i<grpEtats.size();i++){
-                System.out.println(grpEtats.get(i).getNom()+"  "+grpEtats.get(i).getTransitions());
-            }
+//        ArrayList grpTransitions = new ArrayList();
+//        // sert a creer les transitions groupées mais de maniere condensée : ["a:1,2,4","b:2,3"]
+//        ArrayList<String> grpTransitionsTemp = new ArrayList<String>();
+//        // contient les etat à inserer dans l'automate final deteminisé
+//        ArrayList<Etats> grpEtats = new ArrayList<Etats>();
+//        Etats e = new Etats();
+//        e.setNom(a.getEtatDepart().getNom());
+//        grpEtats.add(e);
+//        // on parcourt les etats de a
+//        for(int i=0;i<a.getEtats().size();i++){
+//            // contient les transition de l'etat i
+//            ArrayList transitions_etat = a.getEtats().get(i).getTransitions();
+//            int size = 0;
+//            if (transitions_etat == null)
+//                size = 0;
+//            else
+//                size = transitions_etat.size();
+//            // parcourt les transitions de l"etat i
+//            for(int j=0;j<size;j++){
+//                if (transitions_etat.get(j) != null) {
+//                    // contient la transition j de l'etat i : ce sera toujours un tableau de 2 elements
+//                    ArrayList<String> tr = (ArrayList<String>)transitions_etat.get(j);
+//                    //System.out.println(tr.get(1));
+//                    // creer un nouvel etat composé pour chaque transition partant de etat num i
+//                    // creer un liste d'etat destination pour chaque lettre de l'alphabet
+//                    // a partir de cette liste on creera les etats
+//                    boolean exist = false;
+//                    if(grpTransitionsTemp != null) {
+//                        // parcourt les transitions temporaires
+//                        for(int k=0;k<grpTransitionsTemp.size();k++){
+//                            String str = grpTransitionsTemp.get(k);
+//                            String alph_etat[] = str.split(":");
+////                            System.out.println("ceci est "+alph_etat[0]+"/"+alph_etat[1]+"///"+alph_etat.length);
+//                            // ajouter un nouvel etat au groupe d'etat
+//                            if (tr.get(1).equals(alph_etat[0])){
+////                                System.out.println(alph_etat[1]);
+//                                // ici erreur :
+//                                // le alph_etat[1] ne recupere qu'un seul element ??? qui pourtant est censé etre un string
+//                                alph_etat[1] = alph_etat[1]+","+tr.get(0);
+//                                // les deux prochaines lignes devraient etre correctes ???
+//                                // le probleme vient probablement du fait que les boucles ou les structures sont foireuses
+//
+//                                ////// le code est correct : le probleme : je ne precise pas le depart des transitions
+//                                // le a va bel et bien vers 1,2,3,4,5,6
+//                                // il faudrait penser à modifier les structures  intermediraire du groupage d'en haut comme ça on pourrait
+//                                // determiner le depart des arcs
+//                                String temp =alph_etat[0]+":"+alph_etat[1];
+//                                grpTransitionsTemp.set(k,temp);
+////                                System.out.println(alph_etat[0]+" "+alph_etat[1]+" "+k+"\n\n");
+//                                exist = true;
+//                            }
+//                        }
+//
+//                    }
+//                    // creation d'une transition pour un group d'etat
+//                    if (!exist){
+//                        String str = tr.get(1)+":"+tr.get(0);
+//                        grpTransitionsTemp.add(str);
+//                    }
+//                }
+//            }
+//            for(int g=0;g<grpEtats.size();g++)
+//            System.out.println("grpetats :"+grpEtats.get(g).getNom());
+//            System.out.println("grpTransitionsTemp :"+grpTransitionsTemp);
+//            // ici generer grpTransitions
+//
+//            System.out.println("fin du parcours de l'etat "+(i+1));
+//            // ici on pourrais creer les etats groupés puis vider grpTransitionsTemp
+//            // ici on utilisera grpetat pour stocker les etats groupés déja créés
+//            int s;
+//            if(grpTransitionsTemp!=null) {
+//                s = grpTransitionsTemp.size();
+//            }else {
+//                s = 0;
+//            }
+//                for (int x = 0; x < s; x++) {
+//                    String alph_etat[] = grpTransitionsTemp.get(x).split(":");
+////                Etats etat = creerEtatGrp(alph_etat[1], String.valueOf(i), alph_etat[0]);
+//                    if (grpEtats.contains(alph_etat[1])) {
+//
+//                    } else {
+//                        Etats et = new Etats();
+//                        et.setNom(alph_etat[1]);
+//                        // la partie suivante pourra etre ajoutée à une autre boucle
+//                        // ou on pourrait vider grpTransitionstemp et refaire la meme boucle,sauf qu'en remplissant on ajouterait progressivement les transitions
+////                        ArrayList<String> trns = new ArrayList<String>();
+////                        trns.add()
+////                        et.getTransitions().add();
+//                        grpEtats.add(et);
+//                    }
+//                }
+//                // ici former grpTransitions
+//            grpTransitions.add(String.valueOf(i));
+//            grpTransitions.add(grpTransitionsTemp);
+//            // ICI PPROBLEME
+//            // grpTransitionTemp est vide????
+//            System.out.println("voila "+grpTransitions);
+//            grpTransitionsTemp.clear();
+//
+//        }
+//            // parcours de grpEtat ( pour le depart )
+//            for(int j=0;j<grpEtats.size();j++){
+//                String etat[] = grpEtats.get(j).getNom().split(",");
+//                // on recupere les etats du grpEtat ( depart )
+//                for (int y=0;y<etat.length;y++){
+//                    // parcours des etats de l'automate ( pour determiner l'arrivée )
+//                    for (int i=0;i<a.getEtats().size();i++) {
+//                        if (etat[y].equals(a.getEtats().get(i).getNom())) {
+//                            // ajouter les transitions de l'etat i de l'automate non deterministe
+//                            if(a.getEtats().get(i).getTransitions()!=null){
+//                            for (int m = 0; m < a.getEtats().get(i).getTransitions().size(); m++) {
+//                                //grpetat pour les arrivées
+//                                for (int l = 0; l < grpEtats.size(); l++) {
+//                                    // etat1 contient les etats d'arrivée à tester
+//                                    String etat1[] = grpEtats.get(l).getNom().split(",");
+//                                    for (int g = 0; g < etat1.length; g++) {
+//                                        ArrayList ltr = (ArrayList) a.getEtats().get(i).getTransitions().get(m);
+//                                        if (ltr.get(0).equals(etat1[g])) {
+//                                            boolean trouve = false;
+//                                            // verfie si on a déja ajouté la transition
+//                                            if (grpEtats.get(j).getTransitions() != null) {
+//                                                for (int n = 0; n < grpEtats.get(j).getTransitions().size(); n++) {
+//                                                    ArrayList q = (ArrayList) (grpEtats.get(j).getTransitions().get(n));
+//                                                    if (q.get(1).equals((String) ((ArrayList<?>) a.getEtats().get(i).getTransitions().get(m)).get(1))) {
+//                                                        trouve = true;
+//                                                        // ce qu'on pourrait faire c'est ajouter ici  a.getEtats().get(i).getTransitions().get(m)).get(0)
+//                                                        // à une liste qui formerait l'etat ou envoie l'etat groupé en cours
+//                                                    }
+//                                                }
+//                                            }
+//                                            // s'il n'existte pas envore de transition avec cette lettre la on ajoute
+//                                            if (!trouve) {
+//                                                ArrayList<String> al = new ArrayList<String>();
+//                                                // cette ligne a un probleme
+//                                                al.add(grpEtats.get(l).getNom());
+//                                                al.add((String) ((ArrayList<?>) a.getEtats().get(i).getTransitions().get(m)).get(1));
+//                                                if (grpEtats.get(j).getTransitions() != null) {
+//                                                    grpEtats.get(j).getTransitions().add(al);
+//                                                } else {
+//                                                    // à regler le cas ou les transitions sont vides
+////                                                grpEtats.get(j).getTransitions() = new ArrayList();
+//                                                    grpEtats.get(j).setTransitions(new ArrayList());
+//                                                    grpEtats.get(j).getTransitions().add(al);
+//
+//                                                }
+//
+//                                        }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        }
+//                    }
+//                }
+//            }
+//
+//        System.out.println(grpTransitionsTemp);
+//            for (int i=0;i<grpEtats.size();i++){
+//                System.out.println(grpEtats.get(i).getNom()+"  "+grpEtats.get(i).getTransitions());
+//            }
 //        System.out.println(((ArrayList<?>) a.getEtats().get(0).getTransitions().get(0)).get(1));
 
 //        List<List> lists = new ArrayList<List>();

@@ -322,7 +322,7 @@ public class JsonDeal {
 
         Etats q6 = new Etats();
         q6.setNom("6");
-        q6.setTransitions(null);
+        q6.setTransitions(new ArrayList());
 
         ArrayList<Etats> arrivee = new ArrayList<Etats>();
         arrivee.add(q6);
@@ -339,6 +339,19 @@ public class JsonDeal {
         alphabet.add(".");
         Automates a = new Automates(q1,arrivee,etats,alphabet);
         a.determiniser();
+        for (int i=0;i<a.getEtats().size();i++){
+            System.out.println(a.getEtats().get(i).getNom()+" "+a.getEtats().get(i).getTransitions());
+        }
+//        HashMap h = new HashMap();
+//        h.put("a",1);
+//        h.put("b",2);
+//        System.out.println(h.containsKey(1));
+//        Queue x = new LinkedList();
+//        x.add("a");
+//        x.add("b");
+//        System.out.println(x);
+//        System.out.println(x.poll());
+//        System.out.println(x);
 //        System.out.println(a.getAlphabet());
 ////        System.out.println(a.getEtats());
 //        for(int i=0;i<a.getEtats().size();i++) {

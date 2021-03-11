@@ -79,12 +79,15 @@ public class Automates {
         List debut = new ArrayList();
         debut.add(this.getEtatDepart().getNom());
         file_etat_cree.add(debut);
+        List<Etats> etatsList = new ArrayList<Etats>();
 
         while (file_etat_cree.size()!=0){
-            List etats_preced = file_etat_cree.poll();
+            List<String> etats_preced = file_etat_cree.poll();
+//            System.out.println(etats_preced);
 //            file_etat_cree.remove(etats_preced);
 //            System.out.println(file_etat_cree);
             Etats etat = new Etats();
+            etat.setTransitions(new ArrayList());
             // concatener les etats groupés : à définir
             etat.setNom(etats_preced.toString());
             // contient les colonnes du tableau
@@ -95,39 +98,73 @@ public class Automates {
                 // ICI on pourrait faire un parcours des successeurs de etats_preced pour les ajouter à hash
                 // on pourrait meme remplacer la boucle suivante
                 // sans oublier de remplacer les alphabet.get/size par les vriables adéquates
-                for (int j=0;j<this.alphabet.size();j++){
-                    //verifier cette ligne la condition est inutile : on ajoute tous les etats sans distinction
-                    // on devrait plutot verifier si ils ont alphabet.get(j) comme successeur
-                    if (hash.containsKey(this.alphabet.get(j))){
-                        // l'idée est là
-                        List l = (List)hash.get(this.alphabet.get(j));
-                        // pourquoi etats_preced alors qu'en bas on met un get(i)???
-                        l.add(etats_preced);
-                        hash.put(this.alphabet.get(j),l);
-                    } else {
-                        //ici ce sera le nom de l'etat i qui nous sera utile
-                        List l = new ArrayList();
-                        l.add(etats_preced.get(i));
-                        hash.put(this.alphabet.get(j),l);
+                for (int j=0;j<this.alphabet.size();j++) {
+                    Etats e = this.getEtats().get(get_etat(this, etats_preced.get(i)));
+//                    System.out.println(e.getNom());
+                    for (int k = 0; k < e.getTransitions().size(); k++) {
+                        //verifier cette ligne la condition est inutile : on ajoute tous les etats sans distinction
+                        // on devrait plutot verifier si ils ont alphabet.get(j) comme successeur
+                        ArrayList al = (ArrayList) e.getTransitions().get(k);
+                        if (al.get(1).equals(this.alphabet.get(j))) {
+                            if (hash.containsKey(this.alphabet.get(j))) {
+                                if (!hash.get(this.alphabet.get(j)).contains(((ArrayList<?>) e.getTransitions().get(k)).get(0))){
+                                    // l'idée est là
+                                    List l = (List) hash.get(this.alphabet.get(j));
+                                    // pourquoi etats_preced alors qu'en bas on met un get(i)???
+                                    l.add(((ArrayList<?>) e.getTransitions().get(k)).get(0));
+                                    hash.put(this.alphabet.get(j), l);}
+                            } else {
+                                //ici ce sera le nom de l'etat i qui nous sera utile
+                                List l = new ArrayList();
+                                l.add(((ArrayList<?>) e.getTransitions().get(k)).get(0));
+                                hash.put(this.alphabet.get(j), l);
+                            }
+                        }
                     }
                 }
             }
-            System.out.println(hash);
+//            System.out.println(hash);
             // à revoir
             // le fait que c'est à l'exterieur de la boucle peut poser des problemes de reinnitialisation
             ArrayList hashToList = new ArrayList();
             for(String key: hash.keySet()){
-                file_etat_cree.add(hash.get(key));
                 ArrayList config = new ArrayList();
                 // je pense qu'ici on devrait ajouter la key au lieu de get(key) PAS SÛR
                 config.add(0,hash.get(key).toString());
 //                config.add(1,hash.get(key));
                 config.add(1,key);
+//                System.out.println(config.get(0).getClass());
                 hashToList.add(config);
                 etat.setTransitions(hashToList);
+//                System.out.println(etat.getNom()+" "+etat.getTransitions() +file_etat_cree.size());
+//                if (!etatsList.contains(etat)) {
+                boolean trouve = false;
+                int s=0;
+                while(!trouve && s < etatsList.size()){
+                    if (etatsList.get(s).getNom().equals(etat.getNom())){
+                        trouve = true;
+                    }
+                    s++;
+                }
+                if(!trouve || s>=etatsList.size()) {
+                    etatsList.add(etat);
+//                if(!etat.getTransitions().contains(config)) {
+                    file_etat_cree.add(hash.get(key));
+//                }
+//                }
+                }
+            }
+        }
+    this.setEtats(etatsList);
+    }
+    public int get_etat(Automates automates, String nom) {
+        for(int i = 0; i < automates.getEtats().size(); ++i) {
+            if (((Etats)automates.getEtats().get(i)).getNom().equals(nom)) {
+                return i;
             }
         }
 
+        return -1;
     }
 
 }

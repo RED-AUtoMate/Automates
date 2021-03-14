@@ -155,7 +155,56 @@ public class Automates {
                 }
             }
         }
-    this.setEtats(etatsList);
+        System.out.println(etatsList);
+        for(Etats e : etatsList){
+            String s = e.getNom().substring(1,e.getNom().length()-1);
+            List<String> myList = new ArrayList<String>(Arrays.asList(s.split(",")));
+            Collections.sort(myList);
+//            System.out.println(myList);
+            e.setNom(myList.toString());
+        }
+        List<String> q = new ArrayList<String>();
+//        for(Etats e : etatsList){
+//            if(!q.contains(e.getNom()))
+//            q.add(e.getNom());
+//            else
+//                etatsList.remove(e);
+//        }
+
+        List<Etats> new_fin = new ArrayList<Etats>();
+        Iterator<Etats> it = etatsList.iterator();
+        while( it.hasNext() ) {
+
+            Etats c = it.next();
+
+            String s = c.getNom().substring(1,c.getNom().length()-1);
+            List<String> myList = new ArrayList<String>(Arrays.asList(s.split(",")));
+            for(String p : myList){
+                int i = get_etat(this,p.trim());
+//                System.out.println(i);
+                if ( this.getEtats().get(i).getNom().equals(p.trim())){
+                    new_fin.add(c);
+                    break;
+                }
+            }
+            if( q.contains(c.getNom()) ) { // une condition qui indique que l'on doit retirer l'élément
+                it.remove();
+            }
+            else {
+                q.add(c.getNom());
+            }
+
+        }
+        this.etatsArrivee = new_fin;
+
+//        Set<Etats> mySet = new HashSet<Etats>(etatsList);
+//        System.out.println(etatsList);
+        System.out.println(new_fin);
+        System.out.println(new_fin.get(0).getNom()+" "+1);
+        System.out.println(new_fin.get(1).getNom()+" "+1);
+        System.out.println(new_fin.get(2).getNom()+" "+1);
+    this.setEtats(new ArrayList<Etats>(etatsList));
+//        this.setEtats(new ArrayList<Etats>(mySet));
     }
     public int get_etat(Automates automates, String nom) {
         for(int i = 0; i < automates.getEtats().size(); ++i) {

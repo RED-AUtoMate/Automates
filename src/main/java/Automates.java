@@ -76,6 +76,21 @@ public class Automates {
         return true;
     }
 
+    /* l'application de l'automate de thompson à une expression reguliere donnée */
+    /* la fonction construit des sous-automates de thompson a fur et a mesure de l'analyse de
+    * l'expression reguliere en utilisant une pile pour les operations (+, .) et une autre
+    * pour les automates construit
+    * -Pour un caractere appartenant à l'alphabet ou une etoile de kleen, on lui
+    *  construit son automate associé
+    * -Pour un . de concatenation on l'empile dans la pile d'operations
+    * -Pour un + on depile de la pile d operation tant que le sommet est un . pour conserver la
+    * priorité de . sur + en construisant l'automate associé à chaque iteration :(a.b) puis l'empiler
+    * dans la pile d'automates
+    * -Pour une parethese ouvrante, on l empile dans la pile d'operations
+    * -Pour une parenthese fermante on depile un operateur de la pileM et deux automates, puis
+    * construire l'automate de thompson associe à l auperation et finalement l'empiler
+    * on repete jusqu'a avoir la parenthese ouvrante*/
+
     public Automates thompson(String expression, String[] alpha) {
         Stack<Automates> pileA = new Stack();
         Stack<Character> pileM = new Stack();
@@ -117,7 +132,8 @@ public class Automates {
             }
 
             if (expression.charAt(i) == '(') {
-                System.out.println("(");
+                System.out.println('(');
+                pileM.push('(');
             }
 
             if (expression.charAt(i) == '.') {
@@ -125,7 +141,35 @@ public class Automates {
                 System.out.println(".");
             }
 
+
             if (expression.charAt(i) == '+') {
+                while (pileM.peek() == '.'){
+                    ap = new Automates();
+                    char exp = (Character)pileM.pop();
+                    System.out.println("exp "+exp);
+                    Automates ap2 = (Automates)pileA.pop();
+                    Automates ap1 = (Automates)pileA.pop();
+                    ap.setAlphabet(ap2.getAlphabet());
+                    apEtats = new ArrayList();
+
+                    int j;
+                    for(j = 0; j < ap1.getEtats().size(); ++j) {
+                        apEtats.add(ap1.getEtats().get(j));
+                    }
+
+                    for(j = 0; j < ap2.getEtats().size(); ++j) {
+                        apEtats.add(ap2.getEtats().get(j));
+                    }
+
+                    ap.setEtats(apEtats);
+                    int indiceF1 = ap.get_etat(ap, ((Etats)ap1.getEtatsArrivee().get(0)).getNom());
+                    int indiceD2 = ap.get_etat(ap, ap2.getEtatDepart().getNom());
+                    ((Etats)ap.getEtats().get(indiceF1)).getTransitions().addAll(ap2.getEtatDepart().getTransitions());
+                    ap.getEtats().remove(indiceD2);
+                    ap.setEtatDepart(ap1.getEtatDepart());
+                    ap.setEtatsArrivee(ap2.getEtatsArrivee());
+                    pileA.push(ap);
+                }
                 pileM.push('+');
                 System.out.println("+");
             }
@@ -187,72 +231,77 @@ public class Automates {
 
             if (expression.charAt(i) == ')') {
                 System.out.println(")");
-                ap = new Automates();
-                char exp = (Character)pileM.pop();
-                Automates ap2 = (Automates)pileA.pop();
-                Automates ap1 = (Automates)pileA.pop();
-                ed1 = ap1.getEtatDepart().getNom();
-                String ed2 = ap2.getEtatDepart().getNom();
-                String ef1 = ((Etats)ap1.getEtatsArrivee().get(0)).getNom();
-                String ef2 = ((Etats)ap2.getEtatsArrivee().get(0)).getNom();
-                ap.setAlphabet(ap2.getAlphabet());
-                apEtats = new ArrayList();
+                while (pileM.peek() != '('){
+                    ap = new Automates();
+                    char exp = (Character)pileM.pop();
+                    System.out.println("exp "+exp);
+                    Automates ap2 = (Automates)pileA.pop();
+                    Automates ap1 = (Automates)pileA.pop();
+                    ed1 = ap1.getEtatDepart().getNom();
+                    String ed2 = ap2.getEtatDepart().getNom();
+                    String ef1 = ((Etats)ap1.getEtatsArrivee().get(0)).getNom();
+                    String ef2 = ((Etats)ap2.getEtatsArrivee().get(0)).getNom();
+                    ap.setAlphabet(ap2.getAlphabet());
+                    apEtats = new ArrayList();
 
-                int j;
-                for(j = 0; j < ap1.getEtats().size(); ++j) {
-                    apEtats.add(ap1.getEtats().get(j));
-                }
+                    int j;
+                    for(j = 0; j < ap1.getEtats().size(); ++j) {
+                        apEtats.add(ap1.getEtats().get(j));
+                    }
 
-                for(j = 0; j < ap2.getEtats().size(); ++j) {
-                    apEtats.add(ap2.getEtats().get(j));
-                }
+                    for(j = 0; j < ap2.getEtats().size(); ++j) {
+                        apEtats.add(ap2.getEtats().get(j));
+                    }
 
-                ap.setEtats(apEtats);
-                switch(exp) {
-                    case '+':
-                        Etats etatsD = new Etats();
-                        etatsD.setNom(String.valueOf(etati));
-                        ++etati;
-                        config1 = new ArrayList();
-                        config1.add(String.valueOf(ed1));
-                        config1.add("eps");
-                        config2 = new ArrayList();
-                        config2.add(String.valueOf(ed2));
-                        config2.add("eps");
-                        ArrayList trD = new ArrayList();
-                        trD.add(config1);
-                        trD.add(config2);
-                        etatsD.setTransitions(trD);
-                        ap.getEtats().add(etatsD);
-                        Etats etatsF = new Etats();
-                        etatsF.setNom(String.valueOf(etati));
-                        ++etati;
-                        trF = new ArrayList();
-                        etatsF.setTransitions(trF);
-                        ap.getEtats().add(etatsF);
-                        ArrayList<String> config3 = new ArrayList();
-                        config3.add(String.valueOf(etatsF.getNom()));
-                        config3.add("eps");
-                        ArrayList<String> config4 = new ArrayList();
-                        config4.add(String.valueOf(etatsF.getNom()));
-                        config4.add("eps");
-                        ((Etats)ap.getEtats().get(this.get_etat(ap, ef1))).getTransitions().add(config3);
-                        ((Etats)ap.getEtats().get(this.get_etat(ap, ef2))).getTransitions().add(config4);
-                        List<Etats> efs = new ArrayList();
-                        efs.add(etatsF);
-                        ap.setEtatDepart(etatsD);
-                        ap.setEtatsArrivee(efs);
-                        pileA.push(ap);
-                        break;
-                    case '.':
-                        int indiceF1 = ap.get_etat(ap, ((Etats)ap1.getEtatsArrivee().get(0)).getNom());
-                        int indiceD2 = ap.get_etat(ap, ap2.getEtatDepart().getNom());
-                        ((Etats)ap.getEtats().get(indiceF1)).getTransitions().addAll(ap2.getEtatDepart().getTransitions());
-                        ap.getEtats().remove(indiceD2);
-                        ap.setEtatDepart(ap1.getEtatDepart());
-                        ap.setEtatsArrivee(ap2.getEtatsArrivee());
-                        pileA.push(ap);
+                    ap.setEtats(apEtats);
+                    switch(exp) {
+                        case '+':
+                            Etats etatsD = new Etats();
+                            etatsD.setNom(String.valueOf(etati));
+                            ++etati;
+                            config1 = new ArrayList();
+                            config1.add(String.valueOf(ed1));
+                            config1.add("eps");
+                            config2 = new ArrayList();
+                            config2.add(String.valueOf(ed2));
+                            config2.add("eps");
+                            ArrayList trD = new ArrayList();
+                            trD.add(config1);
+                            trD.add(config2);
+                            etatsD.setTransitions(trD);
+                            ap.getEtats().add(etatsD);
+                            Etats etatsF = new Etats();
+                            etatsF.setNom(String.valueOf(etati));
+                            ++etati;
+                            trF = new ArrayList();
+                            etatsF.setTransitions(trF);
+                            ap.getEtats().add(etatsF);
+                            ArrayList<String> config3 = new ArrayList();
+                            config3.add(String.valueOf(etatsF.getNom()));
+                            config3.add("eps");
+                            ArrayList<String> config4 = new ArrayList();
+                            config4.add(String.valueOf(etatsF.getNom()));
+                            config4.add("eps");
+                            ((Etats)ap.getEtats().get(this.get_etat(ap, ef1))).getTransitions().add(config3);
+                            ((Etats)ap.getEtats().get(this.get_etat(ap, ef2))).getTransitions().add(config4);
+                            List<Etats> efs = new ArrayList();
+                            efs.add(etatsF);
+                            ap.setEtatDepart(etatsD);
+                            ap.setEtatsArrivee(efs);
+                            pileA.push(ap);
+                            break;
+                        case '.':
+                            int indiceF1 = ap.get_etat(ap, ((Etats)ap1.getEtatsArrivee().get(0)).getNom());
+                            int indiceD2 = ap.get_etat(ap, ap2.getEtatDepart().getNom());
+                            ((Etats)ap.getEtats().get(indiceF1)).getTransitions().addAll(ap2.getEtatDepart().getTransitions());
+                            ap.getEtats().remove(indiceD2);
+                            ap.setEtatDepart(ap1.getEtatDepart());
+                            ap.setEtatsArrivee(ap2.getEtatsArrivee());
+                            pileA.push(ap);
+                    }
+
                 }
+                pileM.pop();
             }
         }
 
@@ -270,8 +319,6 @@ public class Automates {
 
         return -1;
     }
-
-
 
 
     public void synch3(){

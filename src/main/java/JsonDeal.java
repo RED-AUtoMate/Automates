@@ -202,9 +202,8 @@ public class JsonDeal {
     }
 
 
+    /* construire un objet json a partir d'un objet de la classe automate */
     public JSONObject automate_to_json(Automates automates){
-
-
 
         ArrayList transitions = new ArrayList();
         for (int i = 0; i < automates.getEtats().size(); i++){
@@ -248,15 +247,26 @@ public class JsonDeal {
 
         Automates a = jsonDeal.json_to_automate("test.json");
 
-
-        String s = "((a+(b.b))*.(b+(a.a))*)";
+        String sss = "(a+bb)*(b+aa)*";
+        String b ="";
+        b+=sss.charAt(0);
+        for (int i = 1; i < sss.length(); i++){
+            if (sss.charAt(i) == 'b' && sss.charAt(i-1) == 'b'||sss.charAt(i) == 'a' && sss.charAt(i-1) == 'a' ||sss.charAt(i) == '(' && sss.charAt(i-1) == ')' ||sss.charAt(i) == '(' && sss.charAt(i-1) == '*') {
+                b += '.';
+                b += sss.charAt(i);
+            }else {
+                b+=sss.charAt(i);
+            }
+        }
+        System.out.println(b);
+        String s = "(b.(a.b)*+(b.a)*.b)";
         String[] ss = {"a", "b", "c"};
 
         Automates bb = a.thompson(s,ss);
 
         System.out.println(jsonDeal.automate_to_json(bb));
         Images i = new Images();
-        i.jsonToDot("test.json", "hh2.dot");
+        i.jsonToDot("test.json", "aa22.dot");
         bb.synch3();
 
 

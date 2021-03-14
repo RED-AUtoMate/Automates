@@ -1,0 +1,254 @@
+Index: src/main/java/JsonDeal.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import org.json.simple.JSONArray;\nimport org.json.simple.JSONObject;\nimport org.json.simple.JSONValue;\nimport org.json.simple.parser.JSONParser;\nimport org.json.simple.parser.ParseException;\n\nimport java.io.FileReader;\nimport java.io.IOException;\nimport java.util.*;\n\npublic class JsonDeal {\n     int i =0;\n\n\n    /*\n    Generation d'un automate aleatoirement les parametres sont le nombres\n    d'etats, le nombre de transitions, une liste d'alphabet\n     */\n\n    public Automates random_aut(int nb_etats, int nb_transition, List<String> alphabet) {\n        Random random = new Random();\n\n        /*\n        Obtenir une liste contenant nb_etats etats numerotés de 0 jusque a nb_etats-1 [0,1,2] si n = 3\n         */\n        ArrayList<String> etats = new ArrayList<String>();\n        for (int i = 0; i < nb_etats; i++) {\n            etats.add(String.valueOf(i));\n        }\n\n\n        /*\n        generation aleatoire de transition, une transition est un triplet etat_depart, mot lu, etat_arrive\n        on cree une map qui va avoir comme kle des indices d'etats et comme valeur les differentes\n        configuration que cet etat peut suivre {1: [[0, a], [1,b]],\n                                                2: [[2,a],[2,b]]\n                                                }\n         */\n        HashMap<String, ArrayList<ArrayList<String>>> transitions = new HashMap<String, ArrayList<ArrayList<String>>>();\n        for (int j = 0; j < nb_transition; j++) {\n            /*\n            le treplet etat_depart, mot, etat_arrive est genere à chaque eteration de la boucle,\n            le mot et l'etat_arrive forment une configuration represente par \"transition\" [0, a]\n             */\n            String depart = String.valueOf(random.nextInt(nb_etats));\n            String destination = String.valueOf(random.nextInt(nb_etats));\n            String mot = alphabet.get(random.nextInt(alphabet.size()));\n            ArrayList<String> transition = new ArrayList<String>();\n            transition.add(0, destination);\n            transition.add(1, mot);\n\n            /*\n            on assure que chaque etat de depart ne va pas se repeter en utilisant une map qui va\n            contenir l etat_depart comme cle, une liste de transition (liste ) comme valeur\n                                    1:[[0,a], [0,b]]\n             */\n            if (transitions.containsKey(depart)) {\n                ArrayList<ArrayList<String>> arrayList = transitions.get(depart);\n                arrayList.add(transition);\n                transitions.put(depart, arrayList);\n            } else {\n                ArrayList<ArrayList<String>> config = new ArrayList<ArrayList<String>>();\n                config.add(transition);\n                transitions.put(depart, config);\n            }\n        }\n\n        /*\n        on cree la liste d'etats que va contenir notre automate\n        on enitialise pour chque item de la map un objet de la classe Etats\n        et on l'ajoute a la liste etatsListe\n         */\n        List<Etats> etatsList = new ArrayList<Etats>();\n        for (Map.Entry<String, ArrayList<ArrayList<String>>> entry: transitions.entrySet()){\n            Etats etats1 = new Etats();\n            etats1.setNom(entry.getKey());\n            etats1.setTransitions(entry.getValue());\n            etatsList.add(etats1);\n        }\n\n        /*\n        notre automate est pret a etre instancie et a se balader dans la memoire\n        par contre il reste de definir l'etat initiale et l'ensemble d'etats fineaux\n         a*/\n        Automates automates = new Automates();\n        automates.setEtats(etatsList);\n        automates.setAlphabet(alphabet);\n\n        int n = automates.getEtats().size();\n        /*\n        l'etat initiale est tire aleatoirement parmi les etats qu'on a\n         */\n        automates.setEtatDepart(automates.getEtats().get(random.nextInt(n)));\n\n        /*\n        la cardinalite de l'ensemble d'etats fineaux est tire au hasard et donc un nombre = card\n        d'etats fineaux est selectionne\n         */\n        int m = random.nextInt(n);\n        if (m == 0){\n            m += 1;\n        }\n        ArrayList<Etats> finale = new ArrayList<Etats>();\n        for (int i = 0; i < m; i++){\n            finale.add(automates.getEtats().get(i));\n        }\n        automates.setEtatsArrivee(finale);\n\n        return automates;\n\n    }\n\n\n\n    /* partir depuis une representation json vers des objets java ensuite vers notre objet automate */\n    public Automates json_to_automate(String path){\n        Automates automates = new Automates();\n\n        JSONParser jsonParser = new JSONParser();\n\n        try {\n            /* lecture du fichier json */\n            JSONObject ob = (JSONObject) jsonParser.parse(new FileReader(path));\n\n            /* on recupere la representation de l'automate depuis le fichier json */\n            ArrayList alpha = (ArrayList) ob.get(\"Alphabet\");\n            JSONArray etats = (JSONArray) ob.get(\"Etats\");\n            String init = ob.get(\"Init\").toString();\n            JSONArray fin = (JSONArray) ob.get(\"Fin\");\n            JSONArray trans = (JSONArray) ob.get(\"Transitions\");\n\n            /*on cree une map qui va contenir pour chaque etat ses transitions */\n            HashMap<String, ArrayList> hashMap = new HashMap<String, ArrayList>();\n\n            /* les differentes listes utilisees par notre automate */\n            ArrayList<String> alphabet = new ArrayList<String>();\n            ArrayList<Etats> etatsArrayList = new ArrayList<Etats>();\n            ArrayList<Etats> fineaux = new ArrayList<Etats>();\n            Etats etat_depart = new Etats();\n\n            for (int i = 0; i < alpha.size(); i++){\n                alphabet.add(alpha.get(i).toString());\n            }\n\n            ArrayList aut_trans = new ArrayList();\n\n            for (int i = 0; i < trans.size(); i++){\n                ArrayList transi = (ArrayList) trans.get(i);\n\n                String depart = transi.get(0).toString();\n                ArrayList config = (ArrayList) transi.get(1);\n\n                /* building a list of configurations */\n                ArrayList aut_config = new ArrayList();\n                for (int j = 0; j < config.size(); j++){\n\n                    ArrayList<String> aut_conf = new ArrayList<String>();\n                    /* getting the basic configuration [0, a] from json format to arraylist aut_conf */\n                    ArrayList conf = (ArrayList) config.get(j);\n                    String arrive = conf.get(0).toString();\n                    String mot = conf.get(1).toString();\n\n                    aut_conf.add(arrive);\n                    aut_conf.add(mot);\n                    aut_config.add(aut_conf);\n\n                }\n                hashMap.put(depart, aut_config);\n            }\n\n            for (Map.Entry<String, ArrayList> entry: hashMap.entrySet()){\n                Etats etats1 = new Etats();\n                etats1.setNom(entry.getKey());\n                etats1.setTransitions(entry.getValue());\n\n                etatsArrayList.add(etats1);\n            }\n            /*depart*/\n            etat_depart.setNom(init);\n            etat_depart.setTransitions(hashMap.get(init));\n\n            /*finaux*/\n            ArrayList<Etats> finos = new ArrayList<Etats>();\n            for (int i = 0; i < fin.size(); i++){\n                Etats finale = new Etats();\n                finale.setNom(fin.get(i).toString());\n                finale.setTransitions(hashMap.get(fin.get(i).toString()));\n                finos.add(finale);\n            }\n            automates.setAlphabet(alphabet);\n            automates.setEtats(etatsArrayList);\n            automates.setEtatDepart(etat_depart);\n            automates.setEtatsArrivee(finos);\n\n        } catch (IOException e) {\n            e.printStackTrace();\n        } catch (ParseException e) {\n            e.printStackTrace();\n        }\n\n        return automates;\n    }\n\n\n    public JSONObject automate_to_json(Automates automates){\n\n\n\n        ArrayList transitions = new ArrayList();\n        for (int i = 0; i < automates.getEtats().size(); i++){\n            ArrayList etat = new ArrayList();\n            Etats etats = automates.getEtats().get(i);\n            etat.add(etats.getNom());\n            etat.add(etats.getTransitions());\n            transitions.add(etat);\n        }\n        List<String> alphabet = automates.getAlphabet();\n        String init = automates.getEtatDepart().getNom();\n\n        ArrayList etats = new ArrayList();\n        for (int i = 0; i < automates.getEtats().size(); i++){\n            etats.add(automates.getEtats().get(i).getNom());\n        }\n\n        ArrayList finaux = new ArrayList();\n        for (int i = 0; i < automates.getEtatsArrivee().size(); i++){\n            finaux.add(automates.getEtatsArrivee().get(i).getNom());\n        }\n        HashMap hashMap = new HashMap();\n        hashMap.put(\"Alphabet\", alphabet);\n        hashMap.put(\"Etats\", etats);\n        hashMap.put(\"Init\", init);\n        hashMap.put(\"Fin\", finaux);\n        hashMap.put(\"Transitions\", transitions);\n        JSONObject object = new JSONObject();\n        object.putAll(hashMap);\n\n\n\n        return object;\n    }\n\n\n\n    public static void main(String[] args) {\n        JsonDeal jsonDeal= new JsonDeal();\n\n\n        Automates a = jsonDeal.json_to_automate(\"test.json\");\n\n\n        String s = \"((a+(b.b))*.(b+(a.a))*)\";\n        String[] ss = {\"a\", \"b\", \"c\"};\n\n        Automates bb = a.thompson(s,ss);\n\n        System.out.println(jsonDeal.automate_to_json(bb));\n        Images i = new Images();\n        i.jsonToDot(\"test.json\", \"hh2.dot\");\n        bb.synch3();\n\n\n\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/JsonDeal.java b/src/main/java/JsonDeal.java
+--- a/src/main/java/JsonDeal.java	(revision 5cf1c6632980e45e697d7cf1ddaa121b25468ecf)
++++ b/src/main/java/JsonDeal.java	(date 1615382724736)
+@@ -249,10 +249,11 @@
+         Automates a = jsonDeal.json_to_automate("test.json");
+ 
+ 
++        String s1 = "(a+bb)*(b+aa)*";
+         String s = "((a+(b.b))*.(b+(a.a))*)";
+         String[] ss = {"a", "b", "c"};
+ 
+-        Automates bb = a.thompson(s,ss);
++        Automates bb = a.thompson(s1,ss);
+ 
+         System.out.println(jsonDeal.automate_to_json(bb));
+         Images i = new Images();
+Index: src/main/java/Automates.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>//\n// Source code recreated from a .class file by IntelliJ IDEA\n// (powered by FernFlower decompiler)\n//\n\nimport java.util.ArrayList;\nimport java.util.List;\nimport java.util.Stack;\n\npublic class Automates {\n    Stack<String> automates = new Stack();\n    private Etats etatDepart;\n    private List<Etats> etatsArrivee;\n    private List<Etats> etats;\n    private List<String> alphabet;\n\n    public Automates() {\n    }\n\n    public Automates(Etats etatDepart, List<Etats> etatsArrivee, List<Etats> etats, List<String> alphabet) {\n        this.etatDepart = etatDepart;\n        this.etatsArrivee = etatsArrivee;\n        this.etats = etats;\n        this.alphabet = alphabet;\n    }\n\n    public Etats getEtatDepart() {\n        return this.etatDepart;\n    }\n\n    public void setEtatDepart(Etats etatDepart) {\n        this.etatDepart = etatDepart;\n    }\n\n    public List<Etats> getEtatsArrivee() {\n        return this.etatsArrivee;\n    }\n\n    public void setEtatsArrivee(List<Etats> etatsArrivee) {\n        this.etatsArrivee = etatsArrivee;\n    }\n\n    public List<Etats> getEtats() {\n        return this.etats;\n    }\n\n    public void setEtats(List<Etats> etats) {\n        this.etats = etats;\n    }\n\n    public List<String> getAlphabet() {\n        return this.alphabet;\n    }\n\n    public void setAlphabet(List<String> alphabet) {\n        this.alphabet = alphabet;\n    }\n\n    public void toMatrice() {\n    }\n\n    public void determiniser() {\n    }\n\n\n\n    boolean presentIn(char mot, String[] alphabet) {\n        boolean not_preset = true;\n\n        for(int i = 0; i < alphabet.length; ++i) {\n            if (alphabet[i].equals(String.valueOf(mot))) {\n                return false;\n            }\n        }\n\n        return true;\n    }\n\n    public Automates thompson(String expression, String[] alpha) {\n        Stack<Automates> pileA = new Stack();\n        Stack<Character> pileM = new Stack();\n        int etati = 0;\n\n\n        for(int i = 0; i < expression.length(); ++i) {\n            Automates ap;\n            ArrayList apEtats;\n\n            /* cas ou c est un charactere de l alphabet */\n            if (!this.presentIn(expression.charAt(i), alpha)) {\n                ap = new Automates();\n                Etats etd = new Etats();\n                etd.setNom(String.valueOf(etati));\n                ++etati;\n                Etats etf = new Etats();\n                etf.setNom(String.valueOf(etati));\n                ++etati;\n                ArrayList<String> config = new ArrayList();\n                config.add(etf.getNom());\n                config.add(String.valueOf(expression.charAt(i)));\n                ArrayList trs = new ArrayList();\n                ArrayList trs1 = new ArrayList();\n                etf.setTransitions(trs);\n                trs1.add(config);\n                etd.setTransitions(trs1);\n                List<Etats> etfs = new ArrayList();\n                etfs.add(etf);\n                List<String> al = this.alphabet;\n                apEtats = new ArrayList();\n                apEtats.add(etd);\n                apEtats.add(etf);\n                ap.setAlphabet(al);\n                ap.setEtats(apEtats);\n                ap.setEtatsArrivee(etfs);\n                ap.setEtatDepart(etd);\n                pileA.push(ap);\n            }\n\n            if (expression.charAt(i) == '(') {\n                System.out.println(\"(\");\n            }\n\n            if (expression.charAt(i) == '.') {\n                pileM.push('.');\n                System.out.println(\".\");\n            }\n\n            if (expression.charAt(i) == '+') {\n                pileM.push('+');\n                System.out.println(\"+\");\n            }\n\n            ArrayList config1;\n            ArrayList config2;\n            ArrayList trF;\n            String ed1;\n            if (expression.charAt(i) == '*') {\n                System.out.println(\"*\");\n                ap = (Automates)pileA.pop();\n                Automates a = new Automates();\n                new ArrayList();\n                List<Etats> etats = ap.getEtats();\n                String ed = ap.getEtatDepart().getNom();\n                ed1 = ((Etats)ap.getEtatsArrivee().get(0)).getNom();\n                Etats etatD = new Etats();\n                etatD.setNom(String.valueOf(etati));\n                ++etati;\n                Etats etatF = new Etats();\n                etatF.setNom(String.valueOf(etati));\n                ArrayList etfss = new ArrayList();\n                etatF.setTransitions(etfss);\n                ++etati;\n                apEtats = new ArrayList();\n                apEtats.add(etatF);\n                ArrayList trD = new ArrayList();\n                config1 = new ArrayList();\n                config1.add(etatF.getNom());\n                config1.add(\"eps\");\n                trD.add(config1);\n                config2 = new ArrayList();\n                config2.add(ed);\n                config2.add(\"eps\");\n                trD.add(config2);\n                etatD.setTransitions(trD);\n\n                for(int j = 0; j < etats.size(); ++j) {\n                    if (((Etats)etats.get(j)).getNom().equals(ed1)) {\n                        ArrayList<String> config3 = new ArrayList();\n                        config3.add(etatF.getNom());\n                        config3.add(\"eps\");\n                        ((Etats)etats.get(j)).getTransitions().add(config3);\n                        trF = new ArrayList();\n                        trF.add(ed);\n                        trF.add(\"eps\");\n                        ((Etats)etats.get(j)).getTransitions().add(trF);\n                    }\n                }\n\n                etats.add(etatD);\n                etats.add(etatF);\n                a.setEtatsArrivee(apEtats);\n                a.setEtats(etats);\n                a.setEtatDepart(etatD);\n                a.setAlphabet(ap.getAlphabet());\n                pileA.push(a);\n            }\n\n            if (expression.charAt(i) == ')') {\n                System.out.println(\")\");\n                ap = new Automates();\n                char exp = (Character)pileM.pop();\n                Automates ap2 = (Automates)pileA.pop();\n                Automates ap1 = (Automates)pileA.pop();\n                ed1 = ap1.getEtatDepart().getNom();\n                String ed2 = ap2.getEtatDepart().getNom();\n                String ef1 = ((Etats)ap1.getEtatsArrivee().get(0)).getNom();\n                String ef2 = ((Etats)ap2.getEtatsArrivee().get(0)).getNom();\n                ap.setAlphabet(ap2.getAlphabet());\n                apEtats = new ArrayList();\n\n                int j;\n                for(j = 0; j < ap1.getEtats().size(); ++j) {\n                    apEtats.add(ap1.getEtats().get(j));\n                }\n\n                for(j = 0; j < ap2.getEtats().size(); ++j) {\n                    apEtats.add(ap2.getEtats().get(j));\n                }\n\n                ap.setEtats(apEtats);\n                switch(exp) {\n                    case '+':\n                        Etats etatsD = new Etats();\n                        etatsD.setNom(String.valueOf(etati));\n                        ++etati;\n                        config1 = new ArrayList();\n                        config1.add(String.valueOf(ed1));\n                        config1.add(\"eps\");\n                        config2 = new ArrayList();\n                        config2.add(String.valueOf(ed2));\n                        config2.add(\"eps\");\n                        ArrayList trD = new ArrayList();\n                        trD.add(config1);\n                        trD.add(config2);\n                        etatsD.setTransitions(trD);\n                        ap.getEtats().add(etatsD);\n                        Etats etatsF = new Etats();\n                        etatsF.setNom(String.valueOf(etati));\n                        ++etati;\n                        trF = new ArrayList();\n                        etatsF.setTransitions(trF);\n                        ap.getEtats().add(etatsF);\n                        ArrayList<String> config3 = new ArrayList();\n                        config3.add(String.valueOf(etatsF.getNom()));\n                        config3.add(\"eps\");\n                        ArrayList<String> config4 = new ArrayList();\n                        config4.add(String.valueOf(etatsF.getNom()));\n                        config4.add(\"eps\");\n                        ((Etats)ap.getEtats().get(this.get_etat(ap, ef1))).getTransitions().add(config3);\n                        ((Etats)ap.getEtats().get(this.get_etat(ap, ef2))).getTransitions().add(config4);\n                        List<Etats> efs = new ArrayList();\n                        efs.add(etatsF);\n                        ap.setEtatDepart(etatsD);\n                        ap.setEtatsArrivee(efs);\n                        pileA.push(ap);\n                        break;\n                    case '.':\n                        int indiceF1 = ap.get_etat(ap, ((Etats)ap1.getEtatsArrivee().get(0)).getNom());\n                        int indiceD2 = ap.get_etat(ap, ap2.getEtatDepart().getNom());\n                        ((Etats)ap.getEtats().get(indiceF1)).getTransitions().addAll(ap2.getEtatDepart().getTransitions());\n                        ap.getEtats().remove(indiceD2);\n                        ap.setEtatDepart(ap1.getEtatDepart());\n                        ap.setEtatsArrivee(ap2.getEtatsArrivee());\n                        pileA.push(ap);\n                }\n            }\n        }\n\n        return (Automates)pileA.pop();\n    }\n\n\n\n    public int get_etat(Automates automates, String nom) {\n        for(int i = 0; i < automates.getEtats().size(); ++i) {\n            if (((Etats)automates.getEtats().get(i)).getNom().equals(nom)) {\n                return i;\n            }\n        }\n\n        return -1;\n    }\n\n\n\n\n    public void synch3(){\n\n        List<Etats> etats = this.getEtats();\n\n        /* etape1 : calcule des eps-transitivitées */\n        for (int i = 0; i < etats.size(); i++){\n            Etats etat0 = etats.get(i);\n            for (int j = 0; j < etat0.getTransitions().size(); j++){\n                ArrayList config0 = (ArrayList) etat0.getTransitions().get(j);\n                if (config0.get(1) == \"eps\"){\n                    int et = this.get_etat(this, config0.get(0).toString());\n\n                    for (int s = 0; s < this.getEtatsArrivee().size(); s++){\n                        if (this.getEtatsArrivee().get(s).getNom() == this.getEtats().get(et).getNom()){\n                            this.getEtatsArrivee().add(etat0);\n                        }\n                    }\n                    for (int k = 0; k < etats.get(et).getTransitions().size(); k++){\n                        ArrayList config1 = (ArrayList) etats.get(et).getTransitions().get(k);\n                        if (config1.get(1) == \"eps\"){\n                            etat0.getTransitions().add(config1);\n                        }\n                    }\n                }\n            }\n        }\n\n        /* etape 2 calcule des transitivités sans epsilons */\n        for (int i = 0; i < etats.size(); i++){\n            Etats etat_courant = etats.get(i);\n\n            for (int j = 0; j < etat_courant.getTransitions().size(); j++){\n                ArrayList config = (ArrayList) etat_courant.getTransitions().get(j);\n                if (config.get(1) == \"eps\"){\n                    Etats etat_inter = etats.get(this.get_etat(this, config.get(0).toString()));\n                    for (int s = 0; s < this.getEtatsArrivee().size(); s++){\n                        if (this.getEtatsArrivee().get(s).getNom() == this.getEtats().get(this.get_etat(this, String.valueOf(config.get(0)))).getNom()){\n                            this.getEtatsArrivee().add(etat_courant);\n                        }\n                    }\n\n                    for (int k = 0; k < etat_inter.getTransitions().size(); k++){\n                        ArrayList trans = etat_inter.getTransitions();\n                        for (int s = 0; s < trans.size(); s++){\n                            ArrayList config1 = (ArrayList) trans.get(s);\n                            if (config1.get(1) != \"eps\"){\n                                etat_courant.getTransitions().add(config1);\n                            }\n                        }\n                    }\n                }\n            }\n        }\n\n\n        /* etape 3 : suppression des eps-transitions */\n        for ( int i = 0 ; i < this.getEtats().size(); i++){\n            ArrayList trs = new ArrayList();\n            for ( int j = 0; j < this.getEtats().get(i).getTransitions().size(); j++){\n                ArrayList a = (ArrayList) this.getEtats().get(i).getTransitions().get(j);\n                if(a.get(1) != \"eps\"){\n                    if ( ! trs.contains(a)){\n                        trs.add(a);\n                    }\n                }\n            }\n            this.getEtats().get(i).setTransitions(trs);\n        }\n\n        /* etape 4: suppression des etats non accessibles et des transitions double */\n        ArrayList<String> etats_acce = new ArrayList<String>();\n        for (int i = 0; i < this.getEtats().size(); i++){\n            String nom = this.getEtats().get(i).getNom();\n            for (int j = 0; j < this.getEtats().size(); j++){\n                ArrayList transitions = this.getEtats().get(j).getTransitions();\n                for ( int k = 0; k < transitions.size(); k++){\n                    ArrayList conf = (ArrayList) transitions.get(k);\n                    if (conf.get(0) == nom){\n                        etats_acce.add(nom);\n                    }\n                }\n            }\n            if (this.getEtats().get(i).getNom() == this.getEtatDepart().getNom()){\n                etats_acce.add(this.getEtats().get(i).getNom());\n            }\n        }\n\n\n        /* definition des nouveaux etats */\n        ArrayList<Etats> etts = new ArrayList<Etats>();\n        for (int i = 0; i < this.getEtats().size(); i++){\n            if (etats_acce.contains(this.getEtats().get(i).getNom())){\n                etts.add(this.getEtats().get(i));\n            }\n        }\n        this.setEtats(etts);\n\n        /* definition des nouveaux etats finaux */\n        ArrayList<Etats> arr = new ArrayList<Etats>();\n        for (int i = 0; i < this.getEtatsArrivee().size(); i++){\n            if (etats_acce.contains(this.getEtatsArrivee().get(i).getNom())){\n                Etats ett = this.getEtats().get(this.get_etat(this, this.getEtatsArrivee().get(i).getNom()));\n                if (!arr.contains(ett)){\n                    arr.add(ett);\n                }\n            }\n        }\n        this.setEtatsArrivee(arr);\n\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Automates.java b/src/main/java/Automates.java
+--- a/src/main/java/Automates.java	(revision 5cf1c6632980e45e697d7cf1ddaa121b25468ecf)
++++ b/src/main/java/Automates.java	(date 1615382898442)
+@@ -384,4 +384,197 @@
+         this.setEtatsArrivee(arr);
+ 
+     }
++
++
++
++
++
++    public Automates thompson2(String expression, String[] alpha) {
++        Stack<Automates> pileA = new Stack();
++        Stack<Character> pileM = new Stack();
++        int etati = 0;
++
++
++        for(int i = 0; i < expression.length(); ++i) {
++            Automates ap;
++            ArrayList apEtats;
++
++            /* cas ou c est un charactere de l alphabet */
++            if (!this.presentIn(expression.charAt(i), alpha)) {
++                ap = new Automates();
++                Etats etd = new Etats();
++                etd.setNom(String.valueOf(etati));
++                ++etati;
++                Etats etf = new Etats();
++                etf.setNom(String.valueOf(etati));
++                ++etati;
++                ArrayList<String> config = new ArrayList();
++                config.add(etf.getNom());
++                config.add(String.valueOf(expression.charAt(i)));
++                ArrayList trs = new ArrayList();
++                ArrayList trs1 = new ArrayList();
++                etf.setTransitions(trs);
++                trs1.add(config);
++                etd.setTransitions(trs1);
++                List<Etats> etfs = new ArrayList();
++                etfs.add(etf);
++                List<String> al = this.alphabet;
++                apEtats = new ArrayList();
++                apEtats.add(etd);
++                apEtats.add(etf);
++                ap.setAlphabet(al);
++                ap.setEtats(apEtats);
++                ap.setEtatsArrivee(etfs);
++                ap.setEtatDepart(etd);
++                pileA.push(ap);
++            }
++
++            if (expression.charAt(i) == '(') {
++                System.out.println("(");
++            }
++
++            if (expression.charAt(i) == '.') {
++                pileM.push('.');
++                System.out.println(".");
++            }
++
++            if (expression.charAt(i) == '+') {
++                pileM.push('+');
++                System.out.println("+");
++            }
++
++            ArrayList config1;
++            ArrayList config2;
++            ArrayList trF;
++            String ed1;
++            if (expression.charAt(i) == '*') {
++                System.out.println("*");
++                ap = (Automates)pileA.pop();
++                Automates a = new Automates();
++                new ArrayList();
++                List<Etats> etats = ap.getEtats();
++                String ed = ap.getEtatDepart().getNom();
++                ed1 = ((Etats)ap.getEtatsArrivee().get(0)).getNom();
++                Etats etatD = new Etats();
++                etatD.setNom(String.valueOf(etati));
++                ++etati;
++                Etats etatF = new Etats();
++                etatF.setNom(String.valueOf(etati));
++                ArrayList etfss = new ArrayList();
++                etatF.setTransitions(etfss);
++                ++etati;
++                apEtats = new ArrayList();
++                apEtats.add(etatF);
++                ArrayList trD = new ArrayList();
++                config1 = new ArrayList();
++                config1.add(etatF.getNom());
++                config1.add("eps");
++                trD.add(config1);
++                config2 = new ArrayList();
++                config2.add(ed);
++                config2.add("eps");
++                trD.add(config2);
++                etatD.setTransitions(trD);
++
++                for(int j = 0; j < etats.size(); ++j) {
++                    if (((Etats)etats.get(j)).getNom().equals(ed1)) {
++                        ArrayList<String> config3 = new ArrayList();
++                        config3.add(etatF.getNom());
++                        config3.add("eps");
++                        ((Etats)etats.get(j)).getTransitions().add(config3);
++                        trF = new ArrayList();
++                        trF.add(ed);
++                        trF.add("eps");
++                        ((Etats)etats.get(j)).getTransitions().add(trF);
++                    }
++                }
++
++                etats.add(etatD);
++                etats.add(etatF);
++                a.setEtatsArrivee(apEtats);
++                a.setEtats(etats);
++                a.setEtatDepart(etatD);
++                a.setAlphabet(ap.getAlphabet());
++                pileA.push(a);
++            }
++
++            if (expression.charAt(i) == ')') {
++                System.out.println(")");
++                ap = new Automates();
++                char exp = (Character)pileM.pop();
++                Automates ap2 = (Automates)pileA.pop();
++                Automates ap1 = (Automates)pileA.pop();
++                ed1 = ap1.getEtatDepart().getNom();
++                String ed2 = ap2.getEtatDepart().getNom();
++                String ef1 = ((Etats)ap1.getEtatsArrivee().get(0)).getNom();
++                String ef2 = ((Etats)ap2.getEtatsArrivee().get(0)).getNom();
++                ap.setAlphabet(ap2.getAlphabet());
++                apEtats = new ArrayList();
++
++                int j;
++                for(j = 0; j < ap1.getEtats().size(); ++j) {
++                    apEtats.add(ap1.getEtats().get(j));
++                }
++
++                for(j = 0; j < ap2.getEtats().size(); ++j) {
++                    apEtats.add(ap2.getEtats().get(j));
++                }
++
++                ap.setEtats(apEtats);
++                switch(exp) {
++                    case '+':
++                        Etats etatsD = new Etats();
++                        etatsD.setNom(String.valueOf(etati));
++                        ++etati;
++                        config1 = new ArrayList();
++                        config1.add(String.valueOf(ed1));
++                        config1.add("eps");
++                        config2 = new ArrayList();
++                        config2.add(String.valueOf(ed2));
++                        config2.add("eps");
++                        ArrayList trD = new ArrayList();
++                        trD.add(config1);
++                        trD.add(config2);
++                        etatsD.setTransitions(trD);
++                        ap.getEtats().add(etatsD);
++                        Etats etatsF = new Etats();
++                        etatsF.setNom(String.valueOf(etati));
++                        ++etati;
++                        trF = new ArrayList();
++                        etatsF.setTransitions(trF);
++                        ap.getEtats().add(etatsF);
++                        ArrayList<String> config3 = new ArrayList();
++                        config3.add(String.valueOf(etatsF.getNom()));
++                        config3.add("eps");
++                        ArrayList<String> config4 = new ArrayList();
++                        config4.add(String.valueOf(etatsF.getNom()));
++                        config4.add("eps");
++                        ((Etats)ap.getEtats().get(this.get_etat(ap, ef1))).getTransitions().add(config3);
++                        ((Etats)ap.getEtats().get(this.get_etat(ap, ef2))).getTransitions().add(config4);
++                        List<Etats> efs = new ArrayList();
++                        efs.add(etatsF);
++                        ap.setEtatDepart(etatsD);
++                        ap.setEtatsArrivee(efs);
++                        pileA.push(ap);
++                        break;
++                    case '.':
++                        int indiceF1 = ap.get_etat(ap, ((Etats)ap1.getEtatsArrivee().get(0)).getNom());
++                        int indiceD2 = ap.get_etat(ap, ap2.getEtatDepart().getNom());
++                        ((Etats)ap.getEtats().get(indiceF1)).getTransitions().addAll(ap2.getEtatDepart().getTransitions());
++                        ap.getEtats().remove(indiceD2);
++                        ap.setEtatDepart(ap1.getEtatDepart());
++                        ap.setEtatsArrivee(ap2.getEtatsArrivee());
++                        pileA.push(ap);
++                }
++            }
++        }
++
++        return (Automates)pileA.pop();
++    }
++
++
++
++
++
++
+ }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"2605dd7d-5e46-4b3b-93d8-2ea0427b4df5\" name=\"Default Changelist\" comment=\"Ajout de l'algorithme de synchronisation\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/Automates.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/Automates.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/Images.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/Images.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/JsonDeal.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/JsonDeal.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/target/classes/Automates.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/Automates.class\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/target/classes/Images.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/Images.class\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/target/classes/JsonDeal.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/JsonDeal.class\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/test.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/test.json\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"imadhou00\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n    <option name=\"RESET_MODE\" value=\"MIXED\" />\n  </component>\n  <component name=\"GitSEFilterConfiguration\">\n    <file-type-list>\n      <filtered-out-file-type name=\"LOCAL_BRANCH\" />\n      <filtered-out-file-type name=\"REMOTE_BRANCH\" />\n      <filtered-out-file-type name=\"TAG\" />\n      <filtered-out-file-type name=\"COMMIT_BY_MESSAGE\" />\n    </file-type-list>\n  </component>\n  <component name=\"ProjectId\" id=\"1okPiOZid0behB92LRDtPAyTX5z\" />\n  <component name=\"ProjectLevelVcsManager\">\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\n    <property name=\"aspect.path.notification.shown\" value=\"true\" />\n    <property name=\"node.js.detected.package.eslint\" value=\"true\" />\n    <property name=\"node.js.detected.package.tslint\" value=\"true\" />\n    <property name=\"node.js.path.for.package.eslint\" value=\"project\" />\n    <property name=\"node.js.path.for.package.tslint\" value=\"project\" />\n    <property name=\"node.js.selected.package.eslint\" value=\"(autodetect)\" />\n    <property name=\"node.js.selected.package.tslint\" value=\"(autodetect)\" />\n    <property name=\"nodejs_package_manager_path\" value=\"npm\" />\n  </component>\n  <component name=\"RunManager\" selected=\"Application.JsonDeal\">\n    <configuration name=\"Images\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\n      <option name=\"MAIN_CLASS_NAME\" value=\"Images\" />\n      <module name=\"Automates\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"JsonDeal\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\n      <option name=\"MAIN_CLASS_NAME\" value=\"JsonDeal\" />\n      <module name=\"Automates\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"JsonTpGv\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\n      <option name=\"MAIN_CLASS_NAME\" value=\"JsonTpGv\" />\n      <module name=\"Automates\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"TraitementTransitions\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\n      <option name=\"MAIN_CLASS_NAME\" value=\"TraitementTransitions\" />\n      <module name=\"Automates\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Application.JsonDeal\" />\n        <item itemvalue=\"Application.TraitementTransitions\" />\n        <item itemvalue=\"Application.JsonTpGv\" />\n        <item itemvalue=\"Application.Images\" />\n        <item itemvalue=\"Application.JsonDeal\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"2605dd7d-5e46-4b3b-93d8-2ea0427b4df5\" name=\"Default Changelist\" comment=\"\" />\n      <created>1613827742264</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1613827742264</updated>\n      <workItem from=\"1613827744292\" duration=\"363000\" />\n      <workItem from=\"1613828133950\" duration=\"1228000\" />\n      <workItem from=\"1614112267934\" duration=\"567000\" />\n      <workItem from=\"1614337229980\" duration=\"26000\" />\n      <workItem from=\"1614340764665\" duration=\"8758000\" />\n      <workItem from=\"1614724089267\" duration=\"43000\" />\n      <workItem from=\"1614948823465\" duration=\"12413000\" />\n      <workItem from=\"1615029847548\" duration=\"3790000\" />\n      <workItem from=\"1615067606138\" duration=\"15975000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"Ghilas commited les classes eni\">\n      <created>1613828472218</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1613828472218</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"Tout est bien\">\n      <created>1614052026476</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1614052026476</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"Final push a propos de JSONDEAL\">\n      <created>1614052212166</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1614052212166</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"0.1\">\n      <created>1614171320903</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1614171320903</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"5\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State>\n              <option name=\"FILTERS\">\n                <map>\n                  <entry key=\"branch\">\n                    <value>\n                      <list>\n                        <option value=\"imadhou00\" />\n                      </list>\n                    </value>\n                  </entry>\n                </map>\n              </option>\n            </State>\n          </value>\n        </entry>\n      </map>\n    </option>\n    <option name=\"RECENT_FILTERS\">\n      <map>\n        <entry key=\"Branch\">\n          <value>\n            <list>\n              <RecentGroup>\n                <option name=\"FILTER_VALUES\">\n                  <option value=\"HEAD\" />\n                </option>\n              </RecentGroup>\n            </list>\n          </value>\n        </entry>\n      </map>\n    </option>\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"Ghilas commited les classes eni\" />\n    <MESSAGE value=\"Tout est bien\" />\n    <MESSAGE value=\"Final push a propos de JSONDEAL\" />\n    <MESSAGE value=\"0.1\" />\n    <MESSAGE value=\"Ajout de l'algorithme de synchronisation\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Ajout de l'algorithme de synchronisation\" />\n  </component>\n  <component name=\"XDebuggerManager\">\n    <breakpoint-manager>\n      <breakpoints>\n        <breakpoint enabled=\"true\" type=\"java-exception\">\n          <properties class=\"java.util.EmptyStackException\" package=\"java.util\" />\n          <option name=\"timeStamp\" value=\"11\" />\n        </breakpoint>\n      </breakpoints>\n      <default-breakpoints>\n        <breakpoint enabled=\"true\" type=\"java-exception\" />\n      </default-breakpoints>\n    </breakpoint-manager>\n    <watches-manager>\n      <configuration name=\"Application\">\n        <watch expression=\"a\" language=\"JAVA\" />\n      </configuration>\n    </watches-manager>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 5cf1c6632980e45e697d7cf1ddaa121b25468ecf)
++++ b/.idea/workspace.xml	(date 1615383892792)
+@@ -7,12 +7,9 @@
+     <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="Ajout de l'algorithme de synchronisation">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/Automates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Automates.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Images.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/JsonDeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JsonDeal.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/target/classes/Automates.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Automates.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/Images.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Images.class" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/target/classes/JsonDeal.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JsonDeal.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/test.json" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />

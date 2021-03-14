@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="Ajout de l'algorithme de synchronisation">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hh2.dot" beforeDir="false" afterPath="$PROJECT_DIR$/hh2.dot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Automates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Automates.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/JsonDeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JsonDeal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Automates.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Automates.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/JsonDeal.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JsonDeal.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/test.json" afterDir="false" />
-    </list>
+    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="Ajout de l'algorithme de synchronisation" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

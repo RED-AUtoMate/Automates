@@ -179,14 +179,7 @@ public class Automates {
 
             String s = c.getNom().substring(1,c.getNom().length()-1);
             List<String> myList = new ArrayList<String>(Arrays.asList(s.split(",")));
-            for(String p : myList){
-                int i = get_etat(this,p.trim());
-//                System.out.println(i);
-                if ( this.getEtats().get(i).getNom().equals(p.trim())){
-                    new_fin.add(c);
-                    break;
-                }
-            }
+
             if( q.contains(c.getNom()) ) { // une condition qui indique que l'on doit retirer l'élément
                 it.remove();
             }
@@ -195,14 +188,32 @@ public class Automates {
             }
 
         }
+        it = etatsList.iterator();
+        while( it.hasNext() ) {
+
+            Etats c = it.next();
+            String s = c.getNom().substring(1,c.getNom().length()-1);
+            List<String> myList = new ArrayList<String>(Arrays.asList(s.split(",")));
+            loop:
+            for (String p : myList) {
+                int i = get_etat(this, p.trim());
+//                System.out.println(i);
+                for (int o = 0; o < this.etatsArrivee.size(); o++) {
+                    if (etatsArrivee.get(o).getNom().equals(p.trim())) {
+                        new_fin.add(c);
+                        break loop;
+                    }
+                }
+            }
+        }
+
+
         this.etatsArrivee = new_fin;
 
 //        Set<Etats> mySet = new HashSet<Etats>(etatsList);
 //        System.out.println(etatsList);
-        System.out.println(new_fin);
-        System.out.println(new_fin.get(0).getNom()+" "+1);
-        System.out.println(new_fin.get(1).getNom()+" "+1);
-        System.out.println(new_fin.get(2).getNom()+" "+1);
+        for (int j =0;j<etatsArrivee.size();j++){
+        System.out.println(etatsArrivee.get(j).getNom()+" 1");}
     this.setEtats(new ArrayList<Etats>(etatsList));
 //        this.setEtats(new ArrayList<Etats>(mySet));
     }

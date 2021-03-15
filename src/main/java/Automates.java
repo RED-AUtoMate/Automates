@@ -228,6 +228,7 @@ public class Automates {
         return -1;
     }
     // marche pour les automates deterministe seulement
+    // retourne le numéro de la transition ou "nom" est lu dans l'etat etat
     public int get_etat_by_transition(Etats etat, String nom) {
         for(int i = 0; i < etat.getTransitions().size(); ++i) {
             ArrayList l = (ArrayList)(etat.getTransitions().get(i));
@@ -259,8 +260,8 @@ public class Automates {
             }
             else {
                 List w = (ArrayList) ec.getTransitions().get(test);
-                System.out.println(get_etat(this,"["+w.get(0)+"]"));
-                ec = this.etats.get(get_etat(this,(String)w.get(0)));
+                System.out.println("get etat "+get_etat(this,"["+w.get(0)+"]"));
+                ec = this.etats.get(get_etat(this,"["+(String)w.get(0)+"]"));
             }
 
 

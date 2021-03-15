@@ -155,7 +155,7 @@ public class Automates {
                 }
             }
         }
-        System.out.println(etatsList);
+//        System.out.println(etatsList);
         for(Etats e : etatsList){
             String s = e.getNom().substring(1,e.getNom().length()-1);
             List<String> myList = new ArrayList<String>(Arrays.asList(s.split(",")));
@@ -212,9 +212,10 @@ public class Automates {
 
 //        Set<Etats> mySet = new HashSet<Etats>(etatsList);
 //        System.out.println(etatsList);
-        for (int j =0;j<etatsArrivee.size();j++){
-        System.out.println(etatsArrivee.get(j).getNom()+" 1");}
+//        for (int j =0;j<etatsArrivee.size();j++){
+//        System.out.println(etatsArrivee.get(j).getNom()+" 1");}
     this.setEtats(new ArrayList<Etats>(etatsList));
+//        System.out.println(etatDepart.getNom()+" 3");
 //        this.setEtats(new ArrayList<Etats>(mySet));
     }
     public int get_etat(Automates automates, String nom) {
@@ -225,6 +226,89 @@ public class Automates {
         }
 
         return -1;
+    }
+    // marche pour les automates deterministe seulement
+    public int get_etat_by_transition(Etats etat, String nom) {
+        for(int i = 0; i < etat.getTransitions().size(); ++i) {
+            ArrayList l = (ArrayList)(etat.getTransitions().get(i));
+            if (l.get(1).equals(nom)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+    public boolean accept(String s){
+        System.out.println(etatDepart.getNom());
+        this.determiniser();
+//        this.determiniser();
+        boolean continuer = true;
+        int i =0;
+        Etats ec = this.etatDepart;
+        System.out.println(etatDepart.getNom());
+        // vaudrait mieux utiliser une hashmap
+        List<String> transit = new ArrayList<String>();
+        while(!s.equals("") && continuer){
+                char c = s.charAt(0);
+
+                //on test la fct
+                int test = get_etat_by_transition(ec,String.valueOf(c));
+            System.out.println("test = "+test);
+            if (test == -1){
+                continuer = false;
+            }
+            else {
+                List w = (ArrayList) ec.getTransitions().get(test);
+                System.out.println(get_etat(this,"["+w.get(0)+"]"));
+                ec = this.etats.get(get_etat(this,(String)w.get(0)));
+            }
+
+
+                transit = ec.getTransitions();
+                for (int l =0;l<transit.size();l++){
+                    List<String> tr = (List)ec.getTransitions().get(l);
+                    System.out.println("avant sub "+" tr="+tr.get(1)+" c="+c+" s="+s+ " ec="+ec.getNom());
+                    char comp = tr.get(1).charAt(0);
+//                    System.out.println(comp);
+                    if (comp == c){
+                        // ici ecrire une fonction qui renvoie un etat en prenant son nom
+//                        System.out.println("sub");
+                        // get_etat prend le nom de l'etat pas de la transition!!!!!
+                        System.out.println(get_etat(this,tr.get(1)));
+                        if (get_etat(this,tr.get(1)) != -1){
+                            System.out.println(ec.getNom()+" avant");
+                            ec = this.etats.get(get_etat(this,tr.get(1)));
+                            System.out.println(ec.getNom()+" apres");}
+                        else {
+                            if (l == transit.size()-1){
+                                continuer = false;
+                            }
+                        }
+//                        System.out.println("avant "+s);
+                        s = s.substring(1);
+//                        System.out.println("apres "+s);
+                        break;
+                    }
+                    else {
+                        if (l == transit.size()-1){
+                            continuer = false;
+                        }
+                    }
+                }
+
+//                i++;
+        }
+        System.out.println(ec.getNom()+" "+continuer+" "+s+1);
+//        for (int m=0;i<getEtatsArrivee().size();m++){
+//            System.out.println(getEtatsArrivee().get(m).getNom()+" "+getEtatsArrivee().get(m).getTransitions());
+//        }
+
+        if(s.equals("") && this.etatsArrivee.contains(ec)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 }

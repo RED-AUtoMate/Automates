@@ -245,9 +245,8 @@ public class JsonDeal {
         JsonDeal jsonDeal= new JsonDeal();
 
 
-        Automates a = jsonDeal.json_to_automate("test.json");
-        a.minimiser();
-
+        Images i = new Images();
+        i.jsonToDot("test.json", "abcd.dot");
 
 
     }

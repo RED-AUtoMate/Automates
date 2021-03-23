@@ -149,10 +149,16 @@ public class Automates {
             // le fait que c'est à l'exterieur de la boucle peut poser des problemes de reinnitialisation
             ArrayList hashToList = new ArrayList();
             for(String key: hash.keySet()){
+
+
+                List l = hash.get(key);
+                Collections.sort(l);
+
+
                 ArrayList config = new ArrayList();
                 // je pense qu'ici on devrait ajouter la key au lieu de get(key) PAS SÛR
 //                config.add(0,hash.get(key).toString());
-                config.add(0,listToString(hash.get(key)));
+                config.add(0,listToString(l));
 //                config.add(1,hash.get(key));
                 config.add(1,key);
 //                System.out.println(config.get(0).getClass());
@@ -171,7 +177,12 @@ public class Automates {
                 if(!trouve || s>=etatsList.size()) {
                     etatsList.add(etat);
 //                if(!etat.getTransitions().contains(config)) {
-                    file_etat_cree.add(hash.get(key));
+//                    file_etat_cree.add(hash.get(key));
+//                    System.out.println("hash = " + hash.get(key));
+//                    List l = hash.get(key);
+//                    Collections.sort(l);
+//                    System.out.println("l = "+l);
+                    file_etat_cree.add(l);
 //                }
 //                }
                 }
@@ -206,18 +217,18 @@ public class Automates {
             Collections.sort(myList);
 //            System.out.println(myList);
             c.setNom(listToString(myList));
-            System.out.println("c= "+c.getNom());
-            for (int b =0;b<c.getTransitions().size();b++){
-                List tr = (List)c.getTransitions().get(b);
-                List<String> ml = new ArrayList<String>(Arrays.asList(((String)tr.get(0)).split(",")));
-                Collections.sort(ml);
-//                ((List) c.getTransitions().get(b)).get(0) = listToString(ml);
-                List l = new ArrayList();
-                l.add(listToString(ml));
-                l.add(((List<?>) c.getTransitions().get(b)).get(1));
-                ((List) c.getTransitions().get(b)).set(b,l);
-
-            }
+//            System.out.println("c= "+c.getNom());
+//            for (int b =0;b<c.getTransitions().size();b++){
+//                List tr = (List)c.getTransitions().get(b);
+//                List<String> ml = new ArrayList<String>(Arrays.asList(((String)tr.get(0)).split(",")));
+//                Collections.sort(ml);
+////                ((List) c.getTransitions().get(b)).get(0) = listToString(ml);
+//                List l = new ArrayList();
+//                l.add(listToString(ml));
+//                l.add(((List<?>) c.getTransitions().get(b)).get(1));
+//                ((List) c.getTransitions().get(b)).set(b,l);
+//
+//            }
 //            System.out.println("s="+s);
             if( q.contains(c.getNom()) ) { // une condition qui indique que l'on doit retirer l'élément
                 it.remove();
@@ -296,35 +307,49 @@ public class Automates {
 //        boolean continuer = true;
         int i =0;
         Etats ec = this.etatDepart;
-        System.out.println(etatDepart.getNom());
+//        System.out.println(etatDepart.getNom());
         // vaudrait mieux utiliser une hashmap
         List<String> transit = new ArrayList<String>();
         while(!s.equals("") && ec != null){
                 char c = s.charAt(0);
 
+            System.out.println("juste pour le test");
                 //on test la fct
                 int test = get_etat_by_transition(ec,String.valueOf(c));
-            System.out.println("test = "+test);
+//            System.out.println("test = "+test);
             if (test == -1){
                 ec = null;
             }
             else {
                 List w = (ArrayList) ec.getTransitions().get(test);
-                System.out.println("w0 = "+w.get(0));
-                System.out.println("nom = "+this.getEtats().get(1).getNom());
+//                System.out.println("w0 = "+w.get(0));
+//                System.out.println("nom = "+this.getEtats().get(1).getNom());
 
-                System.out.println("transsss "+((List)this.getEtats().get(2).getTransitions().get(0)).get(0));
-                System.out.println("nooom "+this.getEtats().get(3).getNom());
+//                System.out.println("transsss "+((List)this.getEtats().get(2).getTransitions().get(0)).get(0));
+//                System.out.println("nooom "+this.getEtats().get(3).getNom());
 
-                System.out.println(etats.get(3).getNom());
+//                System.out.println(etats.get(3).getNom());
 //                System.out.println("get etat "+get_etat(this,"["+w.get(0)+"]"));
                 // ICI ERREUR
                 // PROBABLEMENT LES NOM GENERES
-                System.out.println("w="+w);
-                System.out.println("saluuut "+((List)this.getEtats().get(3).getTransitions().get(1)).get(0));
-                System.out.println("get etat "+get_etat(this,(String)w.get(0)));
+                System.out.println(this.etats.get(1).getNom()+"   ["+w.get(0)+"]");
+                if (this.etats.get(0).getNom().equals("["+w.get(0)+"]")){
+                    System.out.println("réussie");
+                }
+//                System.out.println("w="+w);
+//                System.out.println("saluuut "+((List)this.getEtats().get(3).getTransitions().get(1)).get(0));
+                System.out.println("avant get etat");
 //                ec = this.etats.get(get_etat(this,"["+(String)w.get(0)+"]"));
-                ec = this.etats.get(get_etat(this,(String)w.get(0)));
+                // ici ce ser plutot un get key : key est le mot lu
+//                ec = this.etats.get(get_etat(this,"["+(String)w.get(0)+"]"));
+                if(w.get(0).equals("1"))
+                {
+                    System.out.println("get etat "+get_etat(this,"["+(String)w.get(0)+"]")+" "+w.get(0));
+                    ec = this.etats.get(get_etat(this,"["+(String)w.get(0)+"]"));}
+                else{
+                    ec = this.etats.get(get_etat(this,(String)w.get(0)));
+                System.out.println("get etat "+get_etat(this,(String)w.get(0))+" "+w.get(0));}
+//                }
                 s = s.substring(1);
             }
 
@@ -367,7 +392,8 @@ public class Automates {
 //        for (int m=0;i<getEtatsArrivee().size();m++){
 //            System.out.println(getEtatsArrivee().get(m).getNom()+" "+getEtatsArrivee().get(m).getTransitions());
 //        }
-
+        System.out.println(s);
+//        System.out.println(ec.getNom());
         if(s.equals("") && this.etatsArrivee.contains(ec)){
             return true;
         }

@@ -342,7 +342,7 @@ public class Automates {
 //                ec = this.etats.get(get_etat(this,"["+(String)w.get(0)+"]"));
                 // ici ce ser plutot un get key : key est le mot lu
 //                ec = this.etats.get(get_etat(this,"["+(String)w.get(0)+"]"));
-                if(w.get(0).equals("1"))
+                if(w.get(0).equals(this.etatDepart.getNom()))
                 {
                     System.out.println("get etat "+get_etat(this,"["+(String)w.get(0)+"]")+" "+w.get(0));
                     ec = this.etats.get(get_etat(this,"["+(String)w.get(0)+"]"));}

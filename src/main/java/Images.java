@@ -1,6 +1,4 @@
-import com.groupdocs.*;
-import com.groupdocs.conversion.options.convert.ConvertOptions;
-import com.groupdocs.foundation.*;
+
 import com.sun.xml.internal.ws.commons.xmlutil.Converter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,7 +11,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.groupdocs.metadata.MetadataKey.DocumentInfo.FileType;
 
 public class Images {
     /**
@@ -69,16 +66,84 @@ public class Images {
 
             b.write("\r\n" + footer);
             b.close();
-//            // Load the source DOT file to be converted
-//            Converter converter = new Converter("test.dot");
-//            // Get the convert options ready for the target PNG format
-//            ConvertOptions convertOptions = new FileType().fromExtension("png").getConvertOptions();
-//            // Convert to PNG format
-//            converter.convert("output.png", convertOptions);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public void latexCreate() {
+        String latexString = "\\documentclass{minimal}\n" +
+                "\\usepackage[autosize]{dot2texi}\n" +
+                "\\usepackage[pdf]{graphviz}\n" +
+                "\\usepackage{amsmath}\n" +
+                "\\usepackage{graphicx}\n" +
+                "\\usepackage{tikz}\n" +
+                "\\usetikzlibrary{shapes,arrows}\n" +
+                "\n" +
+                "\\begin{document}\n" +
+                "    \\vskip 5mm\n" +
+                "    \\textbf{Composer sur feuille papier; numérisez votre copie (photos, scanner), puis déposez-la sur Teams, dans l'équipe du cours de Langages Formels, dans le devoir \"CC1\" avant 13h50; prévoyez 10 minutes pour le scan/dépôt!} \\\\\n" +
+                "\n" +
+                "    Essayez si possible de deposer un fichier PDF unique avec vos differentes pages, que vous pouvez obtenir avec une app du type CamScanner.\n" +
+                "\n" +
+                "\n" +
+                "    \\textbf{Les rendus en retard (après 13h50) pourront être pénalisés.}\n" +
+                "\n" +
+                "\n" +
+                "    \\emph{A composer seul. Les échanges avec toute autre personne sont interdits.}\\\\\n" +
+                "\n" +
+                "    On dispose de l'automate suivant\n" +
+                "\n" +
+                "    \\begin{enumerate}\n" +
+                "        \\setcounter{enumi}{-1}\n" +
+                "        \\begin{dot2tex}[neato,mathmode]\n" +
+                "            %AutomateInitial\n" +
+                "        \\end{dot2tex}\n" +
+                "        \\newline\n" +
+                "        \\item 1 - Déterminisez l'automate.\n" +
+                "        \\newline\n" +
+                "        \\item 2 - Normalisez l'automate.\n" +
+                "        \\newline\n" +
+                "        \\item 3 - Indiquez si l'automate accepte les mots suivants..\n" +
+                "        \\newline\n" +
+                "    \\end{enumerate}\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "    \\textbf{SOLUTIONS : }\n" +
+                "    \\begin{enumerate}\n" +
+                "\n" +
+                "        \\item 1- Automate déterministe :\n" +
+                "        \\newline\n" +
+                "        \\begin{dot2tex}[neato,mathmode]\n" +
+                "            %AutomateDeterministe\n" +
+                "        \\end{dot2tex}\n" +
+                "        \\newline\n" +
+                "        \\item 2 - Automate normalisé :\n" +
+                "        \\newline\n" +
+                "        \\begin{dot2tex}[neato,mathmode]\n" +
+                "            %AutomateNormalise\n" +
+                "        \\end{dot2tex}\n" +
+                "\n" +
+                "    \\end{enumerate}\n" +
+                "\n" +
+                "\\end{document}\n" +
+                "\n";
+        try {
+            BufferedWriter b = new BufferedWriter(new FileWriter("/home/rayani00/IdeaProjects/Automates/latex.tex"));
+            System.out.println("Fichier cree avec succes");
+            b.write(latexString);
+            b.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
 }
 

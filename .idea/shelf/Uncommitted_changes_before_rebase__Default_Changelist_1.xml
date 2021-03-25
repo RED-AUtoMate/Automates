@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <changelist name="Uncommitted_changes_before_rebase_[Default_Changelist]1" date="1614171712466" recycled="false" toDelete="true">
+=======
+<changelist name="Uncommitted_changes_before_rebase_[Default_Changelist]1" date="1615243624887" recycled="false" toDelete="true">
+>>>>>>> imadhou00
   <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Default_Changelist]1/shelved.patch" />
   <option name="DESCRIPTION" value="Uncommitted changes before rebase [Default Changelist]" />
 </changelist>

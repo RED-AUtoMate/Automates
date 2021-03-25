@@ -1,4 +1,13 @@
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+import com.groupdocs.*;
+import com.groupdocs.foundation.*;
+=======
+
+>>>>>>> imadhou00
+>>>>>>> main
 import com.sun.xml.internal.ws.commons.xmlutil.Converter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -11,6 +20,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+import static com.groupdocs.metadata.MetadataKey.DocumentInfo.FileType;
+=======
+>>>>>>> imadhou00
+>>>>>>> main
 
 public class Images {
     /**
@@ -71,6 +87,7 @@ public class Images {
         }
     }
 
+<<<<<<< HEAD
     public void latexCreate() {
         String latexString = "\\documentclass{minimal}\n" +
                 "\\usepackage[autosize]{dot2texi}\n" +
@@ -145,5 +162,11 @@ public class Images {
     }
 
 
+=======
+<<<<<<< HEAD
+>>>>>>> main
 }
 
+=======
+}
+>>>>>>> imadhou00

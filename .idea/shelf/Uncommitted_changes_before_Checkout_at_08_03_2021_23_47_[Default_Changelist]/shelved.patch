@@ -5,163 +5,26 @@ Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
-<<<<<<< HEAD
-diff --git a/src/main/java/JsonDeal.java b/src/main/java/JsonDeal.java
---- a/src/main/java/JsonDeal.java	
-+++ b/src/main/java/JsonDeal.java	
-@@ -14,19 +14,31 @@
- 
- public class JsonDeal {
- 
--    public void generer_aleatoirement(int nb_automates, int nb_etats, String[] alphabet, int nb_transition, int max_config_par_etat){
-+    public void aleatoire(int nb_automates, int nb_etats, String[] alphabet, int nb_transitions){
-+        ArrayList automates = new ArrayList();
-+        for (int i = 0; i < nb_automates; i++){
-+            ArrayList automate = new ArrayList();
-+
-+            for (int j = 0; j < nb_transitions; j++){
-+
-+            }
-+
-+        }
-+    }
-+
-+    public void generer_aleatoirement(int nb_automates, int nb_etats, String[] alphabet, int nb_transition, int max_config_par_etat) {
-         JSONObject jsonAutomates = new JSONObject();
-         ArrayList arrayList00 = new ArrayList();
-         HashMap hashMap = new HashMap();
-         Random random = new Random();
--        for (int i = 0; i < 1; i++){
--            for (int j = 0; j < nb_transition; j++){
-+        for (int i = 0; i < 1; i++) {
-+            for (int j = 0; j < nb_transition; j++) {
-                 ArrayList transitions = new ArrayList();
- 
--                int a = random.nextInt(max_config_par_etat+1);
--                if (a != 0){
-+                int a = random.nextInt(max_config_par_etat + 1);
-+                if (a != 0) {
-                     ArrayList arrayList = new ArrayList();
--                    for (int k = 0; k < a; k++ ){
-+                    for (int k = 0; k < a; k++) {
-                         int b = random.nextInt(alphabet.length);
-                         int c = random.nextInt(nb_etats);
-                         ArrayList config = new ArrayList();
-@@ -34,23 +46,23 @@
-                         config.add(alphabet[b]);
-                         arrayList.add(config);
- 
--                        if (hashMap.containsKey(a)){
-+                        if (hashMap.containsKey(a)) {
-                             ArrayList bn = (ArrayList) hashMap.get(a);
-                             bn.add(config);
-                         }
-                     }
--                    if (!hashMap.containsKey(a)){
--                        hashMap.put(a,arrayList);
-+                    if (!hashMap.containsKey(a)) {
-+                        hashMap.put(a, arrayList);
-                     }
-                     transitions.add(a);
-                     transitions.add(arrayList);
-                 }
--                if (transitions.size() != 0){
-+                if (transitions.size() != 0) {
-                     arrayList00.add(transitions);
-                 }
-             }
-             System.out.println(arrayList00);
--            System.out.println(hashMap);
-+
-         }
- 
-     }
-@@ -68,8 +80,8 @@
-             /* obtention du contenu du fichier json (definition de l'automate) */
-             JSONArray alphabet = (JSONArray) ob.get("Alphabet");
-             JSONArray etats = (JSONArray) ob.get("Etats");
--            String init =  ob.get("Init").toString();
--            String fin =  ob.get("Fin").toString();
-+            String init = ob.get("Init").toString();
-+            String fin = ob.get("Fin").toString();
-             JSONArray transitions = (JSONArray) ob.get("Transitions");
- 
-             /* construction du tableau des differentes transitions */
-@@ -77,8 +89,8 @@
-             ArrayList<Transitions> tr = new ArrayList<Transitions>();
- 
-             /* pour chaque transition on obtien l'etat initiale et les differentes configurations */
--            for (int i = 0; i < transitions.size(); i++){
--                JSONArray transition =(JSONArray) transitions.get(i);
-+            for (int i = 0; i < transitions.size(); i++) {
-+                JSONArray transition = (JSONArray) transitions.get(i);
- 
- 
-                 /* obtention de l'etat source */
-@@ -91,7 +103,7 @@
-                 ArrayList arrayList2 = new ArrayList();
- 
-                 /* pour chaque configuration on obtient le mot de l'alphabet et l'etat destination */
--                for (int j = 0; j < trans.size(); j++){
-+                for (int j = 0; j < trans.size(); j++) {
-                     ArrayList arrayList1 = (ArrayList) trans.get(j);
-                     ArrayList arrayList = new ArrayList();
- 
-@@ -113,8 +125,6 @@
-             }
- 
- 
--
--
-         } catch (IOException e) {
-             e.printStackTrace();
-         } catch (ParseException e) {
-=======
 diff --git a/.idea/workspace.xml b/.idea/workspace.xml
 --- a/.idea/workspace.xml	(revision 45d3bba6227b0f7909040457b727a5a7bddf4e08)
-+++ b/.idea/workspace.xml	(date 1615243363432)
-@@ -4,16 +4,7 @@
-     <option name="autoReloadType" value="SELECTIVE" />
-   </component>
-   <component name="ChangeListManager">
--    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="Ajout de l'algorithme de synchronisation">
--      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
--      <change beforePath="$PROJECT_DIR$/src/main/java/Automates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Automates.java" afterDir="false" />
--      <change beforePath="$PROJECT_DIR$/src/main/java/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Images.java" afterDir="false" />
--      <change beforePath="$PROJECT_DIR$/src/main/java/JsonDeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JsonDeal.java" afterDir="false" />
--      <change beforePath="$PROJECT_DIR$/target/classes/Automates.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Automates.class" afterDir="false" />
--      <change beforePath="$PROJECT_DIR$/target/classes/Images.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Images.class" afterDir="false" />
--      <change beforePath="$PROJECT_DIR$/target/classes/JsonDeal.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JsonDeal.class" afterDir="false" />
--      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/test.json" afterDir="false" />
--    </list>
-+    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="Thompson + synchro up" />
-     <option name="SHOW_DIALOG" value="false" />
-     <option name="HIGHLIGHT_CONFLICTS" value="true" />
-     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
-@@ -162,7 +153,14 @@
-       <option name="project" value="LOCAL" />
-       <updated>1614171320903</updated>
-     </task>
--    <option name="localTasksCounter" value="5" />
-+    <task id="LOCAL-00005" summary="Thompson + synchro up">
-+      <created>1615243343680</created>
-+      <option name="number" value="00005" />
-+      <option name="presentableId" value="LOCAL-00005" />
-+      <option name="project" value="LOCAL" />
-+      <updated>1615243343680</updated>
-+    </task>
-+    <option name="localTasksCounter" value="6" />
-     <servers />
-   </component>
-   <component name="TypeScriptGeneratedFilesManager">
-@@ -213,7 +211,8 @@
-     <MESSAGE value="Final push a propos de JSONDEAL" />
-     <MESSAGE value="0.1" />
-     <MESSAGE value="Ajout de l'algorithme de synchronisation" />
--    <option name="LAST_COMMIT_MESSAGE" value="Ajout de l'algorithme de synchronisation" />
-+    <MESSAGE value="Thompson + synchro up" />
-+    <option name="LAST_COMMIT_MESSAGE" value="Thompson + synchro up" />
-   </component>
-   <component name="XDebuggerManager">
-     <breakpoint-manager>
->>>>>>> imadhou00
++++ b/.idea/workspace.xml	(date 1615243638051)
+@@ -93,19 +93,6 @@
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+-      <option name="arquillianRunConfiguration">
+-        <value>
+-          <option name="containerStateName" value="" />
+-        </value>
+-      </option>
+-      <option name="TEST_OBJECT" value="CLASS" />
+-      <properties />
+-      <listeners />
+-      <method v="2">
+-        <option name="Make" enabled="true" />
+-      </method>
+-    </configuration>
+     <recent_temporary>
+       <list>
+         <item itemvalue="Application.JsonDeal" />

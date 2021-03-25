@@ -1,9 +1,0 @@
-digraph automate {
-	rankdir=LR;
-	size="8,5";
-    node  [shape = circle];
-    16  [style = "filled",color ="gray"];
-    19  [shape = "doublecircle"];
-    16 -> 17 [label= "a"];
-    17 -> 19 [label= "b"];
-}

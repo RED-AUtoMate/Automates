@@ -2,7 +2,7 @@ import java.util.List;
 
 public class Etats {
     private String nom;
-    private List<Transitions> transitions;//[ [0,"a"],[1,"b"] ]
+    private List transitions;//[ [0,"a"],[1,"b"] ]
 
     public Etats(){
 
@@ -15,11 +15,11 @@ public class Etats {
         this.nom = nom;
     }
 
-    public List<Transitions> getTransitions() {
+    public List getTransitions() {
         return transitions;
     }
 
-    public void setTransitions(List<Transitions> transitions) {
+    public void setTransitions(List transitions) {
         this.transitions = transitions;
     }
 }

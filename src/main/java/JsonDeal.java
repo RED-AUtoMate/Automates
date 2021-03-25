@@ -264,7 +264,7 @@ public class JsonDeal {
         transition2.add("a");
         Etats q1 = new Etats();
         q1.setNom("1");
-        ArrayList<ArrayList<String>> q1_transitions = q1.getTransitions();
+        ArrayList<ArrayList<String>> q1_transitions;
         q1_transitions = new ArrayList<ArrayList<String>>();
         q1_transitions.add(transition1);
         q1_transitions.add(transition2);

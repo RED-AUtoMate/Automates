@@ -10,6 +10,6 @@ public class Main {
         JsonDeal jsonDeal = new JsonDeal();
         automates = jsonDeal.json_to_automate("test.json");
         Images images = new Images();
-        images.latexCreate(automates);
+        images.jsonToDot("test.json", "test.dot");
     }
 }

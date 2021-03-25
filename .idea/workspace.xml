@@ -6,29 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="images">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aa11.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aa22.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/abcd.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/abcd0.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithme de equivalence.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithme de minimisation.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateJson.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hh.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hh2.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Automates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Automates.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CommandExec.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CommandExec.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Images.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/JsonDeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JsonDeal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Automates.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Automates.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Pdf.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/CommandExec.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/CommandExec.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Images.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Images.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/JsonDeal.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JsonDeal.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Pdf.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/test.dot" beforeDir="false" afterPath="$PROJECT_DIR$/test.dot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/test.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.tex" beforeDir="false" afterPath="$PROJECT_DIR$/test.tex" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +159,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614204046566</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="images">
+      <created>1616701818474</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1616701818475</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

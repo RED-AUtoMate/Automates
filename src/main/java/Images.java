@@ -63,7 +63,7 @@ public class Images {
                     ArrayList tr = (ArrayList) ar.get(j);
                     dst = tr.get(0).toString().trim();
                     lbl = tr.get(1).toString().trim();
-                    transitionGv = "    " + src + " -> " + dst + " " + "[label= \"" + lbl + "\"];";
+                    transitionGv = "    " + this.entreGuillemets(src) + " -> " + this.entreGuillemets(dst) + " " + "[label= \"" + lbl + "\"];";
                     b.write("\r\n" + transitionGv);
                 }
             }
@@ -73,6 +73,10 @@ public class Images {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String entreGuillemets(String mot) {
+        return ("\"" + mot + "\"");
     }
 
     public void latexCreate(Automates automates) throws IOException {

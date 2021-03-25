@@ -2,10 +2,10 @@ digraph automate {
 	rankdir=LR;
 	size="8,5";
     node  [shape = circle];
-    12  [style = "filled",color ="gray"];
-    3  [shape = "doublecircle"];
-    9  [shape = "doublecircle"];
-    12  [shape = "doublecircle"];
+    "12"  [style = "filled",color ="gray"];
+    "3"  [shape = "doublecircle"];
+    "9"  [shape = "doublecircle"];
+    "12"  [shape = "doublecircle"];
     "1" -> "3" [label= "b"];
     "12" -> "1" [label= "a"];
     "12" -> "7" [label= "b"];

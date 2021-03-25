@@ -48,10 +48,10 @@ public class Images {
             System.out.println("Fichier cree avec succes");
             b.write(header);
             // Generer la ligne pour les etats initials
-            b.write("\r\n" + "    " + etatInitial + " " + attributsEtatInitial);
+            b.write("\r\n" + "    " + this.entreGuillemets(etatInitial) + " " + attributsEtatInitial);
             // Generer la ligne pour les etats finaux
             for (int i = 0; i < etatFinal.size(); i++) {
-                b.write("\r\n" + "    " + etatFinal.get(i).getNom().toString().trim() + " " + attributsEtatsFinaux);
+                b.write("\r\n" + "    " + this.entreGuillemets(etatFinal.get(i).getNom().toString().trim()) + " " + attributsEtatsFinaux);
             }
 
             // Ecrire les transitions dans le fichier .gv

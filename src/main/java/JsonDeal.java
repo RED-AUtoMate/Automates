@@ -239,6 +239,14 @@ public class JsonDeal {
         return object;
     }
 
+        String[] a = {"a","b"};
+        String at = "((a.b)*+(b.a)*)";
+
+        Automates au = new Automates();
+        au = au.thompson(at, a);
+        au.synch3();
+        System.out.println(jsonDeal.automate_to_json(au));
+
 
 
     public static void main(String[] args) {
@@ -246,6 +254,7 @@ public class JsonDeal {
 
 
         Automates a = jsonDeal.json_to_automate("test.json");
+        images.latexCreate();
 
         String sss = "(a+bb)*(b+aa)*";
         String b ="";

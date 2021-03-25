@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class JsonDeal {
+     int i =0;
 
 
     /*
@@ -70,7 +71,7 @@ public class JsonDeal {
         et on l'ajoute a la liste etatsListe
          */
         List<Etats> etatsList = new ArrayList<Etats>();
-        for (Map.Entry<String, ArrayList<ArrayList<String>>> entry : transitions.entrySet()) {
+        for (Map.Entry<String, ArrayList<ArrayList<String>>> entry: transitions.entrySet()){
             Etats etats1 = new Etats();
             etats1.setNom(entry.getKey());
             etats1.setTransitions(entry.getValue());
@@ -96,11 +97,11 @@ public class JsonDeal {
         d'etats fineaux est selectionne
          */
         int m = random.nextInt(n);
-        if (m == 0) {
+        if (m == 0){
             m += 1;
         }
         ArrayList<Etats> finale = new ArrayList<Etats>();
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < m; i++){
             finale.add(automates.getEtats().get(i));
         }
         automates.setEtatsArrivee(finale);
@@ -110,8 +111,9 @@ public class JsonDeal {
     }
 
 
+
     /* partir depuis une representation json vers des objets java ensuite vers notre objet automate */
-    public Automates json_to_automate(String path) {
+    public Automates json_to_automate(String path){
         Automates automates = new Automates();
 
         JSONParser jsonParser = new JSONParser();
@@ -136,13 +138,13 @@ public class JsonDeal {
             ArrayList<Etats> fineaux = new ArrayList<Etats>();
             Etats etat_depart = new Etats();
 
-            for (int i = 0; i < alpha.size(); i++) {
+            for (int i = 0; i < alpha.size(); i++){
                 alphabet.add(alpha.get(i).toString());
             }
 
             ArrayList aut_trans = new ArrayList();
 
-            for (int i = 0; i < trans.size(); i++) {
+            for (int i = 0; i < trans.size(); i++){
                 ArrayList transi = (ArrayList) trans.get(i);
 
                 String depart = transi.get(0).toString();
@@ -150,7 +152,7 @@ public class JsonDeal {
 
                 /* building a list of configurations */
                 ArrayList aut_config = new ArrayList();
-                for (int j = 0; j < config.size(); j++) {
+                for (int j = 0; j < config.size(); j++){
 
                     ArrayList<String> aut_conf = new ArrayList<String>();
                     /* getting the basic configuration [0, a] from json format to arraylist aut_conf */
@@ -166,7 +168,7 @@ public class JsonDeal {
                 hashMap.put(depart, aut_config);
             }
 
-            for (Map.Entry<String, ArrayList> entry : hashMap.entrySet()) {
+            for (Map.Entry<String, ArrayList> entry: hashMap.entrySet()){
                 Etats etats1 = new Etats();
                 etats1.setNom(entry.getKey());
                 etats1.setTransitions(entry.getValue());
@@ -179,7 +181,7 @@ public class JsonDeal {
 
             /*finaux*/
             ArrayList<Etats> finos = new ArrayList<Etats>();
-            for (int i = 0; i < fin.size(); i++) {
+            for (int i = 0; i < fin.size(); i++){
                 Etats finale = new Etats();
                 finale.setNom(fin.get(i).toString());
                 finale.setTransitions(hashMap.get(fin.get(i).toString()));
@@ -200,11 +202,11 @@ public class JsonDeal {
     }
 
 
-    public JSONObject automate_to_json(Automates automates) {
-
+    /* construire un objet json a partir d'un objet de la classe automate */
+    public JSONObject automate_to_json(Automates automates){
 
         ArrayList transitions = new ArrayList();
-        for (int i = 0; i < automates.getEtats().size(); i++) {
+        for (int i = 0; i < automates.getEtats().size(); i++){
             ArrayList etat = new ArrayList();
             Etats etats = automates.getEtats().get(i);
             etat.add(etats.getNom());
@@ -215,12 +217,12 @@ public class JsonDeal {
         String init = automates.getEtatDepart().getNom();
 
         ArrayList etats = new ArrayList();
-        for (int i = 0; i < automates.getEtats().size(); i++) {
+        for (int i = 0; i < automates.getEtats().size(); i++){
             etats.add(automates.getEtats().get(i).getNom());
         }
 
         ArrayList finaux = new ArrayList();
-        for (int i = 0; i < automates.getEtatsArrivee().size(); i++) {
+        for (int i = 0; i < automates.getEtatsArrivee().size(); i++){
             finaux.add(automates.getEtatsArrivee().get(i).getNom());
         }
         HashMap hashMap = new HashMap();
@@ -233,27 +235,50 @@ public class JsonDeal {
         object.putAll(hashMap);
 
 
+
         return object;
     }
 
+        String[] a = {"a","b"};
+        String at = "((a.b)*+(b.a)*)";
+
+        Automates au = new Automates();
+        au = au.thompson(at, a);
+        au.synch3();
+        System.out.println(jsonDeal.automate_to_json(au));
+
+
 
     public static void main(String[] args) {
-        Images images = new Images();
-        images.jsonToDot("test.json", "/home/rayani00/IdeaProjects/Automates/test.dot");
-        JsonDeal jsonDeal = new JsonDeal();
-        Automates a = jsonDeal.json_to_automate("test.json");
+        JsonDeal jsonDeal= new JsonDeal();
 
-        for (int i = 0; i < a.getEtats().size(); i++) {
-            Etats e = a.getEtats().get(i);
-            System.out.println("source=" + e.getNom());
-            ArrayList ar = e.getTransitions();
-            for (int j = 0; j < ar.size(); j++) {
-                ArrayList tr = (ArrayList) ar.get(j);
-                System.out.println("dest = " + tr.get(0));
-                System.out.println("mot = " + tr.get(1));
+
+        Automates a = jsonDeal.json_to_automate("test.json");
+        images.latexCreate();
+
+        String sss = "(a+bb)*(b+aa)*";
+        String b ="";
+        b+=sss.charAt(0);
+        for (int i = 1; i < sss.length(); i++){
+            if (sss.charAt(i) == 'b' && sss.charAt(i-1) == 'b'||sss.charAt(i) == 'a' && sss.charAt(i-1) == 'a' ||sss.charAt(i) == '(' && sss.charAt(i-1) == ')' ||sss.charAt(i) == '(' && sss.charAt(i-1) == '*') {
+                b += '.';
+                b += sss.charAt(i);
+            }else {
+                b+=sss.charAt(i);
             }
-            System.out.println("\n");
         }
+        System.out.println(b);
+        String s = "(b.(a.b)*+(b.a)*.b)";
+        String[] ss = {"a", "b", "c"};
+
+        Automates bb = a.thompson(s,ss);
+
+        System.out.println(jsonDeal.automate_to_json(bb));
+        Images i = new Images();
+        i.jsonToDot("test.json", "aa22.dot");
+        bb.synch3();
+
+
 
     }
 

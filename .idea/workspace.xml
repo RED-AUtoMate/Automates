@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="update">
-      <change beforePath="$PROJECT_DIR$/test.pdf" beforeDir="false" />
-    </list>
+    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="update" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -136,7 +134,7 @@
       <workItem from="1614455104850" duration="296000" />
       <workItem from="1615901549137" duration="9291000" />
       <workItem from="1616571516622" duration="4053000" />
-      <workItem from="1616671734507" duration="3199000" />
+      <workItem from="1616671734507" duration="3498000" />
     </task>
     <task id="LOCAL-00001" summary="Ghilas commited les classes eni">
       <created>1613828472218</created>
@@ -194,7 +192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616677846333</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Latex + PDF + CommandExec">
+      <created>1616678094777</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1616678094777</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -231,7 +236,8 @@
     <MESSAGE value="fonction jsonToDot fonctionelle" />
     <MESSAGE value="images" />
     <MESSAGE value="Latex + PDF" />
-    <option name="LAST_COMMIT_MESSAGE" value="Latex + PDF" />
+    <MESSAGE value="Latex + PDF + CommandExec" />
+    <option name="LAST_COMMIT_MESSAGE" value="Latex + PDF + CommandExec" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Automates$Pdf_PDFCreateExample.ic" NAME="Pdf$PDFCreateExample Coverage Results" MODIFIED="1616667822699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

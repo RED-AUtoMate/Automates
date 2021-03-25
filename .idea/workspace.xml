@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="Ghilas commited a new version with new transitions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Etats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Etats.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/JsonDeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JsonDeal.java" afterDir="false" />
     </list>
+=======
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/test.json" afterDir="false" />
+    </list>
+=======
+    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="Ajout de l'algorithme de synchronisation" />
+>>>>>>> origin/imadhou00
+>>>>>>> main
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,8 +56,20 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+<<<<<<< HEAD
+=======
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.repository.indices" />
+>>>>>>> main
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.JsonDeal">
+    <configuration name="Images" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Images" />
+      <module name="Automates" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="JsonDeal" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="JsonDeal" />
       <module name="Automates" />
@@ -56,9 +77,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.JsonDeal" />
+        <item itemvalue="Application.Images" />
       </list>
     </recent_temporary>
   </component>
@@ -71,7 +104,22 @@
       <option name="presentableId" value="Default" />
       <updated>1613827742264</updated>
       <workItem from="1613827744292" duration="363000" />
+<<<<<<< HEAD
       <workItem from="1613828133950" duration="3761000" />
+=======
+      <workItem from="1613828133950" duration="1228000" />
+      <workItem from="1614112267934" duration="567000" />
+      <workItem from="1614337229980" duration="26000" />
+      <workItem from="1614340764665" duration="8758000" />
+<<<<<<< HEAD
+=======
+      <workItem from="1614724089267" duration="43000" />
+      <workItem from="1614948823465" duration="12413000" />
+      <workItem from="1615029847548" duration="3790000" />
+      <workItem from="1615067606138" duration="15975000" />
+      <workItem from="1615680586016" duration="5811000" />
+>>>>>>> origin/imadhou00
+>>>>>>> main
     </task>
     <task id="LOCAL-00001" summary="Ghilas commited les classes eni">
       <created>1613828472218</created>
@@ -87,7 +135,12 @@
       <option name="project" value="LOCAL" />
       <updated>1613832695232</updated>
     </task>
+<<<<<<< HEAD
     <option name="localTasksCounter" value="3" />
+=======
+    </task>
+    <option name="localTasksCounter" value="5" />
+>>>>>>> main
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -119,7 +172,12 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ghilas commited les classes eni" />
+<<<<<<< HEAD
     <MESSAGE value="Ghilas commited a new version with new transitions" />
     <option name="LAST_COMMIT_MESSAGE" value="Ghilas commited a new version with new transitions" />
+=======
+    <MESSAGE value="Tout est bien" />
+    <MESSAGE value="Final push a propos de JSONDEAL" />
+>>>>>>> main
   </component>
 </project>

@@ -1,0 +1,14 @@
+<changelist name="Uncommitted_changes_before_Update_at_26_02_2021_15_33_[Default_Changelist]" date="1614350006547" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_02_2021_15_33_[Default_Changelist]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 26/02/2021 15:33 [Default Changelist]" />
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/JsonDeal.class" />
+    <option name="AFTER_PATH" value="target/classes/JsonDeal.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_02_2021_15_33_[Default_Changelist]/JsonDeal.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/Automates.class" />
+    <option name="AFTER_PATH" value="target/classes/Automates.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_02_2021_15_33_[Default_Changelist]/Automates.class" />
+  </binary>
+</changelist>

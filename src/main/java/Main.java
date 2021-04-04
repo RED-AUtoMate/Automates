@@ -3,14 +3,18 @@ import com.itextpdf.text.DocumentException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws IOException, DocumentException, URISyntaxException {
-        Automates automates;
+        Automates automates = new Automates();
         JsonDeal jsonDeal = new JsonDeal();
-        automates = jsonDeal.json_to_automate("test.json");
-        Images images = new Images();
-        images.jsonToDot("test.json", "test.dot");
-        images.latexCreate(automates);
+        String expr = "(b.(a.b)*+(b.a)*.b)";
+        String[] alphebet = {"a","b"};
+        automates = automates.thompson(expr, alphebet);
+        automates.synch3();
+        automates.determiniser();
+        System.out.println(jsonDeal.automate_to_json(automates));
+
     }
 }

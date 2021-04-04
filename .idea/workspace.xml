@@ -6,7 +6,23 @@
   <component name="ChangeListManager">
     <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="finale">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateDeterministe.dot" beforeDir="false" afterPath="$PROJECT_DIR$/automateDeterministe.dot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateDeterministe.json" beforeDir="false" afterPath="$PROJECT_DIR$/automateDeterministe.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateDeterministe.png" beforeDir="false" afterPath="$PROJECT_DIR$/automateDeterministe.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateInitial.dot" beforeDir="false" afterPath="$PROJECT_DIR$/automateInitial.dot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateInitial.json" beforeDir="false" afterPath="$PROJECT_DIR$/automateInitial.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateInitial.png" beforeDir="false" afterPath="$PROJECT_DIR$/automateInitial.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateMinimal.dot" beforeDir="false" afterPath="$PROJECT_DIR$/automateMinimal.dot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateMinimal.json" beforeDir="false" afterPath="$PROJECT_DIR$/automateMinimal.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateMinimal.png" beforeDir="false" afterPath="$PROJECT_DIR$/automateMinimal.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateSynchro.dot" beforeDir="false" afterPath="$PROJECT_DIR$/automateSynchro.dot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateSynchro.json" beforeDir="false" afterPath="$PROJECT_DIR$/automateSynchro.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateSynchro.png" beforeDir="false" afterPath="$PROJECT_DIR$/automateSynchro.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Automates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Automates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Automates.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Automates.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.dot" beforeDir="false" afterPath="$PROJECT_DIR$/test.dot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/test.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +39,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="ba552f8fb4c6f113d4eb6abc0f462224f8bcac5d" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -94,13 +110,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -115,10 +133,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Images" />
         <item itemvalue="Application.JsonDeal" />
         <item itemvalue="Application.TraitementTransitions" />
         <item itemvalue="Application.JsonTpGv" />
-        <item itemvalue="Application.Images" />
       </list>
     </recent_temporary>
   </component>
@@ -255,5 +273,8 @@
         <watch expression="a" language="JAVA" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Automates$Pdf_PDFCreateExample.ic" NAME="Pdf$PDFCreateExample Coverage Results" MODIFIED="1616667822699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

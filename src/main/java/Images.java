@@ -105,7 +105,6 @@ public class Images {
 
         // Create the JSONObject for the determinist automate
         object = jsonDeal.automate_to_json(automates.determiniser());
-        System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhh");
         // Create the .json for determinist automate
         jsonDeal.jsonToJsonFile(object, "automateDeterministe");
         // Create determinist Automate .dot file
@@ -114,8 +113,26 @@ public class Images {
         commandExec.generateImageCommand("automateDeterministe");
 
 
+
+        // Create the JSONObject for the sychro automate
+        System.out.println("synch");
+        object = jsonDeal.automate_to_json(automates.synch3());
+        System.out.println(object);
+        // Create the .json for synchro automate
+        jsonDeal.jsonToJsonFile(object, "automateSynchro");
+        // Create synchro Automate .dot file
+        images.jsonToDot("automateSynchro.json", "automateSynchro.dot");
+        // Create synchro automate .png
+        commandExec.generateImageCommand("automateSynchro");
+
+
+
         // Create the JSONObject for the minimal automate
-        object = jsonDeal.automate_to_json(automates.minimiser());
+        Automates at = automates.synch3();
+        at = at.minimiser();
+        object = jsonDeal.automate_to_json(at);
+        System.out.println("mi");
+        System.out.println(object);
         // Create the .json for minimal automate
         jsonDeal.jsonToJsonFile(object, "automateMinimal");
         // Create minimal Automate .dot file
@@ -123,15 +140,6 @@ public class Images {
         // Create minimal automate .png
         commandExec.generateImageCommand("automateMinimal");
 
-
-        // Create the JSONObject for the sychro automate
-        object = jsonDeal.automate_to_json(automates.synch3());
-        // Create the .json for synchro automate
-        jsonDeal.jsonToJsonFile(object, "automateSynchro");
-        // Create synchro Automate .dot file
-        images.jsonToDot("automateSynchro.json", "automateSynchro.dot");
-        // Create synchro automate .png
-        commandExec.generateImageCommand("automateSynchro");
 
 
         // Replace the picture into the TeX file

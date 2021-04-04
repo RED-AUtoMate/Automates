@@ -114,11 +114,10 @@ public class Automates {
                 etd.setTransitions(trs1);
                 List<Etats> etfs = new ArrayList();
                 etfs.add(etf);
-                List<String> al = this.alphabet;
                 apEtats = new ArrayList();
                 apEtats.add(etd);
                 apEtats.add(etf);
-                ap.setAlphabet(al);
+                ap.setAlphabet(Arrays.asList(alpha));
                 ap.setEtats(apEtats);
                 ap.setEtatsArrivee(etfs);
                 ap.setEtatDepart(etd);
@@ -323,17 +322,17 @@ public class Automates {
             Etats etat0 = etats.get(i);
             for (int j = 0; j < etat0.getTransitions().size(); j++){
                 ArrayList config0 = (ArrayList) etat0.getTransitions().get(j);
-                if (config0.get(1) == "eps"){
+                if (config0.get(1).equals("eps")){
                     int et = this.get_etat(this, config0.get(0).toString());
 
                     for (int s = 0; s < this.getEtatsArrivee().size(); s++){
-                        if (this.getEtatsArrivee().get(s).getNom() == this.getEtats().get(et).getNom()){
+                        if (this.getEtatsArrivee().get(s).getNom().equals(this.getEtats().get(et).getNom())){
                             this.getEtatsArrivee().add(etat0);
                         }
                     }
                     for (int k = 0; k < etats.get(et).getTransitions().size(); k++){
                         ArrayList config1 = (ArrayList) etats.get(et).getTransitions().get(k);
-                        if (config1.get(1) == "eps"){
+                        if (config1.get(1).equals("eps")){
                             etat0.getTransitions().add(config1);
                         }
                     }
@@ -347,10 +346,10 @@ public class Automates {
 
             for (int j = 0; j < etat_courant.getTransitions().size(); j++){
                 ArrayList config = (ArrayList) etat_courant.getTransitions().get(j);
-                if (config.get(1) == "eps"){
+                if (config.get(1).equals("eps")){
                     Etats etat_inter = etats.get(this.get_etat(this, config.get(0).toString()));
                     for (int s = 0; s < this.getEtatsArrivee().size(); s++){
-                        if (this.getEtatsArrivee().get(s).getNom() == this.getEtats().get(this.get_etat(this, String.valueOf(config.get(0)))).getNom()){
+                        if (this.getEtatsArrivee().get(s).getNom().equals(this.getEtats().get(this.get_etat(this, String.valueOf(config.get(0)))).getNom())){
                             this.getEtatsArrivee().add(etat_courant);
                         }
                     }
@@ -359,7 +358,7 @@ public class Automates {
                         ArrayList trans = etat_inter.getTransitions();
                         for (int s = 0; s < trans.size(); s++){
                             ArrayList config1 = (ArrayList) trans.get(s);
-                            if (config1.get(1) != "eps"){
+                            if (!config1.get(1).equals("eps")){
                                 etat_courant.getTransitions().add(config1);
                             }
                         }
@@ -369,12 +368,13 @@ public class Automates {
         }
 
 
+
         /* etape 3 : suppression des eps-transitions */
         for ( int i = 0 ; i < this.getEtats().size(); i++){
             ArrayList trs = new ArrayList();
             for ( int j = 0; j < this.getEtats().get(i).getTransitions().size(); j++){
                 ArrayList a = (ArrayList) this.getEtats().get(i).getTransitions().get(j);
-                if(a.get(1) != "eps"){
+                if(!a.get(1).equals("eps")){
                     if ( ! trs.contains(a)){
                         trs.add(a);
                     }
@@ -391,15 +391,17 @@ public class Automates {
                 ArrayList transitions = this.getEtats().get(j).getTransitions();
                 for ( int k = 0; k < transitions.size(); k++){
                     ArrayList conf = (ArrayList) transitions.get(k);
-                    if (conf.get(0) == nom){
+                    if (conf.get(0).equals(nom)){
                         etats_acce.add(nom);
                     }
                 }
             }
-            if (this.getEtats().get(i).getNom() == this.getEtatDepart().getNom()){
+            if (this.getEtats().get(i).getNom().equals(this.getEtatDepart().getNom())){
                 etats_acce.add(this.getEtats().get(i).getNom());
             }
         }
+
+
 
 
         /* definition des nouveaux etats */
@@ -409,6 +411,7 @@ public class Automates {
                 etts.add(this.getEtats().get(i));
             }
         }
+
         this.setEtats(etts);
 
         /* definition des nouveaux etats finaux */
@@ -423,7 +426,6 @@ public class Automates {
         }
         this.setEtatsArrivee(arr);
         return this;
-
     }
 
 
@@ -788,6 +790,7 @@ public class Automates {
 
         /* pour chaque etat a l indice i on marque la partition auquel il appartient */
         ArrayList<String> partitions = new ArrayList<String>();
+        this.getAlphabet().add("eps");
         ArrayList<String> noms = new ArrayList<String>();
         for (int i = 0; i < this.getEtats().size(); i++){
             noms.add(this.getEtats().get(i).getNom());
@@ -802,6 +805,7 @@ public class Automates {
 
         ArrayList classes = new ArrayList();
         HashMap<ArrayList, String> trs= new HashMap<ArrayList, String>();
+        Etats etatD = new Etats();
         boolean modif = true;
 
         while (modif){
@@ -859,28 +863,63 @@ public class Automates {
             }
         }
         System.out.println(partition_finale);
-        HashMap<String, String> states = new HashMap<String, String>();
-        for (String key : partition_finale.keySet()){
-            states.put(key, partition_finale.get(key).toString());
-            boolean nnFinale = true;
-            int i=0;
-            while ( i < partition_finale.get(key).size() && nnFinale){
-                if (!estFinale(this, (String) partition_finale.get(key).get(i))){
-                    nnFinale = false;
+
+        ArrayList<Etats> etats2 = new ArrayList<Etats>();
+        ArrayList<Etats> etfs = new ArrayList<Etats>();
+        for (ArrayList key : trs.keySet()){
+            Etats etat = new Etats();
+            ArrayList t = new ArrayList();
+            for (int q = 1; q < key.size(); q++){
+                String a = this.alphabet.get(q-1);
+                ArrayList<String > con = new ArrayList<String>();
+                String tD = (String) key.get(q);
+                System.out.println(tD +" tD");
+                System.out.println(partition_finale.get(tD) +" part f");
+                if(partition_finale.get(tD) != null){
+                    con.add(partition_finale.get(tD).toString());
+                    con.add(alphabet.get(q-1));
+                    t.add(con);
                 }
-                i++;
             }
-            String nom = partition_finale.get(key).toString();
-            System.out.println(nom+ " " + nnFinale);
-            Etats etats = new Etats();
-            etats.setNom(nom) ;
+            
+
+            boolean nnfi = true;
+            int y = 0;
+            while (nnfi && y < partition_finale.get(trs.get(key)).size()){
+                if (estFinale(this, (String) partition_finale.get(trs.get(key)).get(y))){
+                    nnfi = false;
+                }
+                y++;
+            }
+
+
+            if (nnfi){
+                etfs.add(etat);
+            }
+
+            etat.setNom(partition_finale.get(trs.get(key)).toString());
+            etat.setTransitions(t);
+
+            if (etat.getNom().contains(this.getEtatDepart().getNom())){
+                etatD = etat;
+            }
+
+            etats2.add(etat);
 
         }
-        return this;
+
+        Automates automate = new Automates();
+        automate.setAlphabet(this.getAlphabet());
+        automate.setEtats(etats2);
+        automate.setEtatDepart(etatD);
+
+        automate.setEtatsArrivee(etfs);
 
 
+        return automate;
 
     }
+
 
     private String avec_mot(String mot, String etat){
         for (int i = 0; i < this.getEtats().get(this.get_etat(this, etat)).getTransitions().size(); i++){

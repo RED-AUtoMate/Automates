@@ -771,6 +771,158 @@ public class Automates {
     }
 
 
+    public boolean estFinale(Automates automates, String nom_E){
+        boolean nfinale = true;
+        int i = 0;
+        while (nfinale && i < this.getEtatsArrivee().size()){
+            if (this.getEtatsArrivee().get(i).getNom().equals(nom_E)){
+                nfinale = false;
+            }
+            i++;
+        }
+        return nfinale;
+    }
+
+    public Automates minimiser(){
+
+        /* pour chaque etat a l indice i on marque la partition auquel il appartient */
+        ArrayList<String> partitions = new ArrayList<String>();
+        ArrayList<String> noms = new ArrayList<String>();
+        for (int i = 0; i < this.getEtats().size(); i++){
+            noms.add(this.getEtats().get(i).getNom());
+            if (estFinale(this, this.getEtats().get(i).getNom())){
+                partitions.add("0");
+            }else {
+                partitions.add("1");
+            }
+        }
+        System.out.println(noms);
+        System.out.println(partitions);
+
+        ArrayList classes = new ArrayList();
+        HashMap<ArrayList, String> trs= new HashMap<ArrayList, String>();
+        Etats etatD = new Etats();
+        boolean modif = true;
+
+        while (modif){
+            ArrayList table_transitions = new ArrayList();
+            ArrayList t_class = new ArrayList();
+            HashMap<ArrayList, String> t_partition= new HashMap<ArrayList, String>();
+            int vals = 0;
+            for (int i = 0; i < this.getEtats().size(); i++){
+                ArrayList class_transition = new ArrayList();
+                ArrayList transi = new ArrayList();
+                class_transition.add(partitions.get(i));
+                for (int j = 0; j < this.getAlphabet().size(); j++){
+                    String destination = this.avec_mot(this.getAlphabet().get(j), this.getEtats().get(i).getNom());
+                    transi.add(destination);
+                    if (destination == "-1"){
+                        class_transition.add("-1");
+                    }else {
+                        class_transition.add(partitions.get(noms.indexOf(destination)));
+                    }
+                }
+                t_class.add(class_transition);
+                table_transitions.add(transi);
+                if (!t_partition.containsKey(class_transition)){
+                    t_partition.put(class_transition,String.valueOf(vals));
+                    vals++;
+                }
+            }
+            ArrayList nv_partition = new ArrayList();
+            for (int i = 0; i < this.getEtats().size(); i++){
+                nv_partition.add(t_partition.get(t_class.get(i)));
+            }
+
+            if (partitions.containsAll(nv_partition)){
+                modif = false;
+            }else {
+                partitions = nv_partition;
+            }
+            classes = t_class;
+            trs = t_partition;
+        }
+
+        System.out.println(classes);
+        System.out.println(trs);
+
+
+        HashMap<String, ArrayList> partition_finale = new HashMap<String, ArrayList>();
+        for (int i = 0; i < partitions.size(); i++){
+            String part = partitions.get(i);
+            if (partition_finale.containsKey(part)){
+                partition_finale.get(part).add(noms.get(i));
+            }else {
+                ArrayList a = new ArrayList();
+                a.add(noms.get(i));
+                partition_finale.put(part, a);
+            }
+        }
+        System.out.println(partition_finale);
+
+        ArrayList<Etats> etats2 = new ArrayList<Etats>();
+        ArrayList<Etats> etfs = new ArrayList<Etats>();
+        for (ArrayList key : trs.keySet()){
+            Etats etat = new Etats();
+            ArrayList t = new ArrayList();
+            for (int q = 1; q < key.size(); q++){
+                String a = this.alphabet.get(q-1);
+                ArrayList<String > con = new ArrayList<String>();
+                String tD = (String) key.get(q);
+                System.out.println(tD);
+                System.out.println(partition_finale.get(tD));
+                con.add(partition_finale.get(tD).toString());
+                con.add(alphabet.get(q-1));
+                t.add(con);
+            }
+
+            boolean nnfi = true;
+            int y = 0;
+            while (nnfi && y < partition_finale.get(trs.get(key)).size()){
+                if (estFinale(this, (String) partition_finale.get(trs.get(key)).get(y))){
+                    nnfi = false;
+                }
+                y++;
+            }
+            int s =0;
+            boolean deb = false;
+            while (s < partition_finale.get(trs.get(key)).size()){
+                if(this.getEtatDepart().getNom().equals((String) partition_finale.get(trs.get(key)).get(s))){
+                    deb = true;
+                }
+                s++;
+            }
+            etat.setNom(partition_finale.get(trs.get(key)).toString());
+            etat.setTransitions(t);
+            if (nnfi){
+                etfs.add(etat);
+            }
+            etats2.add(etat);
+            etatD = etat;
+        }
+
+        Automates automate = new Automates();
+        automate.setAlphabet(this.getAlphabet());
+        automate.setEtats(etats2);
+        automate.setEtatDepart(etatD);
+        automate.setEtatsArrivee(etfs);
+
+
+        return automate;
+
+    }
+
+    private String avec_mot(String mot, String etat){
+        for (int i = 0; i < this.getEtats().get(this.get_etat(this, etat)).getTransitions().size(); i++){
+            ArrayList<String> config = (ArrayList<String>) this.getEtats().get(this.get_etat(this, etat)).getTransitions().get(i);
+            if (config.get(1).equals(mot)){
+                return config.get(0);
+            }
+        }
+        return "-1";
+    }
+
+
 
 
 

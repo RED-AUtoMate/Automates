@@ -301,7 +301,6 @@ public class Automates {
     }
 
 
-
     public int get_etat(Automates automates, String nom) {
         for(int i = 0; i < automates.getEtats().size(); ++i) {
             if (((Etats)automates.getEtats().get(i)).getNom().equals(nom)) {
@@ -443,8 +442,6 @@ public class Automates {
     }
 
 
-
-
     public String listToString(List l){
         String s ="";
         for (int i =0 ; i<l.size();i++){
@@ -465,7 +462,6 @@ public class Automates {
         }
         return s;
     }
-
 
 
     public Automates determiniser(){
@@ -649,7 +645,6 @@ public class Automates {
     }
 
 
-
     public int get_etat_by_transition(Etats etat, String nom) {
         for(int i = 0; i < etat.getTransitions().size(); ++i) {
             ArrayList l = (ArrayList)(etat.getTransitions().get(i));
@@ -662,13 +657,11 @@ public class Automates {
     }
 
 
-
     public void afficher_etats(Automates aut){
         for (int i=0;i<aut.getEtats().size();i++){
             System.out.println("Etat "+i+" : "+aut.getEtats().get(i).getNom()+" "+aut.getEtats().get(i).getTransitions());
         }
     }
-
 
 
     public boolean accept(String s){

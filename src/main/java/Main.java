@@ -8,6 +8,6 @@ public class Main {
     public static void main(String[] args) throws IOException, DocumentException, URISyntaxException {
         CommandExec commandExec = new CommandExec();
         Latex latex = new Latex();
-        commandExec.generatePdfCommand();
+
     }
 }

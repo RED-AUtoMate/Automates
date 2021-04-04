@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-import com.groupdocs.*;
-import com.groupdocs.foundation.*;
-=======
-
->>>>>>> imadhou00
->>>>>>> main
 import com.sun.xml.internal.ws.commons.xmlutil.Converter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,16 +7,14 @@ import org.json.simple.parser.ParseException;
 import javax.swing.*;
 import java.lang.Object;
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-import static com.groupdocs.metadata.MetadataKey.DocumentInfo.FileType;
-=======
->>>>>>> imadhou00
->>>>>>> main
 
 public class Images {
     /**
@@ -57,13 +45,13 @@ public class Images {
             List<Etats> etatFinal = automates.getEtatsArrivee();
             // Création du fichier .gv
             BufferedWriter b = new BufferedWriter(new FileWriter(path));
-            System.out.println("Fichier cree avec succes");
+            System.out.println("Fichier " + path + " crée avec succes.");
             b.write(header);
             // Generer la ligne pour les etats initials
-            b.write("\r\n" + "    " + etatInitial + " " + attributsEtatInitial);
+            b.write("\r\n" + "    " + this.entreGuillemets(etatInitial) + " " + attributsEtatInitial);
             // Generer la ligne pour les etats finaux
             for (int i = 0; i < etatFinal.size(); i++) {
-                b.write("\r\n" + "    " + etatFinal.get(i).getNom().toString().trim() + " " + attributsEtatsFinaux);
+                b.write("\r\n" + "    " + this.entreGuillemets(etatFinal.get(i).getNom().toString().trim()) + " " + attributsEtatsFinaux);
             }
 
             // Ecrire les transitions dans le fichier .gv
@@ -75,7 +63,7 @@ public class Images {
                     ArrayList tr = (ArrayList) ar.get(j);
                     dst = tr.get(0).toString().trim();
                     lbl = tr.get(1).toString().trim();
-                    transitionGv = "    " + src + " -> " + dst + " " + "[label= \"" + lbl + "\"];";
+                    transitionGv = "    " + this.entreGuillemets(src) + " -> " + this.entreGuillemets(dst) + " " + "[label= \"" + lbl + "\"];";
                     b.write("\r\n" + transitionGv);
                 }
             }
@@ -87,86 +75,78 @@ public class Images {
         }
     }
 
-<<<<<<< HEAD
-    public void latexCreate() {
-        String latexString = "\\documentclass{minimal}\n" +
-                "\\usepackage[autosize]{dot2texi}\n" +
-                "\\usepackage[pdf]{graphviz}\n" +
-                "\\usepackage{amsmath}\n" +
-                "\\usepackage{graphicx}\n" +
-                "\\usepackage{tikz}\n" +
-                "\\usetikzlibrary{shapes,arrows}\n" +
-                "\n" +
-                "\\begin{document}\n" +
-                "    \\vskip 5mm\n" +
-                "    \\textbf{Composer sur feuille papier; numérisez votre copie (photos, scanner), puis déposez-la sur Teams, dans l'équipe du cours de Langages Formels, dans le devoir \"CC1\" avant 13h50; prévoyez 10 minutes pour le scan/dépôt!} \\\\\n" +
-                "\n" +
-                "    Essayez si possible de deposer un fichier PDF unique avec vos differentes pages, que vous pouvez obtenir avec une app du type CamScanner.\n" +
-                "\n" +
-                "\n" +
-                "    \\textbf{Les rendus en retard (après 13h50) pourront être pénalisés.}\n" +
-                "\n" +
-                "\n" +
-                "    \\emph{A composer seul. Les échanges avec toute autre personne sont interdits.}\\\\\n" +
-                "\n" +
-                "    On dispose de l'automate suivant\n" +
-                "\n" +
-                "    \\begin{enumerate}\n" +
-                "        \\setcounter{enumi}{-1}\n" +
-                "        \\begin{dot2tex}[neato,mathmode]\n" +
-                "            %AutomateInitial\n" +
-                "        \\end{dot2tex}\n" +
-                "        \\newline\n" +
-                "        \\item 1 - Déterminisez l'automate.\n" +
-                "        \\newline\n" +
-                "        \\item 2 - Normalisez l'automate.\n" +
-                "        \\newline\n" +
-                "        \\item 3 - Indiquez si l'automate accepte les mots suivants..\n" +
-                "        \\newline\n" +
-                "    \\end{enumerate}\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "    \\textbf{SOLUTIONS : }\n" +
-                "    \\begin{enumerate}\n" +
-                "\n" +
-                "        \\item 1- Automate déterministe :\n" +
-                "        \\newline\n" +
-                "        \\begin{dot2tex}[neato,mathmode]\n" +
-                "            %AutomateDeterministe\n" +
-                "        \\end{dot2tex}\n" +
-                "        \\newline\n" +
-                "        \\item 2 - Automate normalisé :\n" +
-                "        \\newline\n" +
-                "        \\begin{dot2tex}[neato,mathmode]\n" +
-                "            %AutomateNormalise\n" +
-                "        \\end{dot2tex}\n" +
-                "\n" +
-                "    \\end{enumerate}\n" +
-                "\n" +
-                "\\end{document}\n" +
-                "\n";
-        try {
-            BufferedWriter b = new BufferedWriter(new FileWriter("/home/rayani00/IdeaProjects/Automates/latex.tex"));
-            System.out.println("Fichier cree avec succes");
-            b.write(latexString);
-            b.close();
+    /**
+     * @param mot : Le mot auquel on doit mettre des guillemets
+     * @brief : Fonction qui met des guillemets autour d'un mot
+     */
+    public String entreGuillemets(String mot) {
+        return ("\"" + mot + "\"");
+    }
 
+    /**
+     * @param automates : L'automate à partir duquel on crée le sujet de l'etudiant
+     * @brief : Fonction qui crée un fichier TeX à partir d'un automate donné
+     */
+    public void latexCreate(Automates automates) throws IOException {
+        Images images = new Images();
+        JsonDeal jsonDeal = new JsonDeal();
+        CommandExec commandExec = new CommandExec();
+
+
+        // Create the JSONObject for the initial automate
+        JSONObject object = jsonDeal.automate_to_json(automates);
+        // Create the .json for initial automate
+        jsonDeal.jsonToJsonFile(object, "automateInitial");
+        // Create initial Automate .dot file
+        images.jsonToDot("automateInitial.json", "automateInitial.dot");
+        // Create initial automate .png
+        commandExec.generateImageCommand("automateInitial");
+
+
+        // Create the JSONObject for the determinist automate
+        object = jsonDeal.automate_to_json(automates.determiniser());
+        // Create the .json for determinist automate
+        jsonDeal.jsonToJsonFile(object, "automateDeterministe");
+        // Create determinist Automate .dot file
+        images.jsonToDot("automateDeterministe.json", "automateDeterministe.dot");
+        // Create determinist automate .png
+        commandExec.generateImageCommand("automateDeterministe");
+
+
+        // Create the JSONObject for the minimal automate
+        object = jsonDeal.automate_to_json(automates.minimiser());
+        // Create the .json for minimal automate
+        jsonDeal.jsonToJsonFile(object, "automateMinimal");
+        // Create minimal Automate .dot file
+        images.jsonToDot("automateMinimal.json", "automateMinimal.dot");
+        // Create minimal automate .png
+        commandExec.generateImageCommand("automateMinimal");
+
+
+        // Create the JSONObject for the sychro automate
+        object = jsonDeal.automate_to_json(automates.synch3());
+        // Create the .json for synchro automate
+        jsonDeal.jsonToJsonFile(object, "automateSynchro");
+        // Create synchro Automate .dot file
+        images.jsonToDot("automateSynchro.json", "automateSynchro.dot");
+        // Create synchro automate .png
+        commandExec.generateImageCommand("automateSynchro");
+
+
+        // Replace the picture into the TeX file
+        Path path = Paths.get("test.tex");
+        Charset charset = StandardCharsets.UTF_8;
+
+        String content = new String(Files.readAllBytes(path), charset);
+        content = content.replaceAll("#AUTOMATEINITIAL", "automateInitial.png");
+        content = content.replaceAll("#AUTOMATEDETERMINISTE", "automateDeterministe.png");
+        content = content.replaceAll("#AUTOMATEMINIMISE", "automateMinimal.png");
+        content = content.replaceAll("#AUTOMATESYNCHRO", "automateSynchro.png");
+        try {
+            Files.write(path, content.getBytes(charset));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
     }
-
-
-=======
-<<<<<<< HEAD
->>>>>>> main
 }
-
-=======
-}
->>>>>>> imadhou00

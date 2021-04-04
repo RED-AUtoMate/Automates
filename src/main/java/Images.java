@@ -105,6 +105,7 @@ public class Images {
 
         // Create the JSONObject for the determinist automate
         object = jsonDeal.automate_to_json(automates.determiniser());
+        System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhh");
         // Create the .json for determinist automate
         jsonDeal.jsonToJsonFile(object, "automateDeterministe");
         // Create determinist Automate .dot file

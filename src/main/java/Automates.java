@@ -422,7 +422,6 @@ public class Automates {
             }
         }
         this.setEtatsArrivee(arr);
-
         return this;
 
     }

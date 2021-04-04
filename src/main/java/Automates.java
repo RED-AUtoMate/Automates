@@ -3,6 +3,8 @@
 // (powered by FernFlower decompiler)
 //
 
+import com.groupdocs.conversion.internal.a.a.Au;
+
 import java.util.*;
 
 public class Automates {
@@ -801,7 +803,6 @@ public class Automates {
 
         ArrayList classes = new ArrayList();
         HashMap<ArrayList, String> trs= new HashMap<ArrayList, String>();
-        Etats etatD = new Etats();
         boolean modif = true;
 
         while (modif){
@@ -859,56 +860,26 @@ public class Automates {
             }
         }
         System.out.println(partition_finale);
-
-        ArrayList<Etats> etats2 = new ArrayList<Etats>();
-        ArrayList<Etats> etfs = new ArrayList<Etats>();
-        for (ArrayList key : trs.keySet()){
-            Etats etat = new Etats();
-            ArrayList t = new ArrayList();
-            for (int q = 1; q < key.size(); q++){
-                String a = this.alphabet.get(q-1);
-                ArrayList<String > con = new ArrayList<String>();
-                String tD = (String) key.get(q);
-                System.out.println(tD);
-                System.out.println(partition_finale.get(tD));
-                con.add(partition_finale.get(tD).toString());
-                con.add(alphabet.get(q-1));
-                t.add(con);
-            }
-
-            boolean nnfi = true;
-            int y = 0;
-            while (nnfi && y < partition_finale.get(trs.get(key)).size()){
-                if (estFinale(this, (String) partition_finale.get(trs.get(key)).get(y))){
-                    nnfi = false;
+        HashMap<String, String> states = new HashMap<String, String>();
+        for (String key : partition_finale.keySet()){
+            states.put(key, partition_finale.get(key).toString());
+            boolean nnFinale = true;
+            int i=0;
+            while ( i < partition_finale.get(key).size() && nnFinale){
+                if (!estFinale(this, (String) partition_finale.get(key).get(i))){
+                    nnFinale = false;
                 }
-                y++;
+                i++;
             }
-            int s =0;
-            boolean deb = false;
-            while (s < partition_finale.get(trs.get(key)).size()){
-                if(this.getEtatDepart().getNom().equals((String) partition_finale.get(trs.get(key)).get(s))){
-                    deb = true;
-                }
-                s++;
-            }
-            etat.setNom(partition_finale.get(trs.get(key)).toString());
-            etat.setTransitions(t);
-            if (nnfi){
-                etfs.add(etat);
-            }
-            etats2.add(etat);
-            etatD = etat;
+            String nom = partition_finale.get(key).toString();
+            System.out.println(nom+ " " + nnFinale);
+            Etats etats = new Etats();
+            etats.setNom(nom) ;
+
         }
-
-        Automates automate = new Automates();
-        automate.setAlphabet(this.getAlphabet());
-        automate.setEtats(etats2);
-        automate.setEtatDepart(etatD);
-        automate.setEtatsArrivee(etfs);
+        return this;
 
 
-        return automate;
 
     }
 

@@ -1,0 +1,6 @@
+digraph automate {
+	rankdir=LR;
+	size="8,5";
+    node  [shape = circle];
+    "12"  [style = "filled",color ="gray"];
+}

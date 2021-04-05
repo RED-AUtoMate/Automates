@@ -45,7 +45,7 @@ public class Images {
             List<Etats> etatFinal = automates.getEtatsArrivee();
             // Création du fichier .gv
             BufferedWriter b = new BufferedWriter(new FileWriter(path));
-            System.out.println("Fichier cree avec succes");
+            System.out.println("Fichier " + path + " crée avec succes.");
             b.write(header);
             // Generer la ligne pour les etats initials
             b.write("\r\n" + "    " + this.entreGuillemets(etatInitial) + " " + attributsEtatInitial);
@@ -75,10 +75,18 @@ public class Images {
         }
     }
 
+    /**
+     * @param mot : Le mot auquel on doit mettre des guillemets
+     * @brief : Fonction qui met des guillemets autour d'un mot
+     */
     public String entreGuillemets(String mot) {
         return ("\"" + mot + "\"");
     }
 
+    /**
+     * @param automates : L'automate à partir duquel on crée le sujet de l'etudiant
+     * @brief : Fonction qui crée un fichier TeX à partir d'un automate donné
+     */
     public void latexCreate(Automates automates) throws IOException {
         Images images = new Images();
         JsonDeal jsonDeal = new JsonDeal();
@@ -95,18 +103,34 @@ public class Images {
         commandExec.generateImageCommand("automateInitial");
 
 
+        // Create the JSONObject for the sychro automate
+        System.out.println("synch");
+        object = jsonDeal.automate_to_json(automates.synch3());
+        System.out.println(object);
+        // Create the .json for synchro automate
+        jsonDeal.jsonToJsonFile(object, "automateSynchro");
+        // Create synchro Automate .dot file
+        images.jsonToDot("automateSynchro.json", "automateSynchro.dot");
+        // Create synchro automate .png
+        commandExec.generateImageCommand("automateSynchro");
+
         // Create the JSONObject for the determinist automate
         object = jsonDeal.automate_to_json(automates.determiniser());
         // Create the .json for determinist automate
         jsonDeal.jsonToJsonFile(object, "automateDeterministe");
+        System.out.println(object);
         // Create determinist Automate .dot file
         images.jsonToDot("automateDeterministe.json", "automateDeterministe.dot");
         // Create determinist automate .png
         commandExec.generateImageCommand("automateDeterministe");
 
 
+
+
         // Create the JSONObject for the minimal automate
         object = jsonDeal.automate_to_json(automates.minimiser());
+        System.out.println("mi");
+        System.out.println(object);
         // Create the .json for minimal automate
         jsonDeal.jsonToJsonFile(object, "automateMinimal");
         // Create minimal Automate .dot file
@@ -114,15 +138,6 @@ public class Images {
         // Create minimal automate .png
         commandExec.generateImageCommand("automateMinimal");
 
-
-        // Create the JSONObject for the sychro automate
-        object = jsonDeal.automate_to_json(automates.synch3());
-        // Create the .json for synchro automate
-        jsonDeal.jsonToJsonFile(object, "automateSynchro");
-        // Create synchro Automate .dot file
-        images.jsonToDot("automateSynchro.json", "automateSynchro.dot");
-        // Create synchro automate .png
-        commandExec.generateImageCommand("automateSynchro");
 
 
         // Replace the picture into the TeX file

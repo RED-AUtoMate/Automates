@@ -19,6 +19,71 @@ public class JsonDeal {
     d'etats, le nombre de transitions, une liste d'alphabet
      */
 
+    public Automates random(ArrayList<String> alphabet, int nb_etats, int nb_max_trans_etat){
+        Automates automates = new Automates();
+        Random random = new Random();
+
+        ArrayList<Etats> etats = new ArrayList<>();
+        ArrayList<Etats> etats_finaux = new ArrayList<>();
+
+        /* Noms et nbr de transitions pour chaque etat */
+        for (int i = 0; i < nb_etats; i++){
+            Etats etat = new Etats();
+
+            int nTrans = 0;
+            nTrans = random.nextInt(nb_max_trans_etat+1);
+            boolean est_f = false;
+            if (nTrans == nb_max_trans_etat){
+                nTrans -= 1;
+                est_f = true;
+            }
+            if (i == 0){
+                while (nTrans == 0){
+                    nTrans = random.nextInt(nb_max_trans_etat);
+                }
+            }
+
+            /* Transitions pour chaque etat */
+            ArrayList transitions = new ArrayList();
+            System.out.println("i "+i+" "+nTrans);
+            for (int j = 0; j < nTrans; j++){
+                ArrayList<String> config = new ArrayList<>();
+
+                /* Differentes configurations */
+                int ind_alpha = random.nextInt(alphabet.size()+1);
+                String alpha;
+                if (ind_alpha == alphabet.size()){
+                    alpha = "eps";
+                }else {
+                    alpha = alphabet.get(ind_alpha);
+                }
+                System.out.println(alpha);
+
+                /* configuration */
+                int dest = random.nextInt(nb_etats);
+                config.add(String.valueOf(dest));
+                config.add(alpha);
+                transitions.add(config);
+
+            }
+
+            etat.setNom(String.valueOf(i));
+            etat.setTransitions(transitions);
+            etats.add(etat);
+            if (est_f){
+                etats_finaux.add(etat);
+            }
+        }
+        automates.setEtatDepart(etats.get(0));
+        automates.setEtats(etats);
+        automates.setEtatsArrivee(etats_finaux);
+        automates.setAlphabet(alphabet);
+
+
+        return automates;
+    }
+
+
     public Automates random_aut(int nb_etats, int nb_transition, List<String> alphabet) {
         Random random = new Random();
 
@@ -26,7 +91,7 @@ public class JsonDeal {
         Obtenir une liste contenant nb_etats etats numerotés de 0 jusque a nb_etats-1 [0,1,2] si n = 3
          */
         ArrayList<String> etats = new ArrayList<String>();
-        for (int i = 0; i < nb_etats; i++) {
+        for (int i = nb_etats; i > 0; i--) {
             etats.add(String.valueOf(i));
         }
 
@@ -107,6 +172,53 @@ public class JsonDeal {
             finale.add(automates.getEtats().get(i));
         }
         automates.setEtatsArrivee(finale);
+
+        /* etat inaccessibles => supp */
+
+        for (int i = 0; i < automates.getEtats().size(); i++){
+            Etats et = automates.getEtats().get(i);
+            if (!(automates.estFinale(automates, et.getNom())) && et.getTransitions() == null){
+                automates.getEtats().remove(et);
+            }
+        }
+
+        ArrayList<String> etats_acce = new ArrayList<String>();
+        for (int i = 0; i < automates.getEtats().size(); i++){
+
+            String nom = automates.getEtats().get(i).getNom();
+            for (int j = 0; j < automates.getEtats().size(); j++){
+
+                ArrayList transitionss = automates.getEtats().get(j).getTransitions();
+                for ( int k = 0; k < transitionss.size(); k++){
+
+                    ArrayList conf = (ArrayList) transitionss.get(k);
+                    if (conf.get(0).equals(nom)){
+                        etats_acce.add(nom);
+                    }
+                }
+            }
+            if (automates.getEtats().get(i).getNom().equals(automates.getEtatDepart().getNom())){
+                etats_acce.add(automates.getEtats().get(i).getNom());
+            }
+        }
+
+        /* definition des nouveaux etats */
+        ArrayList<Etats> etts = new ArrayList<Etats>();
+        for (int i = 0; i < automates.getEtats().size(); i++){
+            if (etats_acce.contains(automates.getEtats().get(i).getNom())){
+                etts.add(automates.getEtats().get(i));
+            }
+        }
+
+        automates.setEtats(etts);
+
+        /* etats non productif => supp */
+
+        if (automates.getEtatDepart().getTransitions() == null){
+            return null;
+        }
+
+
 
         return automates;
 
@@ -206,6 +318,7 @@ public class JsonDeal {
         String jsonFileContent = object.toJSONString();
         try {
             BufferedWriter b = new BufferedWriter(new FileWriter(jsonFileName + ".json"));
+            System.out.println("Fichier " + jsonFileName + ".json crée avec succés.");
             b.write("\r\n" + jsonFileContent);
             b.close();
         } catch (IOException e) {
@@ -250,35 +363,5 @@ public class JsonDeal {
         return object;
     }
 
-
-    public static void main(String[] args) {
-        JsonDeal jsonDeal = new JsonDeal();
-
-
-        Automates a = jsonDeal.json_to_automate("test.json");
-        String sss = "(a+bb)*(b+aa)*";
-        String b = "";
-        b += sss.charAt(0);
-        for (int i = 1; i < sss.length(); i++) {
-            if (sss.charAt(i) == 'b' && sss.charAt(i - 1) == 'b' || sss.charAt(i) == 'a' && sss.charAt(i - 1) == 'a' || sss.charAt(i) == '(' && sss.charAt(i - 1) == ')' || sss.charAt(i) == '(' && sss.charAt(i - 1) == '*') {
-                b += '.';
-                b += sss.charAt(i);
-            } else {
-                b += sss.charAt(i);
-            }
-        }
-        System.out.println(b);
-        String s = "(b.(a.b)*+(b.a)*.b)";
-        String[] ss = {"a", "b", "c"};
-
-        Automates bb = a.thompson(s, ss);
-
-        System.out.println(jsonDeal.automate_to_json(bb));
-        Images i = new Images();
-        i.jsonToDot("test.json", "aa22.dot");
-        bb.synch3();
-
-
-    }
 
 }

@@ -103,17 +103,6 @@ public class Images {
         commandExec.generateImageCommand("automateInitial");
 
 
-        // Create the JSONObject for the determinist automate
-        object = jsonDeal.automate_to_json(automates.determiniser());
-        // Create the .json for determinist automate
-        jsonDeal.jsonToJsonFile(object, "automateDeterministe");
-        // Create determinist Automate .dot file
-        images.jsonToDot("automateDeterministe.json", "automateDeterministe.dot");
-        // Create determinist automate .png
-        commandExec.generateImageCommand("automateDeterministe");
-
-
-
         // Create the JSONObject for the sychro automate
         System.out.println("synch");
         object = jsonDeal.automate_to_json(automates.synch3());
@@ -125,12 +114,21 @@ public class Images {
         // Create synchro automate .png
         commandExec.generateImageCommand("automateSynchro");
 
+        // Create the JSONObject for the determinist automate
+        object = jsonDeal.automate_to_json(automates.determiniser());
+        // Create the .json for determinist automate
+        jsonDeal.jsonToJsonFile(object, "automateDeterministe");
+        System.out.println(object);
+        // Create determinist Automate .dot file
+        images.jsonToDot("automateDeterministe.json", "automateDeterministe.dot");
+        // Create determinist automate .png
+        commandExec.generateImageCommand("automateDeterministe");
+
+
 
 
         // Create the JSONObject for the minimal automate
-        Automates at = automates.synch3();
-        at = at.minimiser();
-        object = jsonDeal.automate_to_json(at);
+        object = jsonDeal.automate_to_json(automates.minimiser());
         System.out.println("mi");
         System.out.println(object);
         // Create the .json for minimal automate

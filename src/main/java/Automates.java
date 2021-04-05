@@ -504,39 +504,24 @@ public class Automates {
 
         while (file_etat_cree.size()!=0){
             List<String> etats_preced = file_etat_cree.poll();
-//            System.out.println(etats_preced);
-//            file_etat_cree.remove(etats_preced);
-//            System.out.println(file_etat_cree);
             Etats etat = new Etats();
             etat.setTransitions(new ArrayList());
             // concatener les etats groupés : à définir
-//            etat.setNom(etats_preced.toString());
             etat.setNom(listToString(etats_preced));
             // contient les colonnes du tableau
             HashMap<String,List> hash = new HashMap<String,List>();
-
             for(int i =0;i<etats_preced.size();i++){
-                // on pourrait declarer l ici
-                // ICI on pourrait faire un parcours des successeurs de etats_preced pour les ajouter à hash
-                // on pourrait meme remplacer la boucle suivante
-                // sans oublier de remplacer les alphabet.get/size par les vriables adéquates
-                for (int j=0;j<this.alphabet.size();j++) {
+               for (int j=0;j<this.alphabet.size();j++) {
                     Etats e = this.getEtats().get(get_etat(this, etats_preced.get(i)));
-//                    System.out.println(e.getNom());
                     for (int k = 0; k < e.getTransitions().size(); k++) {
-                        //verifier cette ligne la condition est inutile : on ajoute tous les etats sans distinction
-                        // on devrait plutot verifier si ils ont alphabet.get(j) comme successeur
                         ArrayList al = (ArrayList) e.getTransitions().get(k);
                         if (al.get(1).equals(this.alphabet.get(j))) {
                             if (hash.containsKey(this.alphabet.get(j))) {
                                 if (!hash.get(this.alphabet.get(j)).contains(((ArrayList<?>) e.getTransitions().get(k)).get(0))){
-                                    // l'idée est là
                                     List l = (List) hash.get(this.alphabet.get(j));
-                                    // pourquoi etats_preced alors qu'en bas on met un get(i)???
                                     l.add(((ArrayList<?>) e.getTransitions().get(k)).get(0));
                                     hash.put(this.alphabet.get(j), l);}
                             } else {
-                                //ici ce sera le nom de l'etat i qui nous sera utile
                                 List l = new ArrayList();
                                 l.add(((ArrayList<?>) e.getTransitions().get(k)).get(0));
                                 hash.put(this.alphabet.get(j), l);
@@ -545,28 +530,15 @@ public class Automates {
                     }
                 }
             }
-//            System.out.println(hash);
-            // à revoir
-            // le fait que c'est à l'exterieur de la boucle peut poser des problemes de reinnitialisation
             ArrayList hashToList = new ArrayList();
             for(String key: hash.keySet()){
-
-
                 List l = hash.get(key);
                 Collections.sort(l);
-
-
                 ArrayList config = new ArrayList();
-                // je pense qu'ici on devrait ajouter la key au lieu de get(key) PAS SÛR
-//                config.add(0,hash.get(key).toString());
                 config.add(0,listToString(l));
-//                config.add(1,hash.get(key));
                 config.add(1,key);
-//                System.out.println(config.get(0).getClass());
                 hashToList.add(config);
                 etat.setTransitions(hashToList);
-//                System.out.println(etat.getNom()+" "+etat.getTransitions() +file_etat_cree.size());
-//                if (!etatsList.contains(etat)) {
                 boolean trouve = false;
                 int s=0;
                 while(!trouve && s < etatsList.size()){
@@ -577,80 +549,37 @@ public class Automates {
                 }
                 if(!trouve || s>=etatsList.size()) {
                     etatsList.add(etat);
-//                if(!etat.getTransitions().contains(config)) {
-//                    file_etat_cree.add(hash.get(key));
-//                    System.out.println("hash = " + hash.get(key));
-//                    List l = hash.get(key);
-//                    Collections.sort(l);
-//                    System.out.println("l = "+l);
                     file_etat_cree.add(l);
-//                }
-//                }
                 }
             }
         }
-//        System.out.println(etatsList);
-//        for(Etats e : etatsList){
-//            String s = e.getNom().substring(1,e.getNom().length()-1);
-//            List<String> myList = new ArrayList<String>(Arrays.asList(s.split(",")));
-//            Collections.sort(myList);
-////            System.out.println(myList);
-//            e.setNom(myList.toString());
-//        }
-        List<String> q = new ArrayList<String>();
-//        for(Etats e : etatsList){
-//            if(!q.contains(e.getNom()))
-//            q.add(e.getNom());
-//            else
-//                etatsList.remove(e);
-//        }
 
+        List<String> q = new ArrayList<String>();
         List<Etats> new_fin = new ArrayList<Etats>();
         Iterator<Etats> it = etatsList.iterator();
         while( it.hasNext() ) {
-
             Etats c = it.next();
-
             String s = c.getNom().substring(1,c.getNom().length()-1);
             List<String> myList = new ArrayList<String>(Arrays.asList(s.split(",")));
-
             // l'idée serait d'ordonner c ici
             Collections.sort(myList);
-//            System.out.println(myList);
             c.setNom(listToString(myList));
-//            System.out.println("c= "+c.getNom());
-//            for (int b =0;b<c.getTransitions().size();b++){
-//                List tr = (List)c.getTransitions().get(b);
-//                List<String> ml = new ArrayList<String>(Arrays.asList(((String)tr.get(0)).split(",")));
-//                Collections.sort(ml);
-////                ((List) c.getTransitions().get(b)).get(0) = listToString(ml);
-//                List l = new ArrayList();
-//                l.add(listToString(ml));
-//                l.add(((List<?>) c.getTransitions().get(b)).get(1));
-//                ((List) c.getTransitions().get(b)).set(b,l);
-//
-//            }
-//            System.out.println("s="+s);
-            if( q.contains(c.getNom()) ) { // une condition qui indique que l'on doit retirer l'élément
+            if( q.contains(c.getNom()) ) {
+                // une condition qui indique que l'on doit retirer l'élément
                 it.remove();
             }
             else {
                 q.add(c.getNom());
             }
-
         }
-        System.out.println("q="+q);
-
         it = etatsList.iterator();
         while( it.hasNext() ) {
-
             Etats c = it.next();
             String s = c.getNom().substring(1,c.getNom().length()-1);
             List<String> myList = new ArrayList<String>(Arrays.asList(s.split(",")));
             loop:
             for (String p : myList) {
                 int i = get_etat(this, p.trim());
-//                System.out.println(i);
                 for (int o = 0; o < this.etatsArrivee.size(); o++) {
                     if (etatsArrivee.get(o).getNom().equals(p.trim())) {
                         new_fin.add(c);
@@ -659,18 +588,10 @@ public class Automates {
                 }
             }
         }
-        System.out.println("etatlist " + etatsList);
-
-
         this.etatsArrivee = new_fin;
-
-//        Set<Etats> mySet = new HashSet<Etats>(etatsList);
-//        System.out.println(etatsList);
-//        for (int j =0;j<etatsArrivee.size();j++){
-//        System.out.println(etatsArrivee.get(j).getNom()+" 1");}
         this.setEtats(new ArrayList<Etats>(etatsList));
-//        System.out.println(etatDepart.getNom()+" 3");
-//        this.setEtats(new ArrayList<Etats>(mySet));
+        this.setEtatDepart(this.getEtats().get(0));
+
         return this;
     }
 

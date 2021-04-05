@@ -4,13 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="fnal3">
+    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="normalement">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateDeterministe.dot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateDeterministe.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateDeterministe.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateInitial.dot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateInitial.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateInitial.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateMinimal.dot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateMinimal.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateMinimal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateSynchro.dot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateSynchro.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/automateSynchro.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/azerty.dot" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Automates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Automates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Images.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/JsonDeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JsonDeal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Automates.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Automates.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Images.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Images.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/JsonDeal.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JsonDeal.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/test.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.dot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.tex" beforeDir="false" afterPath="$PROJECT_DIR$/test.tex" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +106,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Automates" />
       <method v="2">
@@ -112,15 +134,14 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.Main" />
       <item itemvalue="Application.JsonTpGv" />
       <item itemvalue="Application.TraitementTransitions" />
       <item itemvalue="Application.JsonDeal" />
       <item itemvalue="Application.Images" />
-      <item itemvalue="Application.Main" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Images" />
         <item itemvalue="Application.JsonDeal" />
         <item itemvalue="Application.TraitementTransitions" />
@@ -204,7 +225,21 @@
       <option name="project" value="LOCAL" />
       <updated>1617595537175</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="normalement">
+      <created>1617600857288</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1617600857288</updated>
+    </task>
+    <task id="LOCAL-00010" summary="normalement">
+      <created>1617600887153</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1617600887153</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -258,7 +293,8 @@
     <MESSAGE value="finale" />
     <MESSAGE value="fnal2" />
     <MESSAGE value="fnal3" />
-    <option name="LAST_COMMIT_MESSAGE" value="fnal3" />
+    <MESSAGE value="normalement" />
+    <option name="LAST_COMMIT_MESSAGE" value="normalement" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

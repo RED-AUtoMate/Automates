@@ -1,24 +1,19 @@
-import com.itextpdf.text.DocumentException;
-
 import java.io.IOException;
-import java.net.URISyntaxException;
+
+
+
 
 public class Main {
-    public static void main(String[] args) throws IOException, DocumentException, URISyntaxException {
-        Automates automates = new Automates();
+    public static void main(String[] args) throws IOException{
+        Images images = new Images();
         JsonDeal jsonDeal = new JsonDeal();
-        String expr = "(a+bb)*(b+aa)*";
-        String[] alphebet = {"a","b"};
-        automates = automates.thompson(expr, alphebet);
-        automates.synch3();
-        System.out.println(jsonDeal.automate_to_json(automates));
-        automates.determiniser();
-        System.out.println(jsonDeal.automate_to_json(automates));
-        automates = automates.minimiser();
-        System.out.println(jsonDeal.automate_to_json(automates));
+        Automates automates = new Automates();
+        String[] al = {"a","b"};
+        Automates th = automates.thompson("b(ab)*+(ba)*b", al);
+        jsonDeal.jsonToJsonFile(jsonDeal.automate_to_json(th),"test");
+        images.jsonToDot("test.json", "test.dot");
+        images.latexCreate(th);
 
-        Images a = new Images();
-        a.jsonToDot("test.json", "azerty.dot");
 
     }
 }

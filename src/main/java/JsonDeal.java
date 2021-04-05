@@ -26,7 +26,7 @@ public class JsonDeal {
         Obtenir une liste contenant nb_etats etats numerotés de 0 jusque a nb_etats-1 [0,1,2] si n = 3
          */
         ArrayList<String> etats = new ArrayList<String>();
-        for (int i = 0; i < nb_etats; i++) {
+        for (int i = nb_etats; i > 0; i--) {
             etats.add(String.valueOf(i));
         }
 
@@ -107,6 +107,53 @@ public class JsonDeal {
             finale.add(automates.getEtats().get(i));
         }
         automates.setEtatsArrivee(finale);
+
+        /* etat inaccessibles => supp */
+
+        for (int i = 0; i < automates.getEtats().size(); i++){
+            Etats et = automates.getEtats().get(i);
+            if (!(automates.estFinale(automates, et.getNom())) && et.getTransitions() == null){
+                automates.getEtats().remove(et);
+            }
+        }
+
+        ArrayList<String> etats_acce = new ArrayList<String>();
+        for (int i = 0; i < automates.getEtats().size(); i++){
+
+            String nom = automates.getEtats().get(i).getNom();
+            for (int j = 0; j < automates.getEtats().size(); j++){
+
+                ArrayList transitionss = automates.getEtats().get(j).getTransitions();
+                for ( int k = 0; k < transitionss.size(); k++){
+
+                    ArrayList conf = (ArrayList) transitionss.get(k);
+                    if (conf.get(0).equals(nom)){
+                        etats_acce.add(nom);
+                    }
+                }
+            }
+            if (automates.getEtats().get(i).getNom().equals(automates.getEtatDepart().getNom())){
+                etats_acce.add(automates.getEtats().get(i).getNom());
+            }
+        }
+
+        /* definition des nouveaux etats */
+        ArrayList<Etats> etts = new ArrayList<Etats>();
+        for (int i = 0; i < automates.getEtats().size(); i++){
+            if (etats_acce.contains(automates.getEtats().get(i).getNom())){
+                etts.add(automates.getEtats().get(i));
+            }
+        }
+
+        automates.setEtats(etts);
+
+        /* etats non productif => supp */
+
+        if (automates.getEtatDepart().getTransitions() == null){
+            return null;
+        }
+
+
 
         return automates;
 

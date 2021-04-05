@@ -4,24 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="finale">
+    <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="fnal2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateDeterministe.dot" beforeDir="false" afterPath="$PROJECT_DIR$/automateDeterministe.dot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateDeterministe.json" beforeDir="false" afterPath="$PROJECT_DIR$/automateDeterministe.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateDeterministe.png" beforeDir="false" afterPath="$PROJECT_DIR$/automateDeterministe.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateInitial.dot" beforeDir="false" afterPath="$PROJECT_DIR$/automateInitial.dot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateInitial.json" beforeDir="false" afterPath="$PROJECT_DIR$/automateInitial.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateInitial.png" beforeDir="false" afterPath="$PROJECT_DIR$/automateInitial.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateMinimal.dot" beforeDir="false" afterPath="$PROJECT_DIR$/automateMinimal.dot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateMinimal.json" beforeDir="false" afterPath="$PROJECT_DIR$/automateMinimal.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateMinimal.png" beforeDir="false" afterPath="$PROJECT_DIR$/automateMinimal.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateSynchro.dot" beforeDir="false" afterPath="$PROJECT_DIR$/automateSynchro.dot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateSynchro.json" beforeDir="false" afterPath="$PROJECT_DIR$/automateSynchro.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateSynchro.png" beforeDir="false" afterPath="$PROJECT_DIR$/automateSynchro.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Automates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Automates.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Automates.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Automates.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.dot" beforeDir="false" afterPath="$PROJECT_DIR$/test.dot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/test.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -202,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617545267721</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="fnal2">
+      <created>1617584091602</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1617584091602</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -254,7 +249,8 @@
     <MESSAGE value="0.1" />
     <MESSAGE value="Ajout de l'algorithme de synchronisation" />
     <MESSAGE value="finale" />
-    <option name="LAST_COMMIT_MESSAGE" value="finale" />
+    <MESSAGE value="fnal2" />
+    <option name="LAST_COMMIT_MESSAGE" value="fnal2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -264,9 +260,6 @@
           <option name="timeStamp" value="11" />
         </breakpoint>
       </breakpoints>
-      <default-breakpoints>
-        <breakpoint enabled="true" type="java-exception" />
-      </default-breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">

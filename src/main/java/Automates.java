@@ -3,7 +3,9 @@
 // (powered by FernFlower decompiler)
 //
 
-import com.groupdocs.conversion.internal.a.a.Au;
+
+import com.groupdocs.conversion.internal.a.a.Ar;
+import org.a.a.S;
 
 import java.util.*;
 
@@ -86,10 +88,26 @@ public class Automates {
     * construire l'automate de thompson associe à l auperation et finalement l'empiler
     * on repete jusqu'a avoir la parenthese ouvrante*/
 
-    public Automates thompson(String expression, String[] alpha) { Stack<Automates> pileA = new Stack();
+    public Automates thompson(String expression, String[] alpha) {
+        Stack<Automates> pileA = new Stack();
         Stack<Character> pileM = new Stack();
+        List<String> ab =  Arrays.asList(alpha);
+        expression = "("+expression+")";
+        String e ="";
+        e+=expression.charAt(0);
+        for (int i = 1; i < expression.length(); i++){
+            if (ab.contains(String.valueOf(expression.charAt(i))) || expression.charAt(i) == '('){
+                if(ab.contains(String.valueOf(expression.charAt(i-1))) || expression.charAt(i-1) == ')' || expression.charAt(i-1) == '*'){
+                    e+=".";
+                }
+            }
+            e+= expression.charAt(i);
+        }
+        System.out.println(e);
+        expression = e;
         int etati = 0;
 
+        int l = 0;
 
         for(int i = 0; i < expression.length(); ++i) {
             Automates ap;
@@ -139,7 +157,6 @@ public class Automates {
                 while (pileM.peek() == '.'){
                     ap = new Automates();
                     char exp = (Character)pileM.pop();
-                    System.out.println("exp "+exp);
                     Automates ap2 = (Automates)pileA.pop();
                     Automates ap1 = (Automates)pileA.pop();
                     ap.setAlphabet(ap2.getAlphabet());
@@ -167,11 +184,12 @@ public class Automates {
                 System.out.println("+");
             }
 
-            ArrayList config1;
-            ArrayList config2;
-            ArrayList trF;
-            String ed1;
+
             if (expression.charAt(i) == '*') {
+                ArrayList config1;
+                ArrayList config2;
+                ArrayList trF;
+                String ed1;
                 System.out.println("*");
                 ap = (Automates)pileA.pop();
                 Automates a = new Automates();
@@ -223,11 +241,15 @@ public class Automates {
             }
 
             if (expression.charAt(i) == ')') {
+                System.out.println(pileM);
                 System.out.println(")");
                 while (pileM.peek() != '('){
+                    ArrayList config1;
+                    ArrayList config2;
+                    ArrayList trF;
+                    String ed1;
                     ap = new Automates();
                     char exp = (Character)pileM.pop();
-                    System.out.println("exp "+exp);
                     Automates ap2 = (Automates)pileA.pop();
                     Automates ap1 = (Automates)pileA.pop();
                     ed1 = ap1.getEtatDepart().getNom();
@@ -246,6 +268,7 @@ public class Automates {
                         apEtats.add(ap2.getEtats().get(j));
                     }
 
+                    ap.setAlphabet(Arrays.asList(alpha));
                     ap.setEtats(apEtats);
                     switch(exp) {
                         case '+':
@@ -291,13 +314,13 @@ public class Automates {
                             ap.setEtatDepart(ap1.getEtatDepart());
                             ap.setEtatsArrivee(ap2.getEtatsArrivee());
                             pileA.push(ap);
+                            break;
                     }
 
                 }
                 pileM.pop();
             }
         }
-
         return (Automates)pileA.pop();
     }
 
@@ -318,27 +341,31 @@ public class Automates {
         List<Etats> etats = this.getEtats();
 
         /* etape1 : calcule des eps-transitivitées */
-        for (int i = 0; i < etats.size(); i++){
-            Etats etat0 = etats.get(i);
-            for (int j = 0; j < etat0.getTransitions().size(); j++){
-                ArrayList config0 = (ArrayList) etat0.getTransitions().get(j);
-                if (config0.get(1).equals("eps")){
-                    int et = this.get_etat(this, config0.get(0).toString());
 
-                    for (int s = 0; s < this.getEtatsArrivee().size(); s++){
-                        if (this.getEtatsArrivee().get(s).getNom().equals(this.getEtats().get(et).getNom())){
-                            this.getEtatsArrivee().add(etat0);
-                        }
-                    }
-                    for (int k = 0; k < etats.get(et).getTransitions().size(); k++){
-                        ArrayList config1 = (ArrayList) etats.get(et).getTransitions().get(k);
-                        if (config1.get(1).equals("eps")){
-                            etat0.getTransitions().add(config1);
+        for (int i = 0; i < etats.size(); i++){
+            for (int j = 0; j < etats.size(); j++){
+                for (int s = 0; s <etats.get(j).getTransitions().size(); s++){
+                    ArrayList<String> st = (ArrayList<String>) etats.get(j).getTransitions().get(s);
+                    if (st.get(1).equals("eps") && st.get(0).equals(etats.get(i).getNom())){
+                        for (int l = 0; l < etats.get(i).getTransitions().size(); l++){
+                            ArrayList st1 = (ArrayList) etats.get(i).getTransitions().get(l);
+                            if (estFinale(this,etats.get(j).getNom())){
+                                this.getEtatsArrivee().add(etats.get(j));
+                            }
+
+                            if (st1.get(1).equals("eps")){
+                                etats.get(j).getTransitions().add(st1);
+                                etats.get(j).getTransitions().remove(s);
+                            }else {
+                                etats.get(j).getTransitions().add(st1);
+                            }
                         }
                     }
                 }
             }
         }
+
+
 
         /* etape 2 calcule des transitivités sans epsilons */
         for (int i = 0; i < etats.size(); i++){
@@ -790,7 +817,6 @@ public class Automates {
 
         /* pour chaque etat a l indice i on marque la partition auquel il appartient */
         ArrayList<String> partitions = new ArrayList<String>();
-        this.getAlphabet().add("eps");
         ArrayList<String> noms = new ArrayList<String>();
         for (int i = 0; i < this.getEtats().size(); i++){
             noms.add(this.getEtats().get(i).getNom());
@@ -800,8 +826,6 @@ public class Automates {
                 partitions.add("1");
             }
         }
-        System.out.println(noms);
-        System.out.println(partitions);
 
         ArrayList classes = new ArrayList();
         HashMap<ArrayList, String> trs= new HashMap<ArrayList, String>();
@@ -847,8 +871,6 @@ public class Automates {
             trs = t_partition;
         }
 
-        System.out.println(classes);
-        System.out.println(trs);
 
 
         HashMap<String, ArrayList> partition_finale = new HashMap<String, ArrayList>();
@@ -862,7 +884,6 @@ public class Automates {
                 partition_finale.put(part, a);
             }
         }
-        System.out.println(partition_finale);
 
         ArrayList<Etats> etats2 = new ArrayList<Etats>();
         ArrayList<Etats> etfs = new ArrayList<Etats>();
@@ -873,8 +894,6 @@ public class Automates {
                 String a = this.alphabet.get(q-1);
                 ArrayList<String > con = new ArrayList<String>();
                 String tD = (String) key.get(q);
-                System.out.println(tD +" tD");
-                System.out.println(partition_finale.get(tD) +" part f");
                 if(partition_finale.get(tD) != null){
                     con.add(partition_finale.get(tD).toString());
                     con.add(alphabet.get(q-1));

@@ -1,3 +1,3 @@
 # Automates
 Projet d'integration
-Encadrant : Irene Briquel
+Encadrant : Irenée Briquel

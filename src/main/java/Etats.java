@@ -4,11 +4,12 @@ import java.util.List;
 public class Etats {
     private String nom;
 
-    private ArrayList transitions;//[ [0,"a"],[1,"b"] ]getliste.getitem.getobje.getlist.getitem
+    private ArrayList transitions;
 
-    public Etats(){
+    public Etats() {
 
     }
+
     public String getNom() {
         return nom;
     }
@@ -25,5 +26,3 @@ public class Etats {
         this.transitions = transitions;
     }
 }
-// enlever les classes etatscompose et abstractetat ne laisser que celle la
-// laisser le nom en string on fera les traitement plus tard

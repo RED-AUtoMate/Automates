@@ -125,8 +125,6 @@ public class Images {
         commandExec.generateImageCommand("automateDeterministe");
 
 
-
-
         // Create the JSONObject for the minimal automate
         object = jsonDeal.automate_to_json(automates.minimiser());
         System.out.println("mi");
@@ -137,7 +135,6 @@ public class Images {
         images.jsonToDot("automateMinimal.json", "automateMinimal.dot");
         // Create minimal automate .png
         commandExec.generateImageCommand("automateMinimal");
-
 
 
         // Replace the picture into the TeX file

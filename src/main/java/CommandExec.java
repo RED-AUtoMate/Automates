@@ -1,9 +1,6 @@
 import java.io.IOException;
 
 public class CommandExec {
-    int iExitValue;
-    String sCommandString;
-
     /**
      * @param fileName the name of the dot file we want to convert to png
      * @brief a function that creates an image from an existing .dot file
@@ -17,12 +14,12 @@ public class CommandExec {
     }
 
     /**
-     * @param texFileName the name of the .tex file
      * @brief a function that creates a pdf from a given .tex file
      */
-    public void generatePdfCommand(String texFileName) {
+    public void generatePdfCommand() {
         try {
-            Process process = Runtime.getRuntime().exec("pdflatex " + texFileName + ".tex");
+            Process process = Runtime.getRuntime().exec("pdflatex -interaction scrollmode test.tex");
+            System.out.println("Pdf generé avec succées.");
         } catch (IOException e) {
             e.printStackTrace();
         }

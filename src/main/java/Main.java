@@ -11,7 +11,7 @@ public class Main {
         Automates automates = new Automates();
         String nomPdf;
         ArrayList<String> alphabet =new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             alphabet.add("a");
             alphabet.add("b");
             alphabet.add("c");

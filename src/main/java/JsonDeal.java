@@ -15,149 +15,97 @@ public class JsonDeal {
 
 
     /**
-     * @param alphabet      the alphabet that we want to have in our random automate
-     * @param nb_etats      the number of etats that we want to have
-     * @param nb_transition the number of transitions that we need in our radnom automate
      * @return Automate
      * @brief function that creates a random automate
      */
-    public Automates random_aut(int nb_etats, int nb_transition, List<String> alphabet) {
-        Random random = new Random();
+    public Automates random(ArrayList<String> alphabet, int nb_etats, int nb_max_trans_etat, int nb_trs) {
+        Automates nv = new Automates();
 
-        /*
-        Obtenir une liste contenant nb_etats etats numerotés de 0 jusque a nb_etats-1 [0,1,2] si n = 3
-         */
-        ArrayList<String> etats = new ArrayList<String>();
-        for (int i = nb_etats; i > 0; i--) {
-            etats.add(String.valueOf(i));
-        }
+        do {
+            Automates automates = new Automates();
+            Random random = new Random();
 
+            ArrayList<Etats> etats = new ArrayList<Etats>();
+            ArrayList<Etats> etats_finaux = new ArrayList<Etats>();
 
-        /*
-        generation aleatoire de transition, une transition est un triplet etat_depart, mot lu, etat_arrive
-        on cree une map qui va avoir comme kle des indices d'etats et comme valeur les differentes
-        configuration que cet etat peut suivre {1: [[0, a], [1,b]],
-                                                2: [[2,a],[2,b]]
-                                                }
-         */
-        HashMap<String, ArrayList<ArrayList<String>>> transitions = new HashMap<String, ArrayList<ArrayList<String>>>();
-        for (int j = 0; j < nb_transition; j++) {
-            /*
-            le treplet etat_depart, mot, etat_arrive est genere à chaque eteration de la boucle,
-            le mot et l'etat_arrive forment une configuration represente par "transition" [0, a]
-             */
-            String depart = String.valueOf(random.nextInt(nb_etats));
-            String destination = String.valueOf(random.nextInt(nb_etats));
-            String mot = alphabet.get(random.nextInt(alphabet.size()));
-            ArrayList<String> transition = new ArrayList<String>();
-            transition.add(0, destination);
-            transition.add(1, mot);
+            /* Noms et nbr de transitions pour chaque etat */
+            for (int i = 0; i < nb_etats; i++) {
+                Etats etat = new Etats();
 
-            /*
-            on assure que chaque etat de depart ne va pas se repeter en utilisant une map qui va
-            contenir l etat_depart comme cle, une liste de transition (liste ) comme valeur
-                                    1:[[0,a], [0,b]]
-             */
-            if (transitions.containsKey(depart)) {
-                ArrayList<ArrayList<String>> arrayList = transitions.get(depart);
-                arrayList.add(transition);
-                transitions.put(depart, arrayList);
-            } else {
-                ArrayList<ArrayList<String>> config = new ArrayList<ArrayList<String>>();
-                config.add(transition);
-                transitions.put(depart, config);
-            }
-        }
-
-        /*
-        on cree la liste d'etats que va contenir notre automate
-        on enitialise pour chque item de la map un objet de la classe Etats
-        et on l'ajoute a la liste etatsListe
-         */
-        List<Etats> etatsList = new ArrayList<Etats>();
-        for (Map.Entry<String, ArrayList<ArrayList<String>>> entry : transitions.entrySet()) {
-            Etats etats1 = new Etats();
-            etats1.setNom(entry.getKey());
-            etats1.setTransitions(entry.getValue());
-            etatsList.add(etats1);
-        }
-
-        /*
-        notre automate est pret a etre instancie et a se balader dans la memoire
-        par contre il reste de definir l'etat initiale et l'ensemble d'etats fineaux
-        */
-        Automates automates = new Automates();
-        automates.setEtats(etatsList);
-        automates.setAlphabet(alphabet);
-
-        int n = automates.getEtats().size();
-        /*
-        l'etat initiale est tire aleatoirement parmi les etats qu'on a
-         */
-        automates.setEtatDepart(automates.getEtats().get(random.nextInt(n)));
-
-        /*
-        la cardinalite de l'ensemble d'etats fineaux est tire au hasard et donc un nombre = card
-        d'etats fineaux est selectionne
-         */
-        int m = random.nextInt(n);
-        if (m == 0) {
-            m += 1;
-        }
-        ArrayList<Etats> finale = new ArrayList<Etats>();
-        for (int i = 0; i < m; i++) {
-            finale.add(automates.getEtats().get(i));
-        }
-        automates.setEtatsArrivee(finale);
-
-        /* etat inaccessibles => supp */
-
-        for (int i = 0; i < automates.getEtats().size(); i++) {
-            Etats et = automates.getEtats().get(i);
-            if (!(automates.estFinale(automates, et.getNom())) && et.getTransitions() == null) {
-                automates.getEtats().remove(et);
-            }
-        }
-
-        ArrayList<String> etats_acce = new ArrayList<String>();
-        for (int i = 0; i < automates.getEtats().size(); i++) {
-
-            String nom = automates.getEtats().get(i).getNom();
-            for (int j = 0; j < automates.getEtats().size(); j++) {
-
-                ArrayList transitionss = automates.getEtats().get(j).getTransitions();
-                for (int k = 0; k < transitionss.size(); k++) {
-
-                    ArrayList conf = (ArrayList) transitionss.get(k);
-                    if (conf.get(0).equals(nom)) {
-                        etats_acce.add(nom);
+                int nTrans = 0;
+                nTrans = random.nextInt(nb_max_trans_etat + 1);
+                boolean est_f = false;
+                if (nTrans == nb_max_trans_etat) {
+                    nTrans -= 1;
+                    est_f = true;
+                }
+                if (i == 0) {
+                    while (nTrans == 0) {
+                        nTrans = random.nextInt(nb_max_trans_etat);
                     }
                 }
+
+                /* Transitions pour chaque etat */
+                ArrayList transitions = new ArrayList();
+                System.out.println("i " + i + " " + nTrans);
+                for (int j = 0; j < nTrans; j++) {
+                    ArrayList<String> config = new ArrayList<String>();
+
+                    /* Differentes configurations */
+                    int ind_alpha = random.nextInt(alphabet.size() + 1);
+                    String alpha;
+                    if (ind_alpha == alphabet.size()) {
+                        alpha = "eps";
+                    } else {
+                        alpha = alphabet.get(ind_alpha);
+                    }
+                    System.out.println(alpha);
+
+                    /* configuration */
+                    int dest = random.nextInt(nb_etats);
+                    config.add(String.valueOf(dest));
+                    config.add(alpha);
+                    transitions.add(config);
+
+                }
+
+                etat.setNom(String.valueOf(i));
+                etat.setTransitions(transitions);
+                etats.add(etat);
+                if (est_f) {
+                    etats_finaux.add(etat);
+                }
             }
-            if (automates.getEtats().get(i).getNom().equals(automates.getEtatDepart().getNom())) {
-                etats_acce.add(automates.getEtats().get(i).getNom());
+            automates.setEtatDepart(etats.get(0));
+            automates.setEtats(etats);
+            automates.setEtatsArrivee(etats_finaux);
+            automates.setAlphabet(alphabet);
+
+            System.out.println("Etatd: " + automates.getEtatDepart().getNom() + " " + automates.getEtatDepart().getTransitions());
+            for (int i = 0; i < automates.getEtats().size(); i++) {
+                System.out.println("Etat " + automates.getEtats().get(i).getNom() + ": " + automates.getEtats().get(i).getTransitions());
             }
+            for (int i = 0; i < automates.getEtatsArrivee().size(); i++) {
+                System.out.println("Final " + automates.getEtatsArrivee().get(i).getNom());
+            }
+
+            nv = Automates.supp_non_accessible(automates);
+            System.out.println(Automates.nb_trans(nv) + " nb trs");
+
+        } while (Automates.nb_trans(nv) < nb_trs);
+
+
+        System.out.println("***********");
+        System.out.println("Etatd: " + nv.getEtatDepart().getNom() + " " + nv.getEtatDepart().getTransitions());
+        for (int i = 0; i < nv.getEtats().size(); i++) {
+            System.out.println("Etat " + nv.getEtats().get(i).getNom() + ": " + nv.getEtats().get(i).getTransitions());
         }
 
-        /* definition des nouveaux etats */
-        ArrayList<Etats> etts = new ArrayList<Etats>();
-        for (int i = 0; i < automates.getEtats().size(); i++) {
-            if (etats_acce.contains(automates.getEtats().get(i).getNom())) {
-                etts.add(automates.getEtats().get(i));
-            }
+        System.out.println("fffffff" + nv.getEtatsArrivee().size());
+        for (int i = 0; i < nv.getEtatsArrivee().size(); i++) {
+            System.out.println("Final " + nv.getEtatsArrivee().get(i).getNom() + " " + nv.getEtatsArrivee().get(i).getTransitions());
         }
-
-        automates.setEtats(etts);
-
-        /* etats non productif => supp */
-
-        if (automates.getEtatDepart().getTransitions() == null) {
-            return null;
-        }
-
-
-        return automates;
-
+        return nv;
     }
 
 

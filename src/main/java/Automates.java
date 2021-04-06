@@ -845,5 +845,81 @@ public class Automates {
         return "-1";
     }
 
+    static Automates supp_non_accessible(Automates automate) {
+        String depart = automate.getEtatDepart().getNom();
 
+        Queue<Etats> visite = new LinkedList<Etats>();
+
+        List<Boolean> supprimable = new ArrayList<Boolean>();
+        for (int m = 0; m < automate.getEtats().size(); m++) {
+            supprimable.add(false);
+        }
+
+        for (int i = 1; i < automate.getEtats().size(); i++) {
+            List<Boolean> est_v = new ArrayList<Boolean>();
+            List<Boolean> supp = new ArrayList<Boolean>();
+            boolean preced = false;
+            for (int m = 0; m < automate.getEtats().size(); m++) {
+                est_v.add(false);
+                supp.add(false);
+            }
+
+            visite.add(automate.etatDepart);
+
+            while (!visite.isEmpty() && !preced) {
+
+                Etats etatp = visite.poll();
+                int indP = automate.get_etat(automate, etatp.getNom());
+                if (!est_v.get(indP)) {
+                    est_v.set(indP, true);
+                    for (int j = 0; j < etatp.getTransitions().size(); j++) {
+                        ArrayList<String> con = (ArrayList<String>) etatp.getTransitions().get(j);
+                        String etatD = con.get(0);
+                        int indD = automate.get_etat(automate, etatD);
+                        if (etatD.equals(automate.getEtats().get(i).getNom()) && !etatD.equals(etatp.getNom())) {
+                            System.out.println(i + " pre par " + etatp.getNom());
+                            preced = true;
+                        }
+                        if (!est_v.get(indD)) {
+                            visite.add(automate.getEtats().get(indD));
+                        }
+                    }
+                }
+            }
+            System.out.println(est_v);
+            if (!preced) {
+                supprimable.set(i, true);
+            }
+        }
+        System.out.println(supprimable + " supp");
+
+        List<Etats> etts = new ArrayList<Etats>();
+        for (int i = 0; i < automate.getEtats().size(); i++) {
+            if (!supprimable.get(i)) {
+                etts.add(automate.getEtats().get(i));
+            }
+        }
+
+
+        automate.setEtats(etts);
+        List<Etats> arr = new ArrayList<Etats>();
+        for (int i = 0; i < automate.getEtatsArrivee().size(); i++) {
+            if (automate.getEtats().contains(automate.getEtatsArrivee().get(i))) {
+                arr.add(automate.getEtats().get(i));
+            }
+        }
+        automate.setEtatsArrivee(arr);
+        return automate;
+    }
+
+    static int nb_trans(Automates automates) {
+        int nb = 0;
+
+        for (int i = 0; i < automates.getEtats().size(); i++) {
+            nb += automates.getEtats().get(i).getTransitions().size();
+
+        }
+
+        return nb;
+    }
 }

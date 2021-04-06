@@ -1,6 +1,9 @@
 import java.io.IOException;
 
 public class CommandExec {
+    int iExitValue;
+    String sCommandString;
+
     /**
      * @param fileName the name of the dot file we want to convert to png
      * @brief a function that creates an image from an existing .dot file

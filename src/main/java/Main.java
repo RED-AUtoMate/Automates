@@ -2,11 +2,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 
 
 public class Main {
     public static void main(String[] args) throws IOException {
         Images images = new Images();
+        CommandExec commandExec = new CommandExec();
         String texContent = "    \\begin{center}\n" +
                 "    {\\Large \\textbf{\\textsc{Langages formels - contrôle continu 1}}}\n" +
                 "        \\\\\n" +
@@ -46,7 +48,7 @@ public class Main {
                 "\n" +
                 "    %------------------\n" +
                 "\n" +
-                "    \\clearpage\n" +
+                "    \\newpage\n" +
                 "\n" +
                 "    \\begin{center}\n" +
                 "    {\\Large \\textbf{\\textsc}}\n" +
@@ -81,11 +83,18 @@ public class Main {
         Automates automates = new Automates();
         for (int i = 0; i < 3; i++) {
             String[] al = {"a", "b"};
-            Automates th = automates.thompson("b(ab)*+(ba)*b", al);
+            ArrayList<String> arra = new ArrayList<>();
+            arra.add("a");
+            arra.add("b");
+            arra.add("c");
+            Automates th = jsonDeal.random(arra, 5, 3, 9);
+            texContent = texContent.replaceAll("#NBSUJET#", String.valueOf(i));
             jsonDeal.jsonToJsonFile(jsonDeal.automate_to_json(th), "test");
             images.jsonToDot("test.json", "test.dot");
             Files.write(Paths.get("test.tex"), ("\r\n" + texContent).getBytes(), StandardOpenOption.APPEND);
             images.latexCreate(th);
+            commandExec.generatePdfCommand("test" + i + "");
+
         }
         Files.write(Paths.get("test.tex"), "\r\n\\end{document}".getBytes(), StandardOpenOption.APPEND);
     }

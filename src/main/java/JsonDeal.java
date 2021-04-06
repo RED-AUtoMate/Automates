@@ -14,11 +14,13 @@ public class JsonDeal {
     int i = 0;
 
 
-    /*
-    Generation d'un automate aleatoirement les parametres sont le nombres
-    d'etats, le nombre de transitions, une liste d'alphabet
+    /**
+     * @param alphabet      the alphabet that we want to have in our random automate
+     * @param nb_etats      the number of etats that we want to have
+     * @param nb_transition the number of transitions that we need in our radnom automate
+     * @return Automate
+     * @brief function that creates a random automate
      */
-
     public Automates random_aut(int nb_etats, int nb_transition, List<String> alphabet) {
         Random random = new Random();
 
@@ -83,7 +85,7 @@ public class JsonDeal {
         /*
         notre automate est pret a etre instancie et a se balader dans la memoire
         par contre il reste de definir l'etat initiale et l'ensemble d'etats fineaux
-         a*/
+        */
         Automates automates = new Automates();
         automates.setEtats(etatsList);
         automates.setAlphabet(alphabet);
@@ -110,37 +112,37 @@ public class JsonDeal {
 
         /* etat inaccessibles => supp */
 
-        for (int i = 0; i < automates.getEtats().size(); i++){
+        for (int i = 0; i < automates.getEtats().size(); i++) {
             Etats et = automates.getEtats().get(i);
-            if (!(automates.estFinale(automates, et.getNom())) && et.getTransitions() == null){
+            if (!(automates.estFinale(automates, et.getNom())) && et.getTransitions() == null) {
                 automates.getEtats().remove(et);
             }
         }
 
         ArrayList<String> etats_acce = new ArrayList<String>();
-        for (int i = 0; i < automates.getEtats().size(); i++){
+        for (int i = 0; i < automates.getEtats().size(); i++) {
 
             String nom = automates.getEtats().get(i).getNom();
-            for (int j = 0; j < automates.getEtats().size(); j++){
+            for (int j = 0; j < automates.getEtats().size(); j++) {
 
                 ArrayList transitionss = automates.getEtats().get(j).getTransitions();
-                for ( int k = 0; k < transitionss.size(); k++){
+                for (int k = 0; k < transitionss.size(); k++) {
 
                     ArrayList conf = (ArrayList) transitionss.get(k);
-                    if (conf.get(0).equals(nom)){
+                    if (conf.get(0).equals(nom)) {
                         etats_acce.add(nom);
                     }
                 }
             }
-            if (automates.getEtats().get(i).getNom().equals(automates.getEtatDepart().getNom())){
+            if (automates.getEtats().get(i).getNom().equals(automates.getEtatDepart().getNom())) {
                 etats_acce.add(automates.getEtats().get(i).getNom());
             }
         }
 
         /* definition des nouveaux etats */
         ArrayList<Etats> etts = new ArrayList<Etats>();
-        for (int i = 0; i < automates.getEtats().size(); i++){
-            if (etats_acce.contains(automates.getEtats().get(i).getNom())){
+        for (int i = 0; i < automates.getEtats().size(); i++) {
+            if (etats_acce.contains(automates.getEtats().get(i).getNom())) {
                 etts.add(automates.getEtats().get(i));
             }
         }
@@ -149,10 +151,9 @@ public class JsonDeal {
 
         /* etats non productif => supp */
 
-        if (automates.getEtatDepart().getTransitions() == null){
+        if (automates.getEtatDepart().getTransitions() == null) {
             return null;
         }
-
 
 
         return automates;
@@ -160,7 +161,11 @@ public class JsonDeal {
     }
 
 
-    /* partir depuis une representation json vers des objets java ensuite vers notre objet automate */
+    /**
+     * @param path the path of the needed json file
+     * @return Automate
+     * @brief a function that creates an automate from a given json file
+     */
     public Automates json_to_automate(String path) {
         Automates automates = new Automates();
 
@@ -249,6 +254,11 @@ public class JsonDeal {
         return automates;
     }
 
+    /**
+     * @param jsonFileName the name that we want to give to our json file
+     * @param object       the Json object from where we want to create the .json file
+     * @brief a function that creates a .json from a given Json object
+     */
     public void jsonToJsonFile(JSONObject object, String jsonFileName) {
         String jsonFileContent = object.toJSONString();
         try {
@@ -262,7 +272,11 @@ public class JsonDeal {
     }
 
 
-    /* construire un objet json a partir d'un objet de la classe automate */
+    /**
+     * @param automates the automate we want to convert onto a JSONObject
+     * @return JSONObject
+     * @brief a function that creates a JSONObject from any given Automate object
+     */
     public JSONObject automate_to_json(Automates automates) {
 
         ArrayList transitions = new ArrayList();

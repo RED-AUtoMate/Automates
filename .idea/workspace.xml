@@ -7,32 +7,9 @@
     <list default="true" id="2605dd7d-5e46-4b3b-93d8-2ea0427b4df5" name="Default Changelist" comment="normalement">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateDeterministe.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateDeterministe.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateDeterministe.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateInitial.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateInitial.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateInitial.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateMinimal.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateMinimal.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateMinimal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateSynchro.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateSynchro.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/automateSynchro.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/azerty.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Automates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Automates.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Images.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Automates.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Automates.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/JsonDeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JsonDeal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Automates.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Automates.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Images.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Images.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/JsonDeal.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JsonDeal.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.dot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.tex" beforeDir="false" afterPath="$PROJECT_DIR$/test.tex" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,19 +93,6 @@
     <configuration name="TraitementTransitions" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TraitementTransitions" />
       <module name="Automates" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
